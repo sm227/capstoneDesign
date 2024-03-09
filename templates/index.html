@@ -13,12 +13,14 @@
 <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="row">
         <div class="col-md-6">
-            <div class="text-center mb-3">
-                <input type="text" class="form-control" placeholder="여기에 입력하세요...">
-            </div>
-            <div class="text-center">
-                <button type="submit" class="btn btn-primary">제출</button>
-            </div>
+            <form id = "youtubeForm" action = "/index2/" method = "GET"> {# 유튜브 링크 #}
+                <div class="text-center mb-3">
+                    <input id="youtubeLink" type = "text" class="form-control" name = "youtube_link" style = "width:300px" placeholder="여기에 입력하세요...">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">제출</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
