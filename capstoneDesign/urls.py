@@ -20,6 +20,6 @@ import manage
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('main/', manage.index, name='main_page'),
+    path('', manage.index, name='main_page'),
 
 ]
