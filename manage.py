@@ -2,6 +2,7 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
+from django.shortcuts import render
 
 
 def main():
@@ -17,6 +18,11 @@ def main():
         ) from exc
     execute_from_command_line(sys.argv)
 
+
+def index(request):
+
+    # request에 대해 main.html로 context데이터를 넘겨준다.
+    return render(request, 'index.html')
 
 if __name__ == '__main__':
     main()
