@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% load django_bootstrap5 %}
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <style>
+        #frameContainer{
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+<div id = "frameContainer">
+    {% if youtube_link %}
+        <iframe id="youtubeFrame" src="{{ youtube_link }}" allowfullscreen></iframe>
+    {% else %}
+        <p>유튜브 링크를 입력하세요.</p>
+    {% endif %}
+</div>
+</body>
+</html>
