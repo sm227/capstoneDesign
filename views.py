@@ -1,5 +1,7 @@
 from django.shortcuts import render
 import logging
+import capstoneDesign.script as api
+import capstoneDesign.script_api
 
 def index(request):
     logging.basicConfig(level=logging.DEBUG)
@@ -18,6 +20,9 @@ def index2(request):
     youtube_link = request.GET.get('youtube_link')
     full_link = youtube_link.split('/')
     print(full_link)
-    final_link = full_link[3].split('=')
+    final_link = full_link[3].split('?')
     print(final_link)
+    api.download_script_json(final_link[0])
+    # capstoneDesign.scrpit_api()
     return render(request, 'index2.html', {'youtube_link': full_link[3]})
+
