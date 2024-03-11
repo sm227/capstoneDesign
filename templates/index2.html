@@ -8,10 +8,24 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <style>
+        body, html{
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            align-items: center;
+        }
         #frameContainer{
-            position: fixed;
-            top: 0;
-            left: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+            margin-top: 20%;
+            padding-left: -40%;
+        }
+        #youtubeFrame{
+            height: 630px;
+            width: 1120px;
         }
     </style>
 </head>
@@ -19,7 +33,7 @@
 <div id = "frameContainer">
     {% if youtube_link %}
         {% autoescape off %} {{ youtube_link }}  {% endautoescape %}
-{#        <iframe id="youtubeFrame" src="{{ youtube_link }}" allowfullscreen></iframe>#}
+        {#<iframe id="youtubeFrame" src="{{ youtube_link }}" allowfullscreen></iframe>#}
     {% else %}
         <p>유튜브 링크를 입력하세요.</p>
     {% endif %}
