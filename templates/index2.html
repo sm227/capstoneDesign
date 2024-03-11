@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    
+
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <style>
-        #frameContainer{
+        #frameContainer {
             position: fixed;
             top: 0;
             left: 0;
@@ -16,11 +16,11 @@
     </style>
 </head>
 <body>
-<div id = "frameContainer">
+<div id="frameContainer">
     {% if youtube_link %}
-        {% autoescape off %} {{ youtube_link }}  {% endautoescape %}
-{#        <iframe id="youtubeFrame" src="{{ youtube_link }}" allowfullscreen></iframe>#}
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ youtube_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     {% else %}
+
         <p>유튜브 링크를 입력하세요.</p>
     {% endif %}
 </div>
