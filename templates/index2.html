@@ -31,9 +31,6 @@
                 {% else %}
                     <p>유튜브 링크를 입력하세요.</p>
                 {% endif %}
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary">제출</button>
-                </div>
             </div>
         </div>
         <div class="col">
@@ -48,7 +45,10 @@
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                          data-bs-parent="#scriptText">
                         <div class="accordion-body">
-                            <strong>요약내용</strong>
+                            {% for i in data %}
+                                <strong>{{ i }}</strong>
+                                <br>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
