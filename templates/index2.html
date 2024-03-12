@@ -15,12 +15,16 @@
         #frameContainer {
 
         }
+        .summary-scroll {
+            max-height: 400px; /* 최대 높이 설정 */
+            overflow-y: auto; /* 세로 스크롤 적용 */
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <div class="row">
+    <div class="row" >
         <div class="col">
             <div id="frameContainer">
                 {% if youtube_link %}
@@ -34,7 +38,7 @@
             </div>
         </div>
         <div class="col">
-            <div class="accordion" id="scriptText">
+            <div class="accordion" id="scriptText"  >
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
                         <button class="accordion-button" type="button" data-bs-toggle="collapse"
@@ -45,6 +49,7 @@
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                          data-bs-parent="#scriptText">
                         <div class="accordion-body">
+                        <div class="summary-scroll">
                             {% for i in data %}
                                 <strong>{{ i }}</strong>
                                 <br>
@@ -62,8 +67,12 @@
                     <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                          data-bs-parent="#scriptText">
                         <div class="accordion-body">
+                        <div class="summary-scroll">
                             <strong>요약내용</strong>
-                            ㅇㅇ
+                            {% for i in data %}
+                                <strong>{{ i }}</strong>
+                                <br>
+                            {% endfor %}
                         </div>
                     </div>
                 </div>
@@ -77,6 +86,7 @@
                     <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
                          data-bs-parent="#scriptText">
                         <div class="accordion-body">
+                        <div class="summary-scroll">    
                             <strong>요약내용</strong>
                         </div>
                     </div>
