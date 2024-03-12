@@ -26,7 +26,7 @@ def index2(request):
     print(final_link)
     api.download_script_json(final_link[0])
 
-    with open(f'script_{final_link[0]}.json', 'r') as f:
+    with open(f'script_{final_link[0]}.json', 'r', encoding='UTF-8') as f:
         json_data = json.load(f)
 
     script_data = []
