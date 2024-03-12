@@ -1,8 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 import logging
 import capstoneDesign.script as api
 
-
+@login_required(login_url='common:login')
 def index(request):
     logging.basicConfig(level=logging.DEBUG)
 
@@ -16,6 +17,7 @@ def index(request):
 
     return render(request, 'index.html')
 
+@login_required(login_url='common:login')
 def index2(request):
     youtube_link = request.GET.get('youtube_link')
     full_link = youtube_link.split('/')
