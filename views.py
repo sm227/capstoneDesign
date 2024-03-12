@@ -1,7 +1,7 @@
 from django.shortcuts import render
 import logging
 import capstoneDesign.script as api
-import capstoneDesign.script_api
+
 
 def index(request):
     logging.basicConfig(level=logging.DEBUG)
