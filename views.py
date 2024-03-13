@@ -38,4 +38,8 @@ def index2(request):
         }
         script_data.append(temp)
 
-    return render(request, 'index2.html', {'youtube_link': full_link[3], 'data': script_data})
+    return render(request, 'index2.html', {'youtube_link': final_link[0], 'data': script_data})
+
+@login_required(login_url='common:login')
+def test(request):
+    return render(request, 'test.html')
