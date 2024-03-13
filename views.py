@@ -30,8 +30,12 @@ def index2(request):
         json_data = json.load(f)
 
     script_data = []
-    for i in json_data:
-        temp = i['text']
+
+    for item in json_data:
+        temp = {
+            'text': item['text'],
+            'start': item['start']
+        }
         script_data.append(temp)
 
     return render(request, 'index2.html', {'youtube_link': full_link[3], 'data': script_data})
