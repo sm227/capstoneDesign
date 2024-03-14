@@ -28,7 +28,6 @@ def index2(request):
 
     with open(f'script_{final_link[0]}.json', 'r', encoding='UTF-8') as f:
         json_data = json.load(f)
-# 주석 추가
     script_data = []
 
     for item in json_data:
@@ -36,8 +35,8 @@ def index2(request):
             'text': item['text'],
             'start': item['start'],
             # round 는 소수점 반올림 함수
-            'minutes': round(item['start'] // 60), # 분
-            'seconds': round(item['start'] % 60)    # 초
+            'minutes': round(item['start'] // 60),  # 분
+            'seconds': round(item['start'] % 60)  # 초
         }
 
         script_data.append(temp)
