@@ -28,4 +28,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('common/', include('common.urls')),
     path('test/', views.test),
+    path('index2', views.index, name='index_page'),
+
+
 ]
