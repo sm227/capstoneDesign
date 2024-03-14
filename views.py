@@ -30,15 +30,24 @@ def index2(request):
         json_data = json.load(f)
 
     script_data = []
+    time_list = []
 
     for item in json_data:
         temp = {
             'text': item['text'],
             'start': item['start']
         }
+        time_temp = {
+            'minutes': item['start'] // 60,
+            'seconds': item['start'] % 60
+        }
+
+        time_list. append(time_temp)
         script_data.append(temp)
+    print(time_list)
 
     return render(request, 'index2.html', {'youtube_link': final_link[0], 'data': script_data})
+
 
 @login_required(login_url='common:login')
 def test(request):
