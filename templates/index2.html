@@ -53,7 +53,7 @@
                         <div class="accordion-body">
                             <div class="summary-scroll">
                                 {% for item in data %}
-                                    <a href="#" onclick="onYouTubeIframeAPIReady()"); return false;">{{ item.start }}</a>
+                                    <a href="#" onclick="moveTime({{ item.start }}); return false;">{{ item.start }}</a>
                                     <p> : {{ item.text }}</p>
                                     <br>
                                 {% endfor %}
@@ -136,13 +136,16 @@
 
     // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
-        event.target.seekTo(20 , true)
+        //event.target.seekTo(20 , true)
     }
 
 
-    function moveTime(num) {
+    function moveTime(time) {
+        if(player){
+            player.seekTo(time, true);
+        }
         {#this.num = num;#}
-        event.target.seekTo(num, true)
+        //event.target.seekTo(num, true)
     }
 
     // 5. The API calls this function when the player's state changes.
