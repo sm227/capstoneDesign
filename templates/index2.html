@@ -20,6 +20,13 @@
             max-height: 400px; /* 최대 높이 설정 */
             overflow-y: auto; /* 세로 스크롤 적용 */
         }
+
+        .background-color{
+            background: #eee;
+            box-sizing: border-box;
+            padding: 4px;
+
+        }
     </style>
 </head>
 <body>
@@ -54,8 +61,10 @@
                             <div class="summary-scroll">
                                 {% for item in data %}
                                 <div class="row">
-                                    <a href="#" onclick="moveTime({{ item.start }}" class="col-1" ); return false;">{{ item.minutes }}:{{ item.seconds }} </a>
-                                        <p class="col"> : {{ item.text }}</p>
+                                    <div class="col-1" >
+                                        <a href="#" onclick="moveTime({{ item.start }});" style="background-color:#eee; box-sizing:border-box; padding:4px; text-decoration:none; border-radius:6px;">{{ item.minutes }}:{{ item.seconds }}</a>
+                                    </div>
+                                    <p class="col"> : {{ item.text }}</p>
                                 </div>
 
                                 {% endfor %}
