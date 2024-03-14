@@ -28,23 +28,19 @@ def index2(request):
 
     with open(f'script_{final_link[0]}.json', 'r', encoding='UTF-8') as f:
         json_data = json.load(f)
-
+# 주석 추가
     script_data = []
-    time_list = []
 
     for item in json_data:
         temp = {
             'text': item['text'],
-            'start': item['start']
-        }
-        time_temp = {
-            'minutes': item['start'] // 60,
-            'seconds': item['start'] % 60
+            'start': item['start'],
+            # round 는 소수점 반올림 함수
+            'minutes': round(item['start'] // 60), # 분
+            'seconds': round(item['start'] % 60)    # 초
         }
 
-        time_list. append(time_temp)
         script_data.append(temp)
-    print(time_list)
 
     return render(request, 'index2.html', {'youtube_link': final_link[0], 'data': script_data})
 
