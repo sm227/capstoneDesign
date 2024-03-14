@@ -8,21 +8,152 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     <style>
+        body, html {
+            margin-top: 100px;
+        }
+
         #frameContainer {
-            position: fixed;
-            top: 0;
-            left: 0;
+
+        }
+
+        .summary-scroll {
+            max-height: 400px; /* 최대 높이 설정 */
+            overflow-y: auto; /* 세로 스크롤 적용 */
         }
     </style>
 </head>
 <body>
-<div id="frameContainer">
-    {% if youtube_link %}
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ youtube_link }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-    {% else %}
 
-        <p>유튜브 링크를 입력하세요.</p>
-    {% endif %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div id="frameContainer">
+                {% if youtube_link %}
+                    {#                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ youtube_link }}"#}
+                    {#                            title="YouTube video player" frameborder="0"#}
+                    {#                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"#}
+                    {#                            allowfullscreen></iframe>#}
+                    <div id="player"></div>
+                {% else %}
+                    <p>유튜브 링크를 입력하세요.</p>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col">
+            <div class="accordion" id="scriptText">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <strong>스크립트 전체 보기</strong>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                         data-bs-parent="#scriptText">
+                        <div class="accordion-body">
+                            <div class="summary-scroll">
+                                {% for item in data %}
+                                    <a href="#" onclick="moveTime({{ item.start }}); return false;">{{ item.start }}</a>
+                                    <p> : {{ item.text }}</p>
+                                    <br>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                타임라인, 소제목 #2
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                             data-bs-parent="#scriptText">
+                            <div class="accordion-body">
+                                <div class="summary-scroll">
+                                    <strong>요약내용</strong>
+                                    {#                                dddd#}
+                                    {% for i in data %}
+                                        <strong>{{ i }}</strong>
+                                        <br>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingThree">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                        data-bs-target="#collapseThree" aria-expanded="false"
+                                        aria-controls="collapseThree">
+                                    타임라인, 소제목 #3
+                                </button>
+                            </h2>
+                            <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                                 data-bs-parent="#scriptText">
+                                <div class="accordion-body">
+                                    <div class="summary-scroll">
+                                        <strong>요약내용</strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<script>
+    // 2. This code loads the IFrame Player API code asynchronously.
+    var tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    // 3. This function creates an <iframe> (and YouTube player)
+    //    after the API code downloads.
+    var player;
+
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+            height: '360',
+            width: '640',
+            videoId: '{{ youtube_link }}',
+            events: {
+                'onReady': onPlayerReady,
+            },
+
+        });
+    }
+
+    var num = 0;
+
+    function setNum(num) {
+        this.num = num;
+        onPlayerReady()
+    }
+
+    // 4. The API will call this function when the video player is ready.
+    function onPlayerReady(event) {
+        //event.target.seekTo(20 , true)
+    }
+
+
+    function moveTime(time) {
+        if(player){
+            player.seekTo(time, true);
+        }
+        {#this.num = num;#}
+        //event.target.seekTo(num, true)
+    }
+
+    // 5. The API calls this function when the player's state changes.
+    //    The function indicates that when playing a video (state=1),
+    //    the player should play for six seconds and then stop.
+    var done = false;
+
+</script>
+
 </body>
 </html>
