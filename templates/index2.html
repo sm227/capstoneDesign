@@ -53,10 +53,11 @@
                         <div class="accordion-body">
                             <div class="summary-scroll">
                                 {% for item in data %}
+                                <div class="row">
+                                    <a href="#" onclick="moveTime({{ item.start }}" class="col-1" ); return false;">{{ item.minutes }}:{{ item.seconds }} </a>
+                                        <p class="col"> : {{ item.text }}</p>
+                                </div>
 
-                                    <a href="#" onclick="moveTime({{ item.start }}); return false;">{{ item.minutes }}:{{ item.seconds }} </a>
-                                    <p> : {{ item.text }}</p>
-                                    <br>
                                 {% endfor %}
                             </div>
                         </div>
