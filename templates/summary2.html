@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>텍스트 요약하기</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+    <h2>텍스트 요약하기</h2>
+    <textarea id="jsonInput" rows="10" cols="50">{"item": {"text": "여기에 요약하고 싶은 긴 텍스트를 넣으세요."}}</textarea><br>
+    <button onclick="summarizeText()">요약하기</button>
+    <h3>요약 결과:</h3>
+    <p id="summary"></p>
+
+    <script>
+        async function summarizeText() {
+            const jsonInput = document.getElementById('jsonInput').value;
+            const jsonData = JSON.parse(jsonInput);
+            const textToSummarize = jsonData.item.text;
+
+            try {
+                const response = await axios.post('https://api.openai.com/v1/completions', {
+                    model: "text-davinci-003",  // 사용 가능한 최신 모델로 업데이트해야 할 수 있습니다.
+                    prompt: `요약: ${textToSummarize}`,
+                    temperature: 0.7,
+                    max_tokens: 150
+                }, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer YOUR_API_KEY_HERE`  // 여기에 OpenAI API Key를 입력하세요.
+                    }
+                });
+
+                if (response.data.choices && response.data.choices.length > 0) {
+                    const summary = response.data.choices[0].text.trim();
+                    document.getElementById('summary').textContent = summary;
+                }
+            } catch (error) {
+                console.error('요약 실패:', error);
+                document.getElementById('summary').textContent = '요약을 완료할 수 없습니다.';
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Summarization</title>
+    <script src="https://cdn.jsdelivr.net/npm/@openai/gpt-3-browser@0.0.8/lib/openai.esm.min.js"></script>
+</head>
+<body>
+    <div id="summary"></div>
+
+    <script>
+        const text = "{ item['text'] }"; // 텍스트 가져오기
+
+        const apiKey = "your_api_key"; // OpenAI API 키 입력
+        const gpt3 = new OpenAI(apiKey);
+
+        async function summarizeText() {
+            try {
+                const result = await gpt3.complete({
+                    engine: "davinci",
+                    prompt: text,
+                    maxTokens: 100,
+                    temperature: 0.5,
+                    topP: 1.0,
+                    frequencyPenalty: 0.0,
+                    presencePenalty: 0.0,
+                    stop: ["\n", "<|endoftext|>"]
+                });
+
+                const summary = result.choices[0].text.trim();
+                document.getElementById('summary').innerHTML = summary;
+            } catch (error) {
+                console.error("Error:", error);
+            }
+        }
+summary.py
+        summarizeText();
+    </script>
+</body>
+</html>
