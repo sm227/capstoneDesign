@@ -12,14 +12,74 @@
             margin-top: 100px;
         }
 
-        #frameContainer {
+        .frameContainer {
 
         }
 
-        .summary-scroll {
-            max-height: 400px; /* 최대 높이 설정 */
-            overflow-y: auto; /* 세로 스크롤 적용 */
+
+         /* 박스 수평 정렬 */
+        .summary-scroll .row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
         }
+
+        /* 텍스트, 박스 관련. */
+        .summary-scroll .col-1 {
+            width: 44px;
+            text-align: center;
+            background-color: #E7F1FF;
+            padding: 4px;
+            border-radius: 6px;
+            font-size: 15px;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+
+        /* 박스 왼쪽 부분 가려지는 것 수정 */
+        .summary-scroll .col {
+            flex: 1;
+            padding-left: 10px;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        /* 타임라인 밑 줄 제거 */
+        a {
+            text-decoration: none;
+            color: #307AE9;
+        }
+
+        /* 타임라인 선택 시 파란색 밑줄 표시 */
+        a:hover, a:focus {
+            text-decoration: underline;
+            color: #307AE9;
+        }
+
+        .container {
+            position: sticky;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        /* 모바일 화면 비율 설정 */
+        @media(max-width: 768px) {
+            .frameContainer{
+                width: 100%;
+                padding-top: 75%;
+            }
+
+            .summary-scroll .col-1 {
+                width: 60px;
+                font-size: 28px;
+            }
+
+            .summary-scroll .col {
+                font-size: 28px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -27,18 +87,15 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <div id="frameContainer">
+            <div class="frameContainer">
                 {% if youtube_link %}
-                    {#                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ youtube_link }}"#}
-                    {#                            title="YouTube video player" frameborder="0"#}
-                    {#                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"#}
-                    {#                            allowfullscreen></iframe>#}
                     <div id="player"></div>
                 {% else %}
                     <p>유튜브 링크를 입력하세요.</p>
                 {% endif %}
             </div>
         </div>
+
         <div class="col">
             <div class="accordion" id="scriptText">
                 <div class="accordion-item">
@@ -53,11 +110,14 @@
                         <div class="accordion-body">
                             <div class="summary-scroll">
                                 {% for item in data %}
-                                <div class="row">
-                                    <a href="#" onclick="moveTime({{ item.start }}" class="col-1" ); return false;">{{ item.minutes }}:{{ item.seconds }} </a>
-                                        <p class="col"> : {{ item.text }}</p>
-                                </div>
+                                    <div class="row">
+                                        <div class="col-1">
+                                            <a href="#"
+                                               onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
 
+                                        </div>
+                                        <p class="col"> : {{ item.text }}</p>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
@@ -74,7 +134,6 @@
                             <div class="accordion-body">
                                 <div class="summary-scroll">
                                     <strong>요약내용</strong>
-                                    {#                                dddd#}
                                     {% for i in data %}
                                         <strong>{{ i }}</strong>
                                         <br>
@@ -102,6 +161,21 @@
                     </div>
                 </div>
             </div>
+            <div class="container d-flex justify-content-center align-items-center">
+                <div class="row">
+                    <div class="col-md">
+                        <form id="youtubeForm" action="/index2/" method="GET"> {# 유튜브 링크 #}
+                            <div class="text-center mb-3">
+                                <input id="youtubeLink" type="text" class="form-control" name="youtube_link"
+                                       style="width:300px" placeholder="여기에 입력하세요...">
+                            </div>
+                            <div class="text-center">
+                                <button type="submit" class="btn btn-primary">제출</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -120,7 +194,7 @@
     function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
             height: '360',
-            width: '640',
+            width: '100%',
             videoId: '{{ youtube_link }}',
             events: {
                 'onReady': onPlayerReady,
@@ -143,7 +217,7 @@
 
 
     function moveTime(time) {
-        if(player){
+        if (player) {
             player.seekTo(time, true);
         }
         {#this.num = num;#}
