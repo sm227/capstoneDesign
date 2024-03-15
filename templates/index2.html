@@ -18,8 +18,8 @@
         }
 
         .text-controll {
-            margin-top: 3px;
-
+            margin-top: 15px;
+            font-size: 17px;
         }
 
         .summary-scroll {
@@ -81,14 +81,15 @@
                             <div class="box-controll">
                                 <div class="summary-scroll">
                                     {% for item in data %}
-                                        <div class="row">
-                                            <div class="col-1">
+                                        <div class="row align-items-center">
+                                            <div class="col-2">
                                                 <a class="btn btn-primary btn-sm" href="#" role="button"
                                                    onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
                                             </div>
                                             <div class="text-controll col ms-1 mt-n1">
                                                 <p> {{ item.text }}</p>
                                             </div>
+
                                         </div>
                                     {% endfor %}
                                 </div>
