@@ -17,41 +17,17 @@
 
         }
 
+        .text-controll {
+            margin-top: 15px;
+            font-size: 17px;
+        }
+
         .summary-scroll {
             max-height: 400px;
             overflow-y: auto;
             overflow-x: hidden;
         }
 
-        /* 박스 수평 정렬 */
-        .box-controll .row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-            justify-content: space-between;
-        }
-
-        /* 텍스트, 박스 관련. */
-        .box-controll .col-1 {
-            min-width: 55px;
-            max-width: 60px;
-            height: 40px;
-            text-align: center;
-            background-color: #E7F1FF;
-            padding: 10.5px;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
-            margin-left: 11px;
-        }
-
-        /* 박스 오른쪽 부분 */
-        .box-controll .col {
-            flex-grow: 1;
-            padding-left: 10px;
-            margin: 0;
-            overflow: hidden;
-        }
 
         /* 타임라인 밑 줄 제거 */
         a {
@@ -101,19 +77,24 @@
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                          data-bs-parent="#scriptText">
                         <div class="accordion-body p-md-2-">
+
                             <div class="box-controll">
                                 <div class="summary-scroll">
                                     {% for item in data %}
-                                        <div class="row">
-                                            <div class="col-1">
-                                                <a href="#" class="d-block"
+                                        <div class="row align-items-center">
+                                            <div class="col-2">
+                                                <a class="btn btn-primary btn-sm" href="#" role="button"
                                                    onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
                                             </div>
-                                            <p class="col"> : {{ item.text }}</p>
+                                            <div class="text-controll col ms-1 mt-n1">
+                                                <p> {{ item.text }}</p>
+                                            </div>
+
                                         </div>
                                     {% endfor %}
                                 </div>
                             </div>
+
                         </div>
                     </div>
 
