@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Title</title>
 
     {% load django_bootstrap5 %}
@@ -48,14 +49,20 @@
             padding: 10px;
         }
 
+
+
+
+
+
+
     </style>
 </head>
 <body>
 {% include "navbar.html" %}
 
-<div class="container">
+<div class="container ">
     <div class="row">
-        <div class="col">
+        <div class="col-md-6">
             <div class="frameContainer">
                 {% if youtube_link %}
                     <div id="player"></div>
@@ -65,7 +72,7 @@
             </div>
         </div>
 
-        <div class="col">
+        <div class="col-md-6">
             <div class="accordion" id="scriptText">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
@@ -83,7 +90,7 @@
                                     {% for item in data %}
                                         <div class="row align-items-center">
                                             <div class="col-2">
-                                                <a class="btn btn-primary btn-sm" href="#" role="button"
+                                                <a class="btn btn-primary btn-sm" style="width: 55px" href="#" role="button"
                                                    onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
                                             </div>
                                             <div class="text-controll col ms-1 mt-n1">
