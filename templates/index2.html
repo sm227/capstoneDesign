@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Title</title>
 
     {% load django_bootstrap5 %}
@@ -9,40 +10,25 @@
     {% bootstrap_javascript %}
     <style>
         body, html {
-            margin-top: 100px;
+            margin: 0;
+            padding: 0;
         }
 
         .frameContainer {
 
         }
 
-
-         /* 박스 수평 정렬 */
-        .summary-scroll .row {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
+        .text-controll {
+            margin-top: 15px;
+            font-size: 17px;
         }
 
-        /* 텍스트, 박스 관련. */
-        .summary-scroll .col-1 {
-            width: 44px;
-            text-align: center;
-            background-color: #E7F1FF;
-            padding: 4px;
-            border-radius: 6px;
-            font-size: 15px;
-            margin-right: 5px;
-            font-weight: bold;
+        .summary-scroll {
+            max-height: 400px;
+            overflow-y: auto;
+            overflow-x: hidden;
         }
 
-        /* 박스 왼쪽 부분 가려지는 것 수정 */
-        .summary-scroll .col {
-            flex: 1;
-            padding-left: 10px;
-            overflow: hidden;
-            margin: 0;
-        }
 
         /* 타임라인 밑 줄 제거 */
         a {
@@ -63,30 +49,20 @@
             padding: 10px;
         }
 
-        /* 모바일 화면 비율 설정 */
-        @media(max-width: 768px) {
-            .frameContainer{
-                width: 100%;
-                padding-top: 75%;
-            }
 
-            .summary-scroll .col-1 {
-                width: 60px;
-                font-size: 28px;
-            }
 
-            .summary-scroll .col {
-                font-size: 28px;
-            }
-        }
+
+
+
 
     </style>
 </head>
 <body>
+{% include "navbar.html" %}
 
-<div class="container">
+<div class="container ">
     <div class="row">
-        <div class="col">
+        <div class="col-md-6">
             <div class="frameContainer">
                 {% if youtube_link %}
                     <div id="player"></div>
@@ -96,7 +72,7 @@
             </div>
         </div>
 
-        <div class="col">
+        <div class="col-md-6">
             <div class="accordion" id="scriptText">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
@@ -107,21 +83,28 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
                          data-bs-parent="#scriptText">
-                        <div class="accordion-body">
-                            <div class="summary-scroll">
-                                {% for item in data %}
-                                    <div class="row">
-                                        <div class="col-1">
-                                            <a href="#"
-                                               onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
+                        <div class="accordion-body p-md-2-">
+
+                            <div class="box-controll">
+                                <div class="summary-scroll">
+                                    {% for item in data %}
+                                        <div class="row align-items-center">
+                                            <div class="col-2">
+                                                <a class="btn btn-primary btn-sm" style="width: 55px" href="#" role="button"
+                                                   onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
+                                            </div>
+                                            <div class="text-controll col ms-1 mt-n1">
+                                                <p> {{ item.text }}</p>
+                                            </div>
 
                                         </div>
-                                        <p class="col"> : {{ item.text }}</p>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
                             </div>
+
                         </div>
                     </div>
+
                     <div class="accordion-item">
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
