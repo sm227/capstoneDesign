@@ -61,9 +61,32 @@ def index2(request):
     w.close()
     print(script_data)
 
+    safety_settings = [
+        {
+            "category": "HARM_CATEGORY_DANGEROUS",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_NONE",
+        },
+    ]
+
     # 본인 api key 삽입
-    genai.configure(api_key="API_KEY")
-    model = genai.GenerativeModel('gemini-pro')
+    genai.configure(api_key="AIzaSyB842rnY66Om_-2SwSnh-R98c7v_OWiB9Q")
+    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
     with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
