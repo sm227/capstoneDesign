@@ -61,6 +61,8 @@ def index2(request):
     w.close()
     print(script_data)
 
+
+    # 유해성 조정
     safety_settings = [
         {
             "category": "HARM_CATEGORY_DANGEROUS",
