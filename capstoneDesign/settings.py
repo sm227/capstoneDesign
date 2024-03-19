@@ -42,8 +42,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django_bootstrap5",
+    'markdownx',
+    'markdown',
+    'markdownify.apps.MarkdownifyConfig',
 
-    "django_bootstrap5"
 ]
 
 MIDDLEWARE = [

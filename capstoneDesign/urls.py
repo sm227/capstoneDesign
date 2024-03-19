@@ -29,6 +29,7 @@ urlpatterns = [
     path('common/', include('common.urls')),
     path('test/', views.test),
     path('index2', views.index, name='index_page'),
+    path('markdownx/', include('markdownx.urls')),
 
 
 ]
