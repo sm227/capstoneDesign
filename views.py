@@ -6,6 +6,7 @@ import json
 import google.generativeai as genai
 
 
+
 @login_required(login_url='common:login')
 def index(request):
     logging.basicConfig(level=logging.DEBUG)
@@ -58,18 +59,48 @@ def index2(request):
         w.write(element + '\n')
 
     # w.close() 를 해줘야 텍스트 파일에 저장됨
+    w.write('\n')
+    w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+
     w.close()
     print(script_data)
 
+
+    # 유해성 조정
+    safety_settings = [
+        {
+            "category": "HARM_CATEGORY_DANGEROUS",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_NONE",
+        },
+    ]
+
     # 본인 api key 삽입
-    genai.configure(api_key="API_KEY")
-    model = genai.GenerativeModel('gemini-pro')
+    genai.configure(api_key="")
+    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
     with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
     response = model.generate_content(example)
+
     print(response.text)
-    return render(request, 'index2.html', {'youtube_link': final_link[0], 'data': script_data, 'script' : response.text})
+    a = "<h1>aa</h1>"
+    return render(request, 'index2.html', {'youtube_link': final_link[0], 'data': script_data, 'script' : response.text, 'script2': a})
 
 
 @login_required(login_url='common:login')

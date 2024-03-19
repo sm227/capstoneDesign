@@ -59,7 +59,7 @@
 </head>
 <body>
 {% include "navbar.html" %}
-
+{% load markdownify %}
 <div class="container ">
     <div class="row">
         <div class="col-md-6">
@@ -109,16 +109,17 @@
                         <h2 class="accordion-header" id="headingTwo">
                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                     data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                               요약하기
+                               요약내용
                             </button>
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
                              data-bs-parent="#scriptText">
                             <div class="accordion-body">
                                 <div class="summary-scroll">
-                                    <strong>요약내용</strong>
+{#                                    <strong>요약내용</strong>#}
 {#                                    {% for i in data %}#}
-                                        <strong>{{ script }}</strong>
+                                    {{ script|markdownify }}
+{#                                       {% autoescape off %} {{ script }} {% endautoescape %}#}
                                         <br>
 {#                                    {% endfor %}#}
                                 </div>
