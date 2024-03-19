@@ -43,8 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     "django_bootstrap5",
-    'markdownx',
-    'markdown',
     'markdownify.apps.MarkdownifyConfig',
 
 ]
