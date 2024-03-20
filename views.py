@@ -47,7 +47,6 @@ def index2(request):
 
 
 
-
     result_list = ['aaa', 'Hello', 123]
     w = open(f'script_{final_link[0]}.txt', 'w' ,encoding='UTF-8')
 
@@ -91,7 +90,7 @@ def index2(request):
     ]
 
     # 본인 api key 삽입
-    genai.configure(api_key="")
+    genai.configure(api_key="AIzaSyCt9xAX90wb8DQAmZ06-_8vFTnmkFfAyic")
     model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
     with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
@@ -106,3 +105,7 @@ def index2(request):
 @login_required(login_url='common:login')
 def test(request):
     return render(request, 'test.html')
+
+def sign_up(request):
+    return render(request, 'sign_up.html')
+
