@@ -29,6 +29,5 @@ urlpatterns = [
     path('common/', include('common.urls')),
     path('test/', views.test),
     path('index2', views.index, name='index_page'),
-
-
+    path('sign_up/', views.sign_up, name='sign_up_page'),
 ]
