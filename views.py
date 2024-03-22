@@ -4,9 +4,11 @@ import logging
 import capstoneDesign.script as api
 import json
 import google.generativeai as genai
+from django.views.decorators.csrf import csrf_exempt
 
 
 
+@csrf_exempt
 @login_required(login_url='common:login')
 def index(request):
     logging.basicConfig(level=logging.DEBUG)
