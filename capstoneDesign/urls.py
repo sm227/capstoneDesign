@@ -24,11 +24,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='main_page'),
     path('index2/', views.index2, name='index2_page'),
-    #path('login', auth_views.LoginView.as_view(), name='login'),
+    # path('login', auth_views.LoginView.as_view(), name='login'),
     path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('common/', include('common.urls')),
     path('test/', views.test),
     path('index2', views.index, name='index_page'),
     path('sign_up/', views.sign_up, name='sign_up_page'),
+    path('sign_up_complete/', views.sign_up_complete,),
 ]
