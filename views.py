@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 import logging
 import capstoneDesign.script as api
 import json
@@ -110,4 +110,7 @@ def test(request):
 
 def sign_up(request):
     return render(request, 'sign_up.html')
+
+def sign_up_complete(request):
+    return redirect('common:login')
 
