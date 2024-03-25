@@ -92,7 +92,7 @@ def index2(request):
     ]
 
     # 본인 api key 삽입
-    genai.configure(api_key="")
+    genai.configure(api_key="AIzaSyB842rnY66Om_-2SwSnh-R98c7v_OWiB9Q")
     model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
     with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
