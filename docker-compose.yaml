@@ -8,3 +8,9 @@ services:
       - ./:/usr/src/app/
     ports:
       - 8000:8000
+  db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
