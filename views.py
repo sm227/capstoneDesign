@@ -109,7 +109,7 @@ def test(request):
     return render(request, 'test.html')
 
 def sign_up(request):
-    return render(request, 'sign_up.html')
+    return render(request, 'common/signup.html')
 
 def sign_up_complete(request):
     return redirect('common:login')
