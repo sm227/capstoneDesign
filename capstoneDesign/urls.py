@@ -19,6 +19,7 @@ from django.contrib.auth import views as auth_views
 
 import manage
 import views
+from views import sign_up_complete
 
 urlpatterns = [
     path('admin/', admin.site.urls),

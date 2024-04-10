@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Title</title>
 
     {% load django_bootstrap5 %}
@@ -51,16 +51,32 @@
         }
 
 
-
-
-
-
-
     </style>
 </head>
 <body>
 {% include "navbar.html" %}
 {% load markdownify %}
+
+<!-- 메모 추가 모달
+위치 옮기면 안돼요ㅠㅠㅠㅠㅠㅠㅠㅠ -->
+<div class="modal fade" id="memoModal" tabindex="-1" aria-labelledby="memoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="memoModalLabel">알림</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>메모가 추가되었습니다</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <div class="container ">
     <div class="row">
         <div class="col-md-6">
@@ -70,6 +86,38 @@
                 {% else %}
                     <p>유튜브 링크를 입력하세요.</p>
                 {% endif %}
+            </div>
+            <div class="card text-center">
+                <div class="card-header">
+                    <ul class="nav nav-tabs card-header-tabs">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="true" href="#memo-tab" data-bs-toggle="tab">메모</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <!--메모 입력-->
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="memo-tab">
+                            <textarea id="memo-text" class="form-control mt-3" rows="3"></textarea>
+                            <button id="add-memo" class="btn btn-primary mt-2" data-bs-toggle="modal"
+                                    data-bs-target="#memoModal">메모 추가
+                            </button>
+                        </div>
+                        <div class="tab-pane fade" id="memo-list-tab">
+                            <!--메모 리스트-->
+                            <div id="memo-list">
+                                <ul id="memo-items" class="list-group"></ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -91,7 +139,8 @@
                                     {% for item in data %}
                                         <div class="row align-items-center">
                                             <div class="col-2">
-                                                <a class="btn btn-primary btn-sm" style="width: 55px" href="#" role="button"
+                                                <a class="btn btn-primary btn-sm" style="width: 55px" href="#"
+                                                   role="button"
                                                    onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
                                             </div>
                                             <div class="text-controll col ms-1 mt-n1">
@@ -116,12 +165,12 @@
                              data-bs-parent="#scriptText">
                             <div class="accordion-body">
                                 <div class="summary-scroll">
-{#                                    <strong>요약내용</strong>#}
-{#                                    {% for i in data %}#}
+                                    {#                                    <strong>요약내용</strong>#}
+                                    {#                                    {% for i in data %}#}
                                     {{ script|markdownify }}
-{#                                       {% autoescape off %} {{ script }} {% endautoescape %}#}
-                                        <br>
-{#                                    {% endfor %}#}
+                                    {#                                       {% autoescape off %} {{ script }} {% endautoescape %}#}
+                                    <br>
+                                    {#                                    {% endfor %}#}
                                 </div>
                             </div>
                         </div>
@@ -213,6 +262,54 @@
     //    the player should play for six seconds and then stop.
     var done = false;
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const addMemoButton = document.getElementById("add-memo"); // id가 "add-memo"인 요소를 찾아 'addMomoButton'에 할당 <<-- 메모 추가 버튼
+        const memoListLink = document.querySelector('.nav-tabs .nav-item:nth-child(2) .nav-link'); // 메모 보기 탭 보기
+        const memoList = document.getElementById("memo-list"); // id가 "memo-list"인 요소를 찾아 'memolist'에 할당
+        const memoItems = document.getElementById("memo-items"); // 메모 목록에 들어가는 아이템이 들어가는 리스트
+
+
+        //메모 추가 버튼 클릭 시 동작
+        addMemoButton.addEventListener("click", function () {
+            const memoText = document.getElementById("memo-text").value.trim(); // 메모 내용을 'memoText' 변수에 할당
+            if (memoText !== "") {
+                const memoItem = document.createElement("li"); // 새 리스트 생성
+                memoItem.textContent = memoText;
+                memoItem.className = "list-group-item";
+                memoItems.appendChild(memoItem); // 리스트에 append
+                document.getElementById("memo-text").value = "";
+
+                $('#memoModal').modal('show'); //모달 창 띄우기
+            }
+        });
+
+        memoListLink.addEventListener("click", function () {
+            memoList.style.display = "block";
+        });
+
+        // 모달 설정 1
+        window.addEventListener("click", function (event) {
+            const memoModal = document.getElementById("memoModal");
+            if (event.target === memoModal) {
+                $('#memoModal').modal('hide');
+            }
+        });
+
+        // 모달 설정 2
+        $('#memoModal').on('shown.bs.modal', function () {
+            $(document.body).addClass('modal-open');
+        });
+
+        // 모달 설정 3
+        $('#memoModal').on('hidden.bs.modal', function () {
+            $(document.body).removeClass('modal-open');
+        });
+
+        // 모달 설정 4
+        $('#memoModal').on('click', function (event) {
+            event.stopPropagation();
+        });
+    });
 </script>
 
 </body>
