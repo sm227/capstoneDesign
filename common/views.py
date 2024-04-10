@@ -23,7 +23,7 @@ def signup(request):
             return redirect('common:login')
     else:
         form = UserForm()
-    return render(request, 'common/signup.html', {'form': form})
+    return render(request, 'common/login.html', {'form': form})
 
 
 def signup2(request):
