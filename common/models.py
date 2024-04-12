@@ -9,3 +9,8 @@ class User(models.Model):
     def __str__(self):
         return self.username
 # Create your models here.
+
+class Memo(models.Model):
+    text = models.TextField()  # 메모 내용
+    def str(self):
+        return self.text
