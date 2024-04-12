@@ -4,6 +4,9 @@ from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import redirect, render
 from common.forms import UserForm
 
+from django.http import JsonResponse
+from .models import Memo
+from django.views.decorators.csrf import csrf_exempt
 
 def logout_view(request):
     logout(request)
@@ -28,3 +31,10 @@ def signup(request):
 
 def signup2(request):
     return render(request, 'common/login.html')
+
+def add_memo(request):
+    if request.method == 'POST':
+        text = request.POST.get('text')
+        memo = Memo.objects.create(text=text)
+        return JsonResponse({'message': '메모가 추가되었습니다.'})
+    return JsonResponse({'error': '잘못된 요청입니다.'}, status=400)
