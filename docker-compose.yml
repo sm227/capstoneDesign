@@ -1,15 +1,15 @@
 version: '3.10'
-
+# 두 개 띄우려고 이거 만듦
 services:
   web:
-    build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    build: .  # Dockerfile 빌드
+    command: python manage.py runserver 0.0.0.0:8000  # 장고 서버 실행 시키는 방법
     volumes:
       - ./:/usr/src/app/
     ports:
       - 8000:8000
   db:
-    image: hamsm/capstonedb
+    image: postgres # hamsm/capstonedb
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
