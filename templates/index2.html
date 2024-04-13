@@ -107,7 +107,7 @@
                         <div class="tab-pane fade show active" id="memo-tab">
                             <textarea id="memo-text" class="form-control mt-3" rows="3"></textarea>
                             <button id="add-memo" class="btn btn-primary mt-2" data-bs-toggle="modal"
-                                    data-bs-target="#memoModal">메모 추가
+                                    data-bs-target="#memoModal" name="text" value="{{ form.text.value|default_if_none:'' }}" required>메모 추가
                             </button>
                         </div>
                         <div class="tab-pane fade" id="memo-list-tab">
@@ -283,6 +283,16 @@
                 document.getElementById("memo-text").value = "";
 
                 {#$('#memoModal').modal('show'); //모달 창 띄우기#}
+                
+                const xhr = new XMLHttpRequest();
+                xhr.open("POST", "/add_memo/", true);
+                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        // 성공적으로 메모가 추가되었을 때의 처리
+                        // $('#memoModal').modal('show'); // 모달 창 띄우기
+                    }
+                };
             }
         });
 

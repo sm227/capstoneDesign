@@ -98,6 +98,7 @@ def index2(request):
         example = f.read()
 
     response = model.generate_content(example)
+    #response = model.generate_content("보기 좋게 요약해줘.", example)
 
     print(response.text)
     a = "<h1>aa</h1>"
