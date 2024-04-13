@@ -10,7 +10,9 @@ class User(models.Model):
         return self.username
 # Create your models here.
 
+
 class Memo(models.Model):
-    text = models.TextField()  # 메모 내용
-    def str(self):
-        return self.text
+    text = models.CharField(max_length=500)  # 메모 내용
+    # def __str__(self):
+    #     return self.text
+
