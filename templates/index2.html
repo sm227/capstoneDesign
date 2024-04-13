@@ -102,21 +102,25 @@
                     </ul>
                 </div>
                 <div class="card-body">
-                    <!--메모 입력-->
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="memo-tab">
-                            <textarea id="memo-text" class="form-control mt-3" rows="3"></textarea>
-                            <button id="add-memo" class="btn btn-primary mt-2" data-bs-toggle="modal"
-                                    data-bs-target="#memoModal" name="text" value="{{ form.text.value|default_if_none:'' }}" required>메모 추가
+                    <form method="post" action="{% url 'common:memo' %}">
+                        {% csrf_token %}
+                        <!--메모 입력-->
+                        <div class="tab-content">
+                            <div class="tab-pane fade show active" id="memo-tab">
+                                <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
+{#                                <button  class="btn btn-primary mt-2" type="submit">메모 추가</button>#}
+                                    <button  class="btn btn-primary mt-2" data-bs-toggle="modal"
+                                    data-bs-target="#memoModal" type="submit" >메모 추가
                             </button>
-                        </div>
-                        <div class="tab-pane fade" id="memo-list-tab">
-                            <!--메모 리스트-->
-                            <div id="memo-list">
-                                <ul id="memo-items" class="list-group"></ul>
+                            </div>
+                            <div class="tab-pane fade" id="memo-list-tab">
+                                <!--메모 리스트-->
+                                <div id="memo-list">
+                                    <ul id="memo-items" class="list-group"></ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -277,13 +281,13 @@
                 const tempSeconds = player.getCurrentTime(); // 현재 시간 가져오기 
                 const memoSeconds = changeSeconds(tempSeconds);
 
-                memoItem.textContent = memoText + "\t"+ memoSeconds;
+                memoItem.textContent = memoText + "\t" + memoSeconds;
                 memoItem.className = "list-group-item";
                 memoItems.appendChild(memoItem); // 리스트에 append
                 document.getElementById("memo-text").value = "";
 
                 {#$('#memoModal').modal('show'); //모달 창 띄우기#}
-                
+
                 const xhr = new XMLHttpRequest();
                 xhr.open("POST", "/add_memo/", true);
                 xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");

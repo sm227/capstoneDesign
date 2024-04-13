@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 import logging
 import capstoneDesign.script as api
@@ -6,6 +7,7 @@ import json
 import google.generativeai as genai
 from django.views.decorators.csrf import csrf_exempt
 
+# from capstoneDesign.models import Memo
 
 
 @csrf_exempt
