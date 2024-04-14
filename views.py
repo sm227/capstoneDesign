@@ -7,6 +7,9 @@ import json
 import google.generativeai as genai
 from django.views.decorators.csrf import csrf_exempt
 
+from common.models import Memo
+
+
 # from capstoneDesign.models import Memo
 
 
@@ -116,4 +119,13 @@ def sign_up(request):
 
 def sign_up_complete(request):
     return redirect('common:login')
+
+def add_memo(request):
+    if request.method == 'POST':
+        text = request.POST.get('text') # aaaaa
+        memo = Memo.objects.create(text=text)
+        # return HttpResponse("<script>console.log(dd);</script>")
+        # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+        return render(request, 'memo.html')
+    return JsonResponse({'error': 'Bad request,'}, status=400)
 
