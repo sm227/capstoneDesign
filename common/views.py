@@ -32,9 +32,10 @@ def signup(request):
 def signup2(request):
     return render(request, 'common/login.html')
 
-def add_memo(request):
-    if request.method == 'POST':
-        text = request.POST.get('text') # aaaaa
-        memo = Memo.objects.create(text=text)
-        return JsonResponse({'message': 'Successfully added!'})
-    return JsonResponse({'error': 'Bad request,'}, status=400)
+# def add_memo(request):
+#     if request.method == 'POST':
+#         text = request.POST.get('text') # aaaaa
+#         memo = Memo.objects.create(text=text)
+#         # return HttpResponse("<script>console.log(dd);</script>")
+#         return redirect("common:memo")
+#     return JsonResponse({'error': 'Bad request,'}, status=400)
