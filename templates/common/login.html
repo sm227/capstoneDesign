@@ -284,7 +284,7 @@
                    value="{{ form.password1.value|default_if_none:'' }}"/>
             <input type="password" class="form-control" name="password2" id="password2" placeholder="비밀번호 확인"
                    value="{{ form.password2.value|default_if_none:'' }}"/>
-            <button type="submit">Sign Up</button>
+            <button type="submit" id="signUpBtn">Sign Up</button>
         </form>
     </div>
     <div class="form-container sign-in-container">
@@ -325,6 +325,7 @@
     const signUpButton = document.getElementById('signUp');
     const signInButton = document.getElementById('signIn');
     const container = document.getElementById('container');
+    const signUpBtn = document.getElementById('signUpBtn');
 
     signUpButton.addEventListener('click', () => {
         container.classList.add("right-panel-active");
@@ -332,6 +333,10 @@
 
     signInButton.addEventListener('click', () => {
         container.classList.remove("right-panel-active");
+    });
+    signUpBtn.addEventListener('click', () => {
+         console.log('click!')
+         document.getElementById("signUp").click();
     });
 </script>
 </body>
