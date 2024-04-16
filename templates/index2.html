@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Title</title>
+    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script>
+        $.ajaxSetup({
+            headers: {"X-CSRFToken": '{{csrf_token}}'}
+        });
+    </script>
+
 
     {% load django_bootstrap5 %}
     {% bootstrap_css %}
@@ -94,7 +104,7 @@
                             <a class="nav-link active" aria-current="true" href="#memo-tab" data-bs-toggle="tab">메모</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
+                            <a class="nav-link" id="loadData" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -117,7 +127,7 @@
                             <div class="tab-pane fade" id="memo-list-tab">
                                 <!--메모 리스트-->
                                 <div id="memo-list">
-                                    <ul id="memo-items" class="list-group"></ul>
+                                    <ul id="dataList"></ul>
                                 </div>
                             </div>
                         </div>
@@ -342,6 +352,25 @@
         // 모달 설정 4
         $('#memoModal').on('click', function (event) {
             event.stopPropagation();
+        });
+    });
+
+
+    $(document).ready(function () {
+        $("#loadData").click(function () {
+            $.ajax({
+                url: '/my-ajax-url/', // 요청을 보낼 서버의 URL
+                type: 'get', // HTTP 메소드
+                dataType: 'json', // 응답 데이터 타입
+                success: function (response) {
+                    // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
+                    $('#dataList').empty(); // 기존 리스트를 비우고 시작
+                    $.each(response.items, function (i, item) {
+                        $('#dataList').append($('<li>').text(item.text));
+                    });
+                    console.log("good!")
+                }
+            });
         });
     });
 </script>

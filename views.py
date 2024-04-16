@@ -1,5 +1,5 @@
 from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 import logging
 import capstoneDesign.script as api
@@ -126,6 +126,18 @@ def add_memo(request):
         memo = Memo.objects.create(text=text)
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
+
+        memoList = Memo.objects.all().values('text')
         return render(request, 'memo.html')
     return JsonResponse({'error': 'Bad request,'}, status=400)
+
+# views.py
+
+def my_ajax_view(request):
+    # 예제 데이터 리스트
+    # data_list = ['사과', '바나나', '체리']
+    data_list = Memo.objects.all().values('text')
+    # print(data_list)
+    # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
+    return JsonResponse({'items': list(data_list)})
 
