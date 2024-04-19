@@ -3,6 +3,7 @@
 import os
 import sys
 from django.shortcuts import render
+import django
 
 
 def main():

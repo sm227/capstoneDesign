@@ -123,21 +123,40 @@ def sign_up_complete(request):
 def add_memo(request):
     if request.method == 'POST':
         text = request.POST.get('text') # aaaaa
+        #time = request.POST.get('time') # 00:00
+
         memo = Memo.objects.create(text=text)
+        #memo_time = Memo.objects.create(time=time)
+
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
-        memoList = Memo.objects.all().values('text')
+        #memoList = Memo.objects.all().values('text')
         return render(request, 'memo.html')
     return JsonResponse({'error': 'Bad request,'}, status=400)
 
+
+# @login_required(login_url='common:login')
+# def delete_memo(request, memo_id):
+#     memo = Memo.objects.get(id=memo_id)
+#     if request.method == 'POST':
+#         memo.delete()
+#         return render(request, "memo.html")
+#     return JsonResponse({'error': 'Bad request,'}, status=400)
 # views.py
 
 def my_ajax_view(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
     data_list = Memo.objects.all().values('text')
+    #time_list = Memo.objects.all().values('time')
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
 
+def my_ajax_delete(request):
+    data_list = Memo.objects.all().values('text')
+    data_list.delete(id=request.POST.get('loadData'))
+
+    # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
+    return JsonResponse({'items': list(data_list)})

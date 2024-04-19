@@ -107,7 +107,7 @@
                             <a class="nav-link" id="loadData" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+{#                            <a class="nav-link" id="loadData" href="#memo-list-tab" data-bs-toggle="tab">메모 삭제</a>#}
                         </li>
                     </ul>
                 </div>
@@ -119,10 +119,12 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="memo-tab">
                                 <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
+                                <!--<textarea id="memo-text" name="time" class="form-control mt-3" rows="3"></textarea>-->
                                 {#                                <button  class="btn btn-primary mt-2" type="submit">메모 추가</button>#}
                                 <button class="btn btn-primary mt-2" data-bs-toggle="modal"
                                         data-bs-target="#memoModal" type="submit">메모 추가
                                 </button>
+
                             </div>
                             <div class="tab-pane fade" id="memo-list-tab">
                                 <!--메모 리스트-->
@@ -130,11 +132,19 @@
                                     <ul id="dataList"></ul>
                                 </div>
                             </div>
+
+
                         </div>
                     </form>
+                                    <!-- changed -->
+                    <div class="my-3">
+                            <a href="my_ajax_delete" class="delete btn btn-sm btn-outline-secondary"
+                               data-uri = "{% url 'my_ajax_delete' %}">삭제</a>
+                    </div>
                 </div>
             </div>
         </div>
+
 
         <div class="col-md-6">
             <div class="accordion" id="scriptText">
@@ -228,6 +238,8 @@
     </div>
 </div>
 <script>
+    <!-- Js_Start -->
+
     // 2. This code loads the IFrame Player API code asynchronously.
     var tag = document.createElement('script');
 
@@ -287,9 +299,11 @@
         //메모 추가 버튼 클릭 시 동작
         addMemoButton.addEventListener("click", function () {
             const memoText = document.getElementById("memo-text").value.trim(); // 메모 내용을 'memoText' 변수에 할당
+            //const memoTime = document.getElementById("memo-time").value.trim(); // 메모 내용을 'memoTime' 변수에 할당
             if (memoText !== "") {
                 const memoItem = document.createElement("li"); // 새 리스트 생성
-                const tempSeconds = player.getCurrentTime(); // 현재 시간 가져오기 
+                //const memoTimeItem = document.createElement("li"); // 시간 리스트 생성.
+                const tempSeconds = player.getCurrentTime(); // 현재 시간 가져오기
                 const memoSeconds = changeSeconds(tempSeconds);
 
                 memoItem.textContent = memoText + "\t" + memoSeconds;
@@ -310,6 +324,8 @@
                 };
             }
         });
+
+
 
         // 초를 분으로 변경하는 함수
         function changeSeconds(seconds) {
@@ -355,7 +371,7 @@
         });
     });
 
-
+    <!--ajax text -->
     $(document).ready(function () {
         $("#loadData").click(function () {
             $.ajax({
@@ -373,7 +389,39 @@
             });
         });
     });
-</script>
 
+    {#<!-- ajax delete -->#}
+    $(document).ready(function(){
+        $('#loadData').click(function(){
+            $.ajax({
+                url: '/my-ajax-delete/',
+                type: 'GET',
+                dataType: 'json',
+                success:function(response){
+                    // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
+                    $('#dataList').empty(); // 기존 리스트를 비우고 시작
+                    $.each(response.items, function(i, item){
+                        $('#dataList').append($('<li>').text(item.text));
+                    });
+                    console.log("good!2")
+                }
+            });
+        });
+    });
+
+
+
+
+
+    $(document).ready(function () {
+        $('#memo-list').click(function () {
+            location.href = "../memo-list";
+        })
+        $('#btn_delete').click(function () {
+            location.href = "../delete_form/?id=" + $('#id').val();
+        })
+    });
+    <!-- 자바스크립트 End -->
+</script>
 </body>
 </html>
