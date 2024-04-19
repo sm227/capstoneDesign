@@ -34,7 +34,8 @@ urlpatterns = [
     path('sign_up/', views.sign_up, name='sign_up_page'),
     path('sign_up_complete/', views.sign_up_complete, ),
     path('memo/', views.add_memo, name='memo'),
-    # path('memo2/', views.add_memo, name='memo'),
+    path('memo/', views.delete_memo, name='delete_memo'),
+
     # path('ajax_method/', views.add_memo, name='ajax_method'),
     path('my-ajax-url/', views.my_ajax_view, name='my_ajax_url'),
 

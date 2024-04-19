@@ -123,14 +123,26 @@ def sign_up_complete(request):
 def add_memo(request):
     if request.method == 'POST':
         text = request.POST.get('text') # aaaaa
+        #time = request.POST.get('time') # 00:00
+
         memo = Memo.objects.create(text=text)
+        #memo_time = Memo.objects.create(time=time)
+
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
-        memoList = Memo.objects.all().values('text')
+        #memoList = Memo.objects.all().values('text')
         return render(request, 'memo.html')
     return JsonResponse({'error': 'Bad request,'}, status=400)
 
+
+@login_required(login_url='common:login')
+def delete_memo(request, memo_id):
+    memo = Memo.objects.get(id=memo_id)
+    if request.method == 'POST':
+        memo.delete()
+        return render(request, "memo.html")
+    return JsonResponse({'error': 'Bad request,'}, status=400)
 # views.py
 
 def my_ajax_view(request):
