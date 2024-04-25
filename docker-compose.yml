@@ -9,7 +9,7 @@ services:
     ports:
       - 8000:8000
   db:
-    image: nugoolmon/postgres # hamsm/capstonedb
+    image: postgres # hamsm/capstonedb
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
