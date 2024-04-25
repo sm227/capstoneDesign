@@ -39,3 +39,4 @@ def signup2(request):
 #         # return HttpResponse("<script>console.log(dd);</script>")
 #         return redirect("common:memo")
 #     return JsonResponse({'error': 'Bad request,'}, status=400)
+
