@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,7 +28,7 @@ LOGIN_REDIRECT_URL = '/'
 SECRET_KEY = 'django-insecure-tt*1!y_!rq*2^il!*v_i1ro-7_wcy^9xif%th1*fw&a2asa#rl'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
 
@@ -128,7 +128,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+# STATICFILES_DIRS = [
+#     BASE_DIR / 'static',
+# ]
+
+
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'capstoneDesign','static')]
+
+# STATIC_ROOT = os.path.join(BASE_DIR,'capstoneDesign', 'static')
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
