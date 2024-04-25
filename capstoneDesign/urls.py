@@ -48,8 +48,8 @@ urlpatterns = [
               ]
 
 # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT,  insecure=True)
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT,  insecure=True)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # urlpatterns+=url(r'^media/(?P<path>.\*)$', serve, {
 #     'document_root': settings.MEDIA_ROOT,
 # })
