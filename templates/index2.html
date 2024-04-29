@@ -357,13 +357,14 @@
                 type: 'POST', // HTTP 메소드
                 dataType: 'json', // 응답 데이터 타입
                 success: function (response) {
+                    console.log(response)
                     // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
                     $('#dataList').empty(); // 기존 리스트를 비우고 시작
                     $.each(response.items, function (i, item) {
                         $('#dataList').append($('<li>').text(item.text));
                     });
-                    console.log("good!")
-                }
+                    console.log("서버 요청 성공!")
+                } 
             });
         });
     });

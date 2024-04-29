@@ -10,5 +10,6 @@ Markdown==3.6
 sqlparse==0.4.4
 tinycss2==1.2.1
 youtube-transcript-api==0.6.2
+channels==4.1.0
 psycopg==3.1.18
 psycopg2==2.9.9
