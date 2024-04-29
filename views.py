@@ -52,10 +52,10 @@ def index2(request):
         print(item['text'])
         script_data.append(temp)
 
-
+    memoList = Memo.objects.all()
 
     result_list = ['aaa', 'Hello', 123]
-    w = open(f'script_{final_link[0]}.txt', 'w' ,encoding='UTF-8')
+    w = open(f'script_{final_link[0]}.txt', 'w', encoding='UTF-8')
 
     for element in text_data:
         # element 가 문자형이 아니면 문자형으로 변환
@@ -70,7 +70,6 @@ def index2(request):
 
     w.close()
     print(script_data)
-
 
     # 유해성 조정
     safety_settings = [
@@ -103,26 +102,31 @@ def index2(request):
         example = f.read()
 
     response = model.generate_content(example)
-    #response = model.generate_content("보기 좋게 요약해줘.", example)
+    # response = model.generate_content("보기 좋게 요약해줘.", example)
 
     print(response.text)
     a = "<h1>aa</h1>"
-    return render(request, 'index2.html', {'youtube_link': final_link[0], 'data': script_data, 'script' : response.text, 'script2': a})
+    return render(request, 'index2.html',
+                  {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a,
+                   'memoList': memoList})
 
 
 @login_required(login_url='common:login')
 def test(request):
     return render(request, 'test.html')
 
+
 def sign_up(request):
     return render(request, 'common/signup.html')
+
 
 def sign_up_complete(request):
     return redirect('common:login')
 
+
 def add_memo(request):
     if request.method == 'POST':
-        text = request.POST.get('text') # aaaaa
+        text = request.POST.get('text')  # aaaaa
         memo = Memo.objects.create(text=text)
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -130,6 +134,20 @@ def add_memo(request):
         memoList = Memo.objects.all().values('text')
         return render(request, 'memo.html')
     return JsonResponse({'error': 'Bad request,'}, status=400)
+
+
+def remove_memo(request):
+    if request.method == 'POST':
+        data = request.POST
+        memo_id = data.get('memoId')
+        try:
+            memo = Memo.objects.get(id=memo_id)
+            memo.delete()
+            return JsonResponse({'success': True}, status=200)
+        except Memo.DoesNotExist:
+            return JsonResponse({'error': '메모 존재 X'}, status=404)
+    return JsonResponse({'error': '외않되는데'}, status=400)
+
 
 # views.py
 
@@ -140,4 +158,3 @@ def my_ajax_view(request):
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
-

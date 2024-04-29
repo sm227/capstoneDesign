@@ -35,7 +35,9 @@ urlpatterns = [
     path('sign_up_complete/', views.sign_up_complete, ),
     path('memo/', views.add_memo, name='memo'),
     # path('memo2/', views.add_memo, name='memo'),
-    # path('ajax_method/', views.add_memo, name='ajax_method'),
-    path('my-ajax-url/', views.my_ajax_view, name='my_ajax_url'),
+    #path('ajax_method/', views.add_memo, name='ajax_method'),
+    path('my-ajax-view/', views.my_ajax_view, name='my_ajax_url'),
+    path('remove_memo/', views.remove_memo, name='remove_memo'),
+
 
 ]

@@ -13,6 +13,7 @@ class User(models.Model):
 
 class Memo(models.Model):
     text = models.CharField(max_length=500)  # 메모 내용
+    # time = models.DateTimeField()
     # def __str__(self):
     #     return self.text
 
