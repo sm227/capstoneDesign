@@ -359,7 +359,7 @@
                 success: function (response) {
                     console.log(response)
                     // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
-                    $('#dataList').empty(); // 기존 리스트를 비우고 시작
+                    $('#dataList').empty(); // 기존 리스트를 비우고 시작ㅇ
                     $.each(response.items, function (i, item) {
                         $('#dataList').append($('<li>').text(item.text));
                     });
