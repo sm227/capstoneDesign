@@ -30,7 +30,7 @@ from django.views.static import serve
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', views.index, name='main_page'),
-                  path('index2/', views.index2, name='index2_page'),
+                  path('index2/<int:user_id>/', views.index2, name='index2'),
                   # path('login', auth_views.LoginView.as_view(), name='login'),
                   path('login/', auth_views.LoginView.as_view(template_name='common/login3.html'), name='login'),
                   path('logout/', auth_views.LogoutView.as_view(), name='logout'),

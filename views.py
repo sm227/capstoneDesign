@@ -1,13 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 import logging
 import capstoneDesign.script as api
 import json
 import google.generativeai as genai
 from django.views.decorators.csrf import csrf_exempt
 
-from common.models import Memo
+from common.models import Memo, User, Video
 
 
 # from capstoneDesign.models import Memo
@@ -27,13 +27,19 @@ def index(request):
 
 
 @login_required(login_url='common:login')
-def index2(request):
+def index2(request, user_id):
     youtube_link = request.GET.get('youtube_link')
     full_link = youtube_link.split('/')
     print(full_link)
     final_link = full_link[3].split('?')
     print(final_link)
     api.download_script_json(final_link[0])
+
+    user = get_object_or_404(User, id=user_id)
+    link = Video(user=user, text=final_link)
+    link.save()
+
+    # link.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
 
     with open(f'script_{final_link[0]}.json', 'r', encoding='UTF-8') as f:
         json_data = json.load(f)

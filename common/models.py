@@ -11,8 +11,16 @@ class User(models.Model):
 # Create your models here.
 
 
+
+class Video(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    text = models.TextField()
+
+
 class Memo(models.Model):
     text = models.CharField(max_length=500)  # 메모 내용
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    video = models.ForeignKey(Video, on_delete=models.CASCADE)
     # def __str__(self):
     #     return self.text
 

@@ -1,10 +1,18 @@
 {% extends "base.html" %}
 {% block content %}
     {% load static %}
-    <div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="container show-grid pt-5 pb-5 mb-5">
+        <div class="row">
+            <div class="col-4">1</div>
+            <div class="col-4">2</div>
+            <div class="col-4">3</div>
+        </div>
+    </div>
+    <div class="container d-flex justify-content-center align-items-center mt-5">
         <div class="row">
             <div class="col-md-6">
-                <form id="youtubeForm" action="/index2/" method="GET"> {# 유튜브 링크 #}
+                <form id="youtubeForm" action="{% url 'index2' user.id %}" method="GET"> {# 유튜브 링크 #}
+                    {% csrf_token %}
                     <div class="text-center mb-3">
                         <input id="youtubeLink" type="text" class="form-control" name="youtube_link" style="width:300px"
                                placeholder="여기에 입력하세요...">
