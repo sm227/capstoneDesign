@@ -11,7 +11,7 @@
     <div class="container d-flex justify-content-center align-items-center mt-5">
         <div class="row">
             <div class="col-md-6">
-                <form id="youtubeForm" action="{% url 'index2' user.id %}" method="GET"> {# 유튜브 링크 #}
+                <form id="youtubeForm" action="{% url 'index2' user.id %}" method="get"> {# 유튜브 링크 #}
                     {% csrf_token %}
                     <div class="text-center mb-3">
                         <input id="youtubeLink" type="text" class="form-control" name="youtube_link" style="width:300px"

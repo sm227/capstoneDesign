@@ -358,8 +358,10 @@
 
     $(document).ready(function () {
         $("#loadData").click(function () {
+            {#var user_id = {{ request.user.id }}; // Django 템플릿 태그를 사용하여 사용자 ID를 가져옴#}
+            {#var video_id = {{ request.video.id }}; // Django 템플릿 태그를 사용하여 사용자 ID를 가져옴#}
             $.ajax({
-                url: '/my-ajax-url/', // 요청을 보낼 서버의 URL
+                url: '/my-ajax-url/'  + {{ request.user.id }} + '/' + {{ request.video.id }} + '/', // 요청을 보낼 서버의 URL
                 type: 'get', // HTTP 메소드
                 dataType: 'json', // 응답 데이터 타입
                 success: function (response) {
@@ -370,7 +372,7 @@
                         $('#dataList').append($('<li>').text(item.text));
                     });
                     console.log("서버 요청 성공!")
-                } 
+                }
             });
         });
     });

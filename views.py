@@ -7,7 +7,9 @@ import json
 import google.generativeai as genai
 from django.views.decorators.csrf import csrf_exempt
 
-from common.models import Memo, User, Video
+from common.models import Memo, Video
+from django.contrib.auth.models import User as authUser
+
 
 
 # from capstoneDesign.models import Memo
@@ -35,9 +37,10 @@ def index2(request, user_id):
     print(final_link)
     api.download_script_json(final_link[0])
 
-    user = get_object_or_404(User, id=user_id)
-    link = Video(user=user, text=final_link)
+    user = get_object_or_404(authUser, id=user_id)
+    link = Video(user=user, text=full_link)
     link.save()
+    test = get_object_or_404(Video, id=user_id)
 
     # link.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
 
@@ -130,6 +133,7 @@ def add_memo(request):
     if request.method == 'POST':
         text = request.POST.get('text') # aaaaa
         memo = Memo.objects.create(text=text)
+
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
 
@@ -139,10 +143,10 @@ def add_memo(request):
 
 # views.py
 
-def my_ajax_view(request):
+def my_ajax_view(request, user, video):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
-    data_list = Memo.objects.all().values('text')
+    data_list = Memo.objects.all(user=user, video=video).values('text')
 
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
