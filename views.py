@@ -24,7 +24,8 @@ def index(request):
 
     logging.basicConfig(level=logging.DEBUG)
 
-    recent_data = Video.objects.order_by('-id')[:3]
+    recent_data = Video.objects.filter(user=request.user).order_by('-id')[:3]
+    # recent_data = Video.objects.order_by('-id')[:3]
 
     if request.method == 'POST':
         youtube_link = request.POST.get('youtube_link')
@@ -173,10 +174,10 @@ def sign_up_complete(request):
 
 def add_memo(request):
     if request.method == 'POST':
-        global video_id
+        global video_pk
         text = request.POST.get('text') # aaaaa
         # user = get_object_or_404(authUser, id=user_id)
-        memo = Memo.objects.create(text=text, user=request.user, video_id=video_id)
+        memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk)
 
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
