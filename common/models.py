@@ -13,10 +13,11 @@ from django.contrib.auth.models import User as authUser
 # # Create your models here.
 
 
-
 class Video(models.Model):
     user = models.ForeignKey(authUser, on_delete=models.CASCADE)
     text = models.TextField()
+    thumbnail = models.TextField()
+
 
 
 class Memo(models.Model):
@@ -25,4 +26,3 @@ class Memo(models.Model):
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     # def __str__(self):
     #     return self.text
-

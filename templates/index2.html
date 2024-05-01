@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,10 +14,10 @@
             headers: {"X-CSRFToken": '{{csrf_token}}'}
         });
     </script>
-
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 
     {% load django_bootstrap5 %}
-    {% bootstrap_css %}
+    {#    {% bootstrap_css %}#}
     {% bootstrap_javascript %}
     <style>
         body, html {
@@ -212,7 +213,7 @@
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="row">
                     <div class="col-md">
-                        <form id="youtubeForm" action="/index2/" method="GET"> {# 유튜브 링크 #}
+                        <form id="youtubeForm" action="{% url 'index2' user.id %}" method="GET"> {# 유튜브 링크 #}
                             <div class="text-center mb-3">
                                 <input id="youtubeLink" type="text" class="form-control" name="youtube_link"
                                        style="width:300px" placeholder="여기에 입력하세요...">
@@ -361,7 +362,7 @@
             {#var user_id = {{ request.user.id }}; // Django 템플릿 태그를 사용하여 사용자 ID를 가져옴#}
             {#var video_id = {{ request.video.id }}; // Django 템플릿 태그를 사용하여 사용자 ID를 가져옴#}
             $.ajax({
-                url: '/my-ajax-url/'  + {{ request.user.id }} + '/' + {{ request.video.id }} + '/', // 요청을 보낼 서버의 URL
+                url: '/my-ajax-url/', // 요청을 보낼 서버의 URL
                 type: 'get', // HTTP 메소드
                 dataType: 'json', // 응답 데이터 타입
                 success: function (response) {

@@ -1,0 +1,25 @@
+ # --------
+    # API 키와 API 버전 지정
+    api_key = 'AIzaSyB1ZzrTmFpdSNc2gHmF9n9S11A4vgHrKbc'
+    api_service_name = 'youtube'
+    api_version = 'v3'
+
+    # YouTube API 클라이언트 생성
+    youtube = build(api_service_name, api_version, developerKey=api_key)
+
+    # 동영상 ID 지정
+    video_id = real_id
+
+    # videos.list API를 호출하여 동영상 정보 가져오기
+    request = youtube.videos().list(
+        part='snippet',
+        id='bISh9uGFcpiUve_D'
+    )
+    responsee = request.execute()
+    print(responsee)
+
+    # # 동영상 제목 추출
+    # video_title = response['items'][0]['snippet']['title']
+    # print("동영상 제목:", video_title)
+
+    # --------------
