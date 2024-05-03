@@ -189,14 +189,24 @@ def add_memo(request):
 
 # views.py
 
+# def my_ajax_view(request):
+#     # 예제 데이터 리스트
+#     # data_list = ['사과', '바나나', '체리']
+#     global video_pk
+#     data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('text')
+#     print(data_list)
+#     print("ok")
+#
+#     # print(data_list)
+#     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
+#     return JsonResponse({'items': list(data_list)})
+
 def my_ajax_view(request):
-    # 예제 데이터 리스트
-    # data_list = ['사과', '바나나', '체리']
     global video_pk
-    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('text')
-    print(data_list)
+    # 사용자와 비디오 ID에 해당하는 메모들을 필터링
+    memos = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text')
+    print(memos)
     print("ok")
 
-    # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
-    return JsonResponse({'items': list(data_list)})
+    return JsonResponse({'items': list(memos)})
