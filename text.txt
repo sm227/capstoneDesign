@@ -23,3 +23,45 @@
     # print("동영상 제목:", video_title)
 
     # --------------
+
+
+    {% if data %}
+    <h2 class="container mt-3">최근 기록</h2>
+    <div class="container" style="  overflow-x: auto;">
+        <table class="table">
+            <tbody>
+            <tr>
+                {% for item in data %}
+                    <td style="overflow-x: hidden; margin: 10px;">
+                        <div>
+                            <div class="col-md-5">
+                                <div class="card"
+                                     style="width: 300px; height: 350px; overflow: auto;   margin: 10px;">
+                                    <img class="card-img-top" src="{{ item.thumbnail }}" alt="Card image cap">
+                                    <div class="card-body">
+                                        <a href="#">{{ item.text }}</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </td>
+                {% endfor %}
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% else %}
+    <div class="col-md-12 mt-5">
+        <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 &#128051;</h4>
+    </div>
+{% endif %}
+
+
+
+
+.card-container {
+            width: 100%;
+            overflow-x: auto; /* 가로 스크롤 가능하도록 설정 */
+            white-space: nowrap; /* 자식 요소들이 줄바꿈되지 않도록 설정 */
+        }
