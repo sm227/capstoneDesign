@@ -35,6 +35,7 @@ def index(request):
     return render(request, 'index.html' , {'data': recent_data})
 
 video_pk = 0
+
 @login_required(login_url='common:login')
 def index2(request, user_id):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
@@ -192,11 +193,10 @@ def my_ajax_view(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
     global video_pk
-    data_list = Memo.objects.filter(user=request.user, video_id=15).values('text')
+    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('text')
     print(data_list)
     print("ok")
 
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
-
