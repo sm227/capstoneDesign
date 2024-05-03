@@ -13,15 +13,12 @@ from django.contrib.auth.models import User as authUser
 from googleapiclient.discovery import build
 
 
-
 # from capstoneDesign.models import Memo
 
 
 @csrf_exempt
 @login_required(login_url='common:login')
 def index(request):
-
-
     logging.basicConfig(level=logging.DEBUG)
 
     recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
@@ -32,9 +29,11 @@ def index(request):
         full_link = youtube_link.split('/')
         return render(request, 'index2.html', {'youtube_link': youtube_link, 'full': full_link[2]})
 
-    return render(request, 'index.html' , {'data': recent_data})
+    return render(request, 'index.html', {'data': recent_data})
+
 
 video_pk = 0
+
 
 @login_required(login_url='common:login')
 def index2(request, user_id):
@@ -105,10 +104,8 @@ def index2(request, user_id):
         # print(item['text'])
         script_data.append(temp)
 
-
-
     result_list = ['aaa', 'Hello', 123]
-    w = open(f'script_{final_link[0]}.txt', 'w' ,encoding='UTF-8')
+    w = open(f'script_{final_link[0]}.txt', 'w', encoding='UTF-8')
 
     for element in text_data:
         # element 가 문자형이 아니면 문자형으로 변환
@@ -123,7 +120,6 @@ def index2(request, user_id):
 
     w.close()
     # print(script_data)
-
 
     # 유해성 조정
     safety_settings = [
@@ -156,27 +152,31 @@ def index2(request, user_id):
         example = f.read()
 
     response = model.generate_content(example)
-    #response = model.generate_content("보기 좋게 요약해줘.", example)
+    # response = model.generate_content("보기 좋게 요약해줘.", example)
 
     # print(response.text)
     a = "<h1>aa</h1>"
-    return render(request, 'index2.html', {'youtube_link': final_link[0], 'data': script_data, 'script' : response.text, 'script2': a})
+    return render(request, 'index2.html',
+                  {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a})
 
 
 @login_required(login_url='common:login')
 def test(request):
     return render(request, 'test.html')
 
+
 def sign_up(request):
     return render(request, 'common/signup.html')
+
 
 def sign_up_complete(request):
     return redirect('common:login')
 
+
 def add_memo(request):
     if request.method == 'POST':
         global video_pk
-        text = request.POST.get('text') # aaaaa
+        text = request.POST.get('text')  # aaaaa
         # user = get_object_or_404(authUser, id=user_id)
         memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk)
 
@@ -187,13 +187,37 @@ def add_memo(request):
         return render(request, 'memo.html')
     return JsonResponse({'error': 'Bad request,'}, status=400)
 
+
 # views.py
+
+def delete_memo(request):
+    if request.method == 'POST':
+        memo_id = request.POST.get('memo_id')
+        print("Delete request received for memo ID:", memo_id)  # 로그 추가
+        try:
+            memo = Memo.objects.get(id=memo_id)
+            memo.delete()
+            # 삭제된 메모가 아닌 나머지 메모들을 다시 불러옵니다.
+            remaining_memos = Memo.objects.filter(user=request.user).values('id', 'text')
+            print("Memo successfully deleted.")  # 로그 추가
+            return JsonResponse({'message': '메모가 성공적으로 삭제되었습니다.', 'items': list(remaining_memos)})
+        except Memo.DoesNotExist:
+            print("Memo with ID", memo_id, "does not exist.")  # 로그 추가
+            return JsonResponse({'error': '해당 ID의 메모를 찾을 수 없습니다.'}, status=404)
+        except Exception as e:
+            print("An error occurred while deleting memo:", str(e))  # 로그 추가
+            return JsonResponse({'error': str(e)}, status=500)
+    else:
+        print("POST 요청이 필요합니다.")  # 로그 추가
+        return JsonResponse({'error': 'POST 요청이 필요합니다.'}, status=400)
+
+
 
 def my_ajax_view(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
     global video_pk
-    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('text')
+    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text')
     print(data_list)
     print("ok")
 

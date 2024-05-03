@@ -286,7 +286,7 @@
 
 
         //메모 추가 버튼 클릭 시 동작
-        addMemoButton.addEventListener("click", function () {
+        {% comment %}addMemoButton.addEventListener("click", function () {
             const memoText = document.getElementById("memo-text").value.trim(); // 메모 내용을 'memoText' 변수에 할당
             if (memoText !== "") {
                 const memoItem = document.createElement("li"); // 새 리스트 생성
@@ -311,7 +311,7 @@
                 };
             }
         });
-
+{% endcomment %}
         // 초를 분으로 변경하는 함수
         function changeSeconds(seconds) {
             if (seconds < 61) {
@@ -368,15 +368,57 @@
                 success: function (response) {
                     console.log(response)
                     // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
-                    $('#dataList').empty(); // 기존 리스트를 비우고 시작
                     $.each(response.items, function (i, item) {
-                        $('#dataList').append($('<li>').text(item.text));
+                        // 이미 목록에 있는 아이템인지 확인
+                        if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
+                            const memoItem = document.createElement("li"); // 새 리스트 생성
+                            memoItem.className = "list-group-item d-flex justify-content-between align-items-start"; // 부트스트랩 5 목록 그룹 클래스 추가
+                            memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
+                            memoItem.innerHTML = `
+                                <div>
+                                <div class="fw-bold">${item.id}</div>
+                                ${item.text}
+                            </div>
+                            <div>
+                                <span class="badge bg-primary rounded-pill me-2"></span>
+
+                            </div>
+                            <button class="btn btn-sm btn-danger deleteMemo">삭제</button>
+                            `; // 목록 그룹에 맞는 HTML 추가
+                            $('#memo-list').append(memoItem); // 목록 그룹에 append
+                        }
                     });
                     console.log("서버 요청 성공!")
                 }
             });
         });
     });
+
+    $(document).on("click", ".deleteMemo", function () {
+        const memoItem = $(this).closest("li");
+        const memoId = memoItem.data("id");
+
+
+        $.ajax({
+            url: '/delete-memo/',
+            type: 'POST',
+            data: {
+                memo_id: memoId
+            },
+            dataType: 'json',
+            success: function (response) {
+                console.log("서버 응답:", response);
+
+
+                memoItem.remove();
+            },
+            error: function(xhr, status, error){
+                console.error("서버 오류:", error);
+            }
+        });
+    });
+
+
 </script>
 
 </body>
