@@ -24,7 +24,7 @@ def index(request):
 
     logging.basicConfig(level=logging.DEBUG)
 
-    recent_data = Video.objects.filter(user=request.user).order_by('-id')[:3]
+    recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
     # recent_data = Video.objects.order_by('-id')[:3]
 
     if request.method == 'POST':

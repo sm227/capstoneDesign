@@ -3,32 +3,73 @@
     {% load static %}
 
 
-    <div class="container mt-5">
 
-        <div class="row">
-            {% if data %}
-                <h2>최근 기록</h2>
+    {#    <div class="container mt-3">#}
+    {#        <div class="row">#}
+    {#            {% if data %}#}
+    {#                <h2>최근 기록</h2>#}
+    {#                {% for item in data %}#}
+    {#                    <div class="scrollable-wrapper" style="overflow-x: auto;">#}
+    {#                        <div class="col-md-4">#}
+    {#                            <div class="card">#}
+    {#                                <img class="card-img-top" src="{{ item.thumbnail }}" alt="Card image cap">#}
+    {#                                <div class="card-body">#}
+    {#                                    <h7 class="card-title">{{ item.text }}</h7>#}
+    {#                                    <p class="card-text">이 카드는 첫 번째 최근 기록을 보여줍니다.</p>#}
+    {#                                    <a href="#" class="btn btn-sm btn-primary mt-1">자세히 보기</a>#}
+    {#                                </div>#}
+    {#                            </div>#}
+    {#                        </div>#}
+    {#                    </div>#}
+    {#                {% endfor %}#}
+    {#            {% else %}#}
+    {#                <div class="col-md-12 mt-5">#}
+    {#                    <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 &#128051;</h4>#}
+    {#                </div>#}
+    {#            {% endif %}#}
+    {##}
+    {#        </div>#}
+    {#    </div>#}
+
+
+
+
+
+    {% if data %}
+        <h2 class="container mt-3">최근 기록</h2>
+        <div class="container" style=" display: flex; overflow-x: auto;">
+        <table class="table">
+            <tbody>
+            <tr>
                 {% for item in data %}
-                    <div class="col-md-4">
-                        <div class="card">
-                            <img class="card-img-top" src="{{ item.thumbnail }}" alt="Card image cap">
-                            <div class="card-body">
-                                <h5 class="card-title">{{ item.text }}</h5>
-                                <p class="card-text">이 카드는 첫 번째 최근 기록을 보여줍니다.</p>
-                                <a href="#" class="btn btn-primary">자세히 보기</a>
+                    <td style="overflow-x: scroll;">
+                        <div>
+                            {#                            <div class="col-md-5">#}
+                            <div class="card" style="width: 300px; height: 350px; overflow: auto; flex: 0 0 auto;  margin: 10px;">
+                                <img class="card-img-top" src="{{ item.thumbnail }}" alt="Card image cap">
+                                <div class="card-body">
+{#                                    <h7 class="card-title">{{ item.text }}</h7>#}
+                                    {#                                <p class="card-text">이 카드는 첫 번째 최근 기록을 보여줍니다.</p>#}
+                                    <a href="#" >{{ item.text }}</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        {#                        </div>#}
+                    </td>
                 {% endfor %}
-            {% else %}
-                <div class="col-md-12">
-                    <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 🥲</h4>
-                </div>
-            {% endif %}
-
+            </tr>
+            </tbody>
+        </table>
+    {% else %}
+        <div class="col-md-12 mt-5">
+            <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 &#128051;</h4>
         </div>
-    </div>
-    <h1 class="text-center mt-5">🌏 전 세계의 모든 영상을 요약해 보세요</h1>
+    {% endif %}
+</div>
+
+
+
+    <h2 class="text-center  mt-5">🌏 전 세계의 모든 영상을 요약해 보세요</h2>
     <div class="container d-flex justify-content-center align-items-center mb-5 mt-5">
         <div class="row">
             <form id="youtubeForm" action="{% url 'index2' user.id %}" method="get"> {# 유튜브 링크 #}
@@ -38,7 +79,7 @@
                         <input id="youtubeLink" type="text" class="form-control" name="youtube_link" style="width:300px"
                                placeholder="요약할 URL 붙여넣기">
                     </div>
-                    <div class="col-md-4  ms-3 text-right">
+                    <div class="col-md-5  ms-3 text-right">
                         <button type="submit" class="btn btn-success">요약하기</button>
                     </div>
                 </div>
