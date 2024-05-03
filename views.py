@@ -192,7 +192,7 @@ def my_ajax_view(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
     global video_pk
-    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('text')
+    data_list = Memo.objects.filter(user=request.user, video_id=15).values('text')
     print(data_list)
     print("ok")
 
