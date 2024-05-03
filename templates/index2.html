@@ -128,7 +128,13 @@
                             <div class="tab-pane fade" id="memo-list-tab">
                                 <!--메모 리스트-->
                                 <div id="memo-list">
-                                    <ul id="dataList"></ul>
+                                    {% for memo in memoList %}
+                                        <li>{{ memo.id }}</li>
+                                        <button class="btn btn-primary mt-2" type="button"
+                                                onclick="removeMemo({{ memo.id }})">
+                                            삭제
+                                        </button>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -278,97 +284,85 @@
     //    the player should play for six seconds and then stop.
     var done = false;
 
-    document.addEventListener("DOMContentLoaded", function () {
-        const addMemoButton = document.getElementById("add-memo"); // id가 "add-memo"인 요소를 찾아 'addMomoButton'에 할당 <<-- 메모 추가 버튼
-        const memoListLink = document.querySelector('.nav-tabs .nav-item:nth-child(2) .nav-link'); // 메모 보기 탭 보기
-        const memoList = document.getElementById("memo-list"); // id가 "memo-list"인 요소를 찾아 'memolist'에 할당
-        const memoItems = document.getElementById("memo-items"); // 메모 목록에 들어가는 아이템이 들어가는 리스트
 
-
-        //메모 추가 버튼 클릭 시 동작
-        addMemoButton.addEventListener("click", function () {
-            const memoText = document.getElementById("memo-text").value.trim(); // 메모 내용을 'memoText' 변수에 할당
-            if (memoText !== "") {
-                const memoItem = document.createElement("li"); // 새 리스트 생성
-                const tempSeconds = player.getCurrentTime(); // 현재 시간 가져오기 
-                const memoSeconds = changeSeconds(tempSeconds);
-
-                memoItem.textContent = memoText + "\t" + memoSeconds;
-                memoItem.className = "list-group-item";
-                memoItems.appendChild(memoItem); // 리스트에 append
-                document.getElementById("memo-text").value = "";
-
-                {#$('#memoModal').modal('show'); //모달 창 띄우기#}
-
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "/add_memo/", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        // 성공적으로 메모가 추가되었을 때의 처리
-                        // $('#memoModal').modal('show'); // 모달 창 띄우기
-                    }
-                };
-            }
-        });
-
-        // 초를 분으로 변경하는 함수
-        function changeSeconds(seconds) {
-            if (seconds < 61) {
-                return '00:' + addZero(seconds)
-            }
-            // sec
-            var hours = Math.floor(seconds / 3600)
-            var mins = Math.floor((seconds - hours * 3600) / 60)
-            var secs = Math.floor(seconds % 60)
-            return addZero(hours) + ':' + addZero(mins) + ':' + addZero(secs)
-
-            function addZero(num) {
-                return ((num < 10) ? '0' : '') + num
-            }
+    // 초를 분으로 변경하는 함수
+    function changeSeconds(seconds) {
+        if (seconds < 61) {
+            return '00:' + addZero(seconds)
         }
+        // sec
+        var hours = Math.floor(seconds / 3600)
+        var mins = Math.floor((seconds - hours * 3600) / 60)
+        var secs = Math.floor(seconds % 60)
+        return addZero(hours) + ':' + addZero(mins) + ':' + addZero(secs)
 
-        memoListLink.addEventListener("click", function () {
-            memoList.style.display = "block";
-        });
+        function addZero(num) {
+            return ((num < 10) ? '0' : '') + num
+        }
+    }
 
-        // 모달 설정 1
-        window.addEventListener("click", function (event) {
-            const memoModal = document.getElementById("memoModal");
-            if (event.target === memoModal) {
-                $('#memoModal').modal('hide');
-            }
-        });
-
-        // 모달 설정 2
-        $('#memoModal').on('shown.bs.modal', function () {
-            $(document.body).addClass('modal-open');
-        });
-
-        // 모달 설정 3
-        $('#memoModal').on('hidden.bs.modal', function () {
-            $(document.body).removeClass('modal-open');
-        });
-
-        // 모달 설정 4
-        $('#memoModal').on('click', function (event) {
-            event.stopPropagation();
-        });
+    // 모달 설정 1
+    window.addEventListener("click", function (event) {
+        const memoModal = document.getElementById("memoModal");
+        if (event.target === memoModal) {
+            $('#memoModal').modal('hide');
+        }
     });
 
+    // 모달 설정 2
+    $('#memoModal').on('shown.bs.modal', function () {
+        $(document.body).addClass('modal-open');
+    });
 
+    // 모달 설정 3
+    $('#memoModal').on('hidden.bs.modal', function () {
+        $(document.body).removeClass('modal-open');
+    });
+
+    // 모달 설정 4
+    $('#memoModal').on('click', function (event) {
+        event.stopPropagation();
+    });
+
+    
+    //삭제
+    const removeMemo = function (memoId) {
+        $.ajax({
+            url: '/remove_memo/',
+            type: 'POST',
+            //let memo ={
+            //  memoId = memoId
+            //}
+            data: {
+                'memoId': memoId
+            },
+            dataType: 'json',
+            success: function (response) {
+                if (response.success) {
+                    $('#memo' + memoId).remove();
+                } else {
+                    console.log("왜안되는데");
+                }
+            },
+            error: function (xhr, errmsg, err) {
+                console.log(xhr.status + ": " + xhr.responseText); //콘솔에 오류메시지
+            }
+        });
+    }
+    
+    //추가
     $(document).ready(function () {
         $("#loadData").click(function () {
             {#var user_id = {{ request.user.id }}; // Django 템플릿 태그를 사용하여 사용자 ID를 가져옴#}
             {#var video_id = {{ request.video.id }}; // Django 템플릿 태그를 사용하여 사용자 ID를 가져옴#}
             $.ajax({
-                url: '/my-ajax-url/', // 요청을 보낼 서버의 URL
-                type: 'get', // HTTP 메소드
+                url: '/my_ajax_view/', // 요청을 보낼 서버의 URL
+                type: 'POST', // HTTP 메소드
                 dataType: 'json', // 응답 데이터 타입
                 success: function (response) {
                     console.log(response)
                     // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
-                    $('#dataList').empty(); // 기존 리스트를 비우고 시작
+                    $('#dataList').empty(); // 기존 리스트를 비우고 시작ㅇ
                     $.each(response.items, function (i, item) {
                         $('#dataList').append($('<li>').text(item.text));
                     });
@@ -377,6 +371,7 @@
             });
         });
     });
+
 </script>
 
 </body>
