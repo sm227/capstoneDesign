@@ -57,9 +57,9 @@
             {% for item in data %}
                 <div class="card">
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
-                    <div class="text-wrapper">
-                        {{ item.text }}
-                        {#                        <a href="#" style="width:250px;">{{ item.text }}</a>#}
+                    <div class="ms-2 me-2 mt-2 container text-wrap" >
+{#                        {{ item.text }}#}
+                                                <a href="#">{{ item.text }}</a>
                     </div>
                 </div>
             {% endfor %}
