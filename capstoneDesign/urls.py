@@ -44,7 +44,7 @@ urlpatterns = [
                   # path('ajax_method/', views.add_memo, name='ajax_method'),
                   path('my-ajax-url/', views.my_ajax_view, name='my_ajax_url'),
                   # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-
+                  path('index/', views.index, name='index'),
               ]
 
 # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
