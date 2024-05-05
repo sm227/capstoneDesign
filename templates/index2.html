@@ -71,7 +71,7 @@
 <!-- 메모 추가 모달
 위치 옮기면 안돼요ㅠㅠㅠㅠㅠㅠㅠㅠ -->
 <div class="modal fade" id="memoModal" tabindex="-1" aria-labelledby="memoModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="memoModalLabel">알림</h5>
@@ -85,6 +85,39 @@
             </div>
         </div>
     </div>
+</div>
+
+
+<div class="modal fade" id="editMemoModal" tabindex="-1" aria-labelledby="editMemoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMemoModalLabel">메모 수정</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <textarea id="editMemoText" class="form-control" rows="3"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+        <button type="button" id="saveEditedMemo" class="btn btn-primary">저장</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="editMemoCompleteModal" tabindex="-1" aria-labelledby="editMemoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editMemoModalLabel">메모 수정 완료!</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-footer">
+        <button id="editMemoComleteBtn" class="btn btn-primary mt-2" type="button">확인</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 
@@ -293,7 +326,7 @@
         onPlayerReady()
     }
 
-    // 4. The API will call this function when the video player is ready.ㅇ
+    // 4. The API will call this function when the video player is ready.
     function onPlayerReady(event) {
         //event.target.seekTo(20 , true)
     }
@@ -399,6 +432,8 @@
                 dataType: 'json', // 응답 데이터 타입
                 success: function (response) {
                     console.log(response)
+                    $('#memo-list').empty()
+
                     // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
                     $.each(response.items, function (i, item) {
                         // 이미 목록에 있는 아이템인지 확인
@@ -453,47 +488,116 @@
         });
     });
 
-    //수정 기능 해야할것
-    //1. 메모 id를 찾아서 텍스트 찾아오기
-    //2. 텍스트박스로 바꾸고, 삭제, 수정 버튼 비활성화 만들기
-    $(document).on("click", ".editMemo", function(){
-        const memoItem = $(this).closest("li");
-        const memoId = memoItem.data("id");
-        const memoText = memoItem.find(".memo-text").text();
-        
-        memoItem.find(".memo-text").replaceWith('<input type="text" class="form-control edited-memo-text" value="${memoText}"');
-        memoItem.find(".editMemo").prop("disabled", true);
-        memoItem.find(".deleteMemo").prop("disabled", true);
-        memoItem.append('<button class="btn btn-sm btn-success saveMemo" data-id="${memoId}" type="button">저장</button>');
-    });
-    //3. 수정 완료 되면 다시 리스트에 append
-    //4 수정 완료 되면 ajax 요청 보내기
-    $(document).on("click", ".saveMemo", function(){
-        const memoItem = $(this).closest("li");
-        const memoId = $(this).data("id");
-        const editedMemo = memoItem.find(".edited-memo-text").val(); //수정된 텍스트 가져오기 -> 476
-        
+{% comment %}    $(document).on("click", ".editMemo", function () {
+    const memoItem = $(this).closest("li");
+    const memoId = memoItem.data("id");
+    const memoText = memoItem.find('.memo-text').text();
+
+    $('#editMemoModal').modal('show');
+    $('#editMemoText').val(memoText);
+
+
+    $('#saveEditedMemo').off().on('click', function () {
+        const editedMemoText = $('#editMemoText').val();
+
+
         $.ajax({
             url: '/edit-memo/',
             type: 'POST',
             data: {
                 memo_id: memoId,
-                edited_text: editedMemo
+                text: editedMemoText
             },
             dataType: 'json',
-            success: function(response){
-                console.log("서버 요청 성공", response);
-                
-                memoItem.find(".edited-memo-text").replaceWith('<div class="memo-text">${editedMemo}</div>');
-                memoItem.find(".changeMemo").prop("disabled", false);
-                memoItem.find(".deleteMemo").prop("disabled", false);
-                $(this).remove();
+            success: function (response) {
+                console.log("서버 응답:", response);
+                // 수정된 내용을 메모 리스트에 업데이트
+
+                $('#editMemoModal').modal('hide'); // 모달 닫기
+                memoItem.find('.memo-text').text(editedMemoText);
             },
-            error: function(xhr, status, error){
-                console.error("서버 요청 실패", error);
+            error: function (xhr, status, error) {
+                console.error("서버 오류:", error);
             }
         });
     });
+});{% endcomment %}
+
+    $(document).on("click", ".editMemo", function () {
+    const memoItem = $(this).closest("li");
+    const memoId = memoItem.data("id");
+    const memoText = memoItem.find('.memo-text').text(); // 메모 텍스트 가져오기
+
+    $('#editMemoModal').modal('show'); // 모달 열기
+    $('#editMemoText').val(memoText); // 모달 내부의 텍스트 에어리어에 메모 내용 표시
+
+    // "저장" 버튼 클릭 시 수정된 내용을 저장하는 이벤트 핸들러
+    $('#saveEditedMemo').click(function () {
+        const editedMemoText = $('#editMemoText').val(); // 수정된 메모 내용 가져오기
+
+        // 수정된 내용을 서버에 전송
+        $.ajax({
+            url: '/edit-memo/',
+            type: 'POST',
+            data: {
+                memo_id: memoId,
+                text: editedMemoText
+            },
+            dataType: 'json',
+            success: function (response) {
+                console.log("서버 응답:", response);
+                // 수정된 내용을 메모 리스트에 업데이트
+                memoItem.find('.memo-text').text(editedMemoText);
+                $('#editMemoModal').modal('hide'); // 모달 닫기
+
+                $('#editMemoCompleteModal').modal('show');
+            },
+            error: function(xhr, status, error){
+                console.error("서버 오류:", error);
+            }
+        });
+    });
+    
+    $(document).on("click", "#editMemoComleteBtn", function(){
+        $.ajax({
+            url: '/my-ajax-url/', // 요청을 보낼 서버의 URL
+            type: 'get', // HTTP 메소드
+            dataType: 'json', // 응답 데이터 타입
+            success: function (response) {
+                console.log(response);
+                $('#memo-list').empty();
+    
+                // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
+                $.each(response.items, function (i, item) {
+                    // 이미 목록에 있는 아이템인지 확인
+                    if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
+                        const memoItem = document.createElement("li"); // 새 리스트 생성
+                        memoItem.className = "list-group-item list-group-item-action"; // 부트스트랩 5 목록 그룹 클래스 추가
+                        memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
+                        memoItem.innerHTML = `
+                            <div class="d-flex justify-content-between align-items-end">
+                                <div>
+                                    <div class="fw-bold text-sm" style="font-size: 10px;">${item.id}</div>
+                                    <div>${item.text}</div>
+                                </div>
+                                <div>
+                                    <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
+                                    <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
+                                </div>
+                            </div>
+                        `;
+                        $('#memo-list').append(memoItem); // 목록 그룹에 append
+                    }
+                });
+                console.log("서버 요청 성공!");
+                $('#editMemoCompleteModal').modal('hide'); // 확인 버튼 클릭 후 모달 닫기
+            },
+            error: function(xhr, status, error){
+                console.error("서버 오류:", error);
+            }
+        });
+    });
+});
 
 </script>
 
