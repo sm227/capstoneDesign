@@ -178,7 +178,9 @@ def add_memo(request):
         global video_pk
         text = request.POST.get('text')  # aaaaa
         # user = get_object_or_404(authUser, id=user_id)
+
         memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk)
+            #return JsonResponse({'sucess': True, 'message': 'good'})
 
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -197,7 +199,7 @@ def delete_memo(request):
         try:
             memo = Memo.objects.get(id=memo_id)
             memo.delete()
-            # 삭제된 메모가 아닌 나머지 메모들을 다시 불러옵니다.
+
             remaining_memos = Memo.objects.filter(user=request.user).values('id', 'text')
             print("Memo successfully deleted.")  # 로그 추가
             return JsonResponse({'message': '메모가 성공적으로 삭제되었습니다.', 'items': list(remaining_memos)})
@@ -211,6 +213,42 @@ def delete_memo(request):
         print("POST 요청이 필요합니다.")  # 로그 추가
         return JsonResponse({'error': 'POST 요청이 필요합니다.'}, status=400)
 
+
+def edit_memo(request):
+    if request.method == "POST":
+        global video_pk
+        memo_id = request.POST.get('memo_id')
+        edited_memo = request.Post.get('edited_memo')
+
+        try:
+            memo = Memo.objects.get(id=memo_id)
+            memo.text = edited_text
+            memo.save()
+            return JsonResponse({'success': True, 'message': '성공'})
+        except Memo.DoesNotExist:
+            return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
+
+    else:
+        return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+
+
+#def edit_memo(request):
+#    if request.method == "POST":
+#        global video_pk
+#        memo_id = request.POST.get('memo_id')
+#        edited_text = request.POST.get('edited_text')
+
+#        try:
+#            memo = Memo.objects.get(id=memo_id, video_id=video_pk)
+#            memo.text = edited_text
+#            memo.save()
+#            return JsonResponse({'success': True, 'message': '성공'})
+#        except Memo.DoesNotExist:
+#            return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
+#        except Exception as e:
+#            return JsonResponse({'success': False, 'message': str(e)})
+#    else:
+#        return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
 
 def my_ajax_view(request):

@@ -26,6 +26,7 @@ import manage
 import views
 from views import sign_up_complete
 from django.views.static import serve
+#from views import MemoListView
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
@@ -44,8 +45,9 @@ urlpatterns = [
                   # path('memo2/', views.add_memo, name='memo'),
                   # path('ajax_method/', views.add_memo, name='ajax_method'),
                   path('my-ajax-url/', views.my_ajax_view, name='my_ajax_url'),
+                  #path('memo-list/', MemoListView.as_view(), name='memo-list'),
                   # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-
+                  path('edit-memo/', views.edit_memo, name='edit_memo'),
               ]
 
 # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
