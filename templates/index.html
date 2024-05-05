@@ -1,90 +1,96 @@
-{% extends "base.html" %}
-{% block content %}
-    {% load static %}
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+
+    <title>Capstone</title>
+    {% load django_bootstrap5 %}
+    {#    {% bootstrap_css %}#}
+    {% bootstrap_javascript %}
+
+    <style>
+        .card-container {
+            width: 100%;
+            overflow-x: auto; /* 가로 스크롤 가능하도록 설정 */
+            white-space: nowrap; /* 자식 요소들이 줄바꿈되지 않도록 설정 */
+        {#display: flex; /* Flexbox 사용 */#} overflow-wrap: break-word; /* 넘치는 텍스트 줄 바꿈 */
+            word-wrap: break-word; /* IE를 위한 속성 */
+            word-break: break-all;
+        }
 
 
+        .card {
 
-    {#    <div class="container mt-3">#}
-    {#        <div class="row">#}
-    {#            {% if data %}#}
-    {#                <h2>최근 기록</h2>#}
-    {#                {% for item in data %}#}
-    {#                    <div class="scrollable-wrapper" style="overflow-x: auto;">#}
-    {#                        <div class="col-md-4">#}
-    {#                            <div class="card">#}
-    {#                                <img class="card-img-top" src="{{ item.thumbnail }}" alt="Card image cap">#}
-    {#                                <div class="card-body">#}
-    {#                                    <h7 class="card-title">{{ item.text }}</h7>#}
-    {#                                    <p class="card-text">이 카드는 첫 번째 최근 기록을 보여줍니다.</p>#}
-    {#                                    <a href="#" class="btn btn-sm btn-primary mt-1">자세히 보기</a>#}
-    {#                                </div>#}
-    {#                            </div>#}
-    {#                        </div>#}
-    {#                    </div>#}
-    {#                {% endfor %}#}
-    {#            {% else %}#}
-    {#                <div class="col-md-12 mt-5">#}
-    {#                    <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 &#128051;</h4>#}
-    {#                </div>#}
-    {#            {% endif %}#}
-    {##}
-    {#        </div>#}
-    {#    </div>#}
+            display: inline-block;
+            width: 300px;
+            height: 350px;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            margin-right: 10px;
+            overflow: hidden; /* 넘치는 부분을 숨김 */
 
+        }
 
+        .text-wrapper {
+            width: 250px;
+            height: 100px;
+            {#overflow-wrap: break-word; /* 넘치는 텍스트 줄 바꿈 */#}
+            word-break: break-word; /* 긴 단어를 줄 바꿈 (이 옵션을 사용하려면 주석을 해제하세요) */
+            /* 또는 */
+            overflow-wrap: anywhere; /* 이 속성을 사용할 경우 긴 단어도 줄바꿈되어 넘치지 않습니다. (이 옵션을 사용하려면 주석을 해제하세요) */
+        }
+    </style>
 
+</head>
 
+<body>
+{% include "navbar.html" %}
+<div class="container mt-5">
+    <div class="card-container">
+        {% if data %}
+            <h2>최근 기록</h2>
+            {% for item in data %}
+                <div class="card">
+                    <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
+                    <div class="ms-2 me-2 mt-2 container text-wrap" >
+{#                        {{ item.text }}#}
+                                                <a href="#">{{ item.text }}</a>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 🥲</h4>
+            </div>
+        {% endif %}
+    </div>
+</div>
 
-    {% if data %}
-        <h2 class="container mt-3">최근 기록</h2>
-        <div class="container" style=" display: flex; overflow-x: auto;">
-        <table class="table">
-            <tbody>
-            <tr>
-                {% for item in data %}
-                    <td style="overflow-x: scroll;">
-                        <div>
-                            {#                            <div class="col-md-5">#}
-                            <div class="card" style="width: 300px; height: 350px; overflow: auto; flex: 0 0 auto;  margin: 10px;">
-                                <img class="card-img-top" src="{{ item.thumbnail }}" alt="Card image cap">
-                                <div class="card-body">
-{#                                    <h7 class="card-title">{{ item.text }}</h7>#}
-                                    {#                                <p class="card-text">이 카드는 첫 번째 최근 기록을 보여줍니다.</p>#}
-                                    <a href="#" >{{ item.text }}</a>
-                                </div>
-                            </div>
-                        </div>
-                        {#                        </div>#}
-                    </td>
-                {% endfor %}
-            </tr>
-            </tbody>
-        </table>
-    {% else %}
-        <div class="col-md-12 mt-5">
-            <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 &#128051;</h4>
-        </div>
-    {% endif %}
+{#</div>#}
+<h2 class="text-center  mt-5">🌏 전 세계의 모든 영상을 요약해 보세요</h2>
+<div class="container d-flex justify-content-center align-items-center mb-5 mt-5">
+    <div class="row">
+        <form id="youtubeForm" action="{% url 'index2' user.id %}" method="get"> {# 유튜브 링크 #}
+            <div class="col-md-8 d-flex ">
+                {% csrf_token %}
+                <div class="text-center">
+                    <input id="youtubeLink" type="text" class="form-control" name="youtube_link" style="width:300px"
+                           placeholder="요약할 URL 붙여넣기">
+                </div>
+                <div class="col-md-5  ms-3 text-right">
+                    <button type="submit" class="btn btn-success">요약하기</button>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
 
+</body>
 
-    <h2 class="text-center  mt-5">🌏 전 세계의 모든 영상을 요약해 보세요</h2>
-    <div class="container d-flex justify-content-center align-items-center mb-5 mt-5">
-        <div class="row">
-            <form id="youtubeForm" action="{% url 'index2' user.id %}" method="get"> {# 유튜브 링크 #}
-                <div class="col-md-8 d-flex ">
-                    {% csrf_token %}
-                    <div class="text-center">
-                        <input id="youtubeLink" type="text" class="form-control" name="youtube_link" style="width:300px"
-                               placeholder="요약할 URL 붙여넣기">
-                    </div>
-                    <div class="col-md-5  ms-3 text-right">
-                        <button type="submit" class="btn btn-success">요약하기</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-{% endblock %}
+</html>
