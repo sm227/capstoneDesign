@@ -222,7 +222,7 @@ def edit_memo(request):
 
         try:
             memo = Memo.objects.get(id=memo_id)
-            memo.text = edited_text
+            memo.text = edited_memo
             memo.save()
             return JsonResponse({'success': True, 'message': '성공'})
         except Memo.DoesNotExist:
@@ -250,6 +250,23 @@ def edit_memo(request):
 #    else:
 #        return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
+def edit_memo(request):
+   if request.method == "POST":
+       global video_pk
+       memo_id = request.POST.get('memo_id')
+       edited_text = request.POST.get('text')
+
+       try:
+           memo = Memo.objects.get(id=memo_id, video_id=video_pk)
+           memo.text = edited_text
+           memo.save()
+           return JsonResponse({'success': True, 'message': '성공'})
+       except Memo.DoesNotExist:
+           return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
+       except Exception as e:
+           return JsonResponse({'success': False, 'message': str(e)})
+   else:
+       return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
 def my_ajax_view(request):
     # 예제 데이터 리스트
