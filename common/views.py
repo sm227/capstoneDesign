@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from django.contrib.auth import logout, authenticate, login
 from django.shortcuts import redirect, render
-from common.forms import UserForm
+from common.forms import UserForm, UserForm2
 
 from django.http import JsonResponse, HttpResponse
 from .models import Memo
@@ -40,3 +40,25 @@ def signup2(request):
 #         return redirect("common:memo")
 #     return JsonResponse({'error': 'Bad request,'}, status=400)
 
+
+
+def update(request):
+    if request.method == "POST":
+        form = UserForm2(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('common:login')
+    else:
+        form = UserForm2(instance=request.user)
+    return render(request, 'common/update.html', {'form': form})
+
+# def update_password(request):
+#     if request.method == "POST":
+#         form = PasswordChangeForm(request.POST, instance=request.user)
+#         if form.is_valid():
+#             form.save()
+#             update_session_auth_hash(request, form.user)
+#             return redirect('common:login')
+#     else:
+#         form = PasswordChangeForm(instance=request.user)
+#     return render(request, 'common/update_password.html', {'form': form})
