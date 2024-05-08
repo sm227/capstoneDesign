@@ -13,6 +13,7 @@ from django.contrib.auth.models import User as authUser
 from googleapiclient.discovery import build
 
 
+
 # from capstoneDesign.models import Memo
 
 
@@ -214,24 +215,6 @@ def delete_memo(request):
         return JsonResponse({'error': 'POST 요청이 필요합니다.'}, status=400)
 
 
-def edit_memo(request):
-    if request.method == "POST":
-        global video_pk
-        memo_id = request.POST.get('memo_id')
-        edited_memo = request.Post.get('edited_memo')
-
-        try:
-            memo = Memo.objects.get(id=memo_id)
-            memo.text = edited_memo
-            memo.save()
-            return JsonResponse({'success': True, 'message': '성공'})
-        except Memo.DoesNotExist:
-            return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
-
-    else:
-        return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
-
-
 #def edit_memo(request):
 #    if request.method == "POST":
 #        global video_pk
@@ -279,3 +262,6 @@ def my_ajax_view(request):
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
+
+
+

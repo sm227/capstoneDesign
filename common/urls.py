@@ -16,6 +16,8 @@ urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('login2/', views.signup2),
     # path('memo/', views.add_memo, name='memo'),
+    path('update/', views.update, name='update'),
+
 
 ]
 
