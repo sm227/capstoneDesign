@@ -1,6 +1,5 @@
 from django.conf import settings
 from django.conf.urls.static import static
-from django.template.defaulttags import url
 
 app_name = 'common'
 
@@ -17,6 +16,7 @@ urlpatterns = [
     path('login2/', views.signup2),
     # path('memo/', views.add_memo, name='memo'),
     path('update/', views.update, name='update'),
+    path('1/password/', views.update_password, name='update_password'),
 
 
 ]

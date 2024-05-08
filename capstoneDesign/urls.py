@@ -27,36 +27,30 @@ import views
 from views import sign_up_complete
 from django.views.static import serve
 
-from views import edit_memo
-
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.index, name='main_page'),
-    path('index2/<int:user_id>/', views.index2, name='index2'),
-    # path('login', auth_views.LoginView.as_view(), name='login'),
-    path('login/', auth_views.LoginView.as_view(template_name='common/login3.html'), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
-    path('common/', include('common.urls')),
-    path('test/', views.test),
-    path('index2', views.index, name='index_page'),
-    path('sign_up/', views.sign_up, name='sign_up_page'),
-    path('sign_up_complete/', views.sign_up_complete, ),
-    path('memo/', views.add_memo, name='memo'),
-    path('delete-memo/', views.delete_memo, name='delete_memo'),
-    # path('memo2/', views.add_memo, name='memo'),
-    # path('ajax_method/', views.add_memo, name='ajax_method'),
-    path('my-ajax-url/', views.my_ajax_view, name='my_ajax_url'),
-    # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-    path('index/', views.index, name='index'),
-
-    # gpt 1번째꺼
-    path('edit-memo/', views.edit_memo, name='edit_memo'),
-
-
-]
+                  path('admin/', admin.site.urls),
+                  path('', views.index, name='main_page'),
+                  path('index2/', views.index2, name='index2'),
+                  # path('login', auth_views.LoginView.as_view(), name='login'),
+                  path('login/', auth_views.LoginView.as_view(template_name='common/login3.html'), name='login'),
+                  path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+                  path('common/', include('common.urls')),
+                  path('test/', views.test),
+                  path('index2', views.index, name='index_page'),
+                  path('sign_up/', views.sign_up, name='sign_up_page'),
+                  path('sign_up_complete/', views.sign_up_complete, ),
+                  path('memo/', views.add_memo, name='memo'),
+                  path('delete-memo/', views.delete_memo, name='delete_memo'),
+                  # path('memo2/', views.add_memo, name='memo'),
+                  # path('ajax_method/', views.add_memo, name='ajax_method'),
+                  path('my-ajax-url/', views.my_ajax_view, name='my_ajax_url'),
+                  # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+                  path('edit-memo/', views.edit_memo, name='edit_memo'),
+                  path('index/', views.index, name='index'),
+              ]
 
 # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT, insecure=True)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT,  insecure=True)
 # urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 # urlpatterns+=url(r'^media/(?P<path>.\*)$', serve, {
 #     'document_root': settings.MEDIA_ROOT,

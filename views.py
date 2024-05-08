@@ -36,7 +36,7 @@ video_pk = 0
 
 
 @login_required(login_url='common:login')
-def index2(request, user_id):
+def index2(request):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
     youtube_link = request.GET.get('youtube_link')
     full_link = youtube_link.split('/')
@@ -49,6 +49,7 @@ def index2(request, user_id):
     print(final_link)
     api.download_script_json(final_link[0])
 
+    user_id = request.user.id
     # --------
     # API 키와 API 버전 지정
     api_key = 'AIzaSyB1ZzrTmFpdSNc2gHmF9n9S11A4vgHrKbc'
@@ -177,11 +178,10 @@ def add_memo(request):
     if request.method == 'POST':
         global video_pk
         text = request.POST.get('text')  # aaaaa
-        current_time = request.POST.get('current_time')
         # user = get_object_or_404(authUser, id=user_id)
 
-        memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk, current_time=current_time)
-            #return JsonResponse({'sucess': True, 'message': 'good'})
+        memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk)
+        # return JsonResponse({'sucess': True, 'message': 'good'})
 
         # return HttpResponse("<script>console.log(dd);</script>")
         # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
@@ -214,23 +214,25 @@ def delete_memo(request):
         print("POST 요청이 필요합니다.")  # 로그 추가
         return JsonResponse({'error': 'POST 요청이 필요합니다.'}, status=400)
 
-def edit_memo(request):
-   if request.method == "POST":
-       global video_pk
-       memo_id = request.POST.get('memo_id')
-       edited_text = request.POST.get('text')
 
-       try:
-           memo = Memo.objects.get(id=memo_id, video_id=video_pk)
-           memo.text = edited_text
-           memo.save()
-           return JsonResponse({'success': True, 'message': '성공'})
-       except Memo.DoesNotExist:
-           return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
-       except Exception as e:
-           return JsonResponse({'success': False, 'message': str(e)})
-   else:
-       return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
+def edit_memo(request):
+    if request.method == "POST":
+        global video_pk
+        memo_id = request.POST.get('memo_id')
+        edited_text = request.POST.get('text')
+
+        try:
+            memo = Memo.objects.get(id=memo_id, video_id=video_pk)
+            memo.text = edited_text
+            memo.save()
+            data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text')
+            return JsonResponse({'items': list(data_list)})
+        except Memo.DoesNotExist:
+            return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
+        except Exception as e:
+            return JsonResponse({'success': False, 'message': str(e)})
+    else:
+        return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
 
 def my_ajax_view(request):
