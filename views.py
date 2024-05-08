@@ -13,7 +13,6 @@ from django.contrib.auth.models import User as authUser
 from googleapiclient.discovery import build
 
 
-
 # from capstoneDesign.models import Memo
 
 
@@ -178,9 +177,10 @@ def add_memo(request):
     if request.method == 'POST':
         global video_pk
         text = request.POST.get('text')  # aaaaa
+        current_time = request.POST.get('current_time')
         # user = get_object_or_404(authUser, id=user_id)
 
-        memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk)
+        memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk, current_time=current_time)
             #return JsonResponse({'sucess': True, 'message': 'good'})
 
         # return HttpResponse("<script>console.log(dd);</script>")
@@ -214,25 +214,6 @@ def delete_memo(request):
         print("POST 요청이 필요합니다.")  # 로그 추가
         return JsonResponse({'error': 'POST 요청이 필요합니다.'}, status=400)
 
-
-#def edit_memo(request):
-#    if request.method == "POST":
-#        global video_pk
-#        memo_id = request.POST.get('memo_id')
-#        edited_text = request.POST.get('edited_text')
-
-#        try:
-#            memo = Memo.objects.get(id=memo_id, video_id=video_pk)
-#            memo.text = edited_text
-#            memo.save()
-#            return JsonResponse({'success': True, 'message': '성공'})
-#        except Memo.DoesNotExist:
-#            return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
-#        except Exception as e:
-#            return JsonResponse({'success': False, 'message': str(e)})
-#    else:
-#        return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
-
 def edit_memo(request):
    if request.method == "POST":
        global video_pk
@@ -251,6 +232,7 @@ def edit_memo(request):
    else:
        return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
+
 def my_ajax_view(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
@@ -262,6 +244,3 @@ def my_ajax_view(request):
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
-
-
-
