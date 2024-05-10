@@ -1,14 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-{% load django_bootstrap5 %}
-{% bootstrap_css %}
+{#{% load django_bootstrap5 %}#}
+{#{% bootstrap_css %}#}
 <head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Title</title>
     {#    <link rel="stylesheet" href="static/css/login.css">#}
     <link rel="stylesheet" href="{% static '/css/login.css' %}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.1/gsap.min.js"
+            integrity="sha512-qF6akR/fsZAB4Co1QDDnUXWnaQseLGXoniuSuSlPQK6+aWhlMZcHzkasCSlnWoe+TJuudlka1/IQ01Dnhgq95g=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
         @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
@@ -171,9 +179,9 @@
         }
 
         .overlay {
-            background: #FF416C;
-            background: -webkit-linear-gradient(to right, #FF4B2B, #FF416C);
-            background: linear-gradient(to right, #FF4B2B, #FF416C);
+        {#background: #FF416C;#} background: rgb(56, 56, 56);
+            background: -webkit-linear-gradient(to right, rgb(56, 56, 56), rgb(56, 56, 56));
+            background: linear-gradient(to right, rgb(56, 56, 56), rgb(56, 56, 56));
             background-repeat: no-repeat;
             background-size: cover;
             background-position: 0 0;
@@ -261,20 +269,22 @@
             color: #3c97bf;
             text-decoration: none;
         }
+
+
     </style>
 </head>
 <body>
 {% include "form_errors.html" %}
 <div class="container" id="container">
     <div class="form-container sign-up-container">
-        <form  method="post" action="{% url 'common:signup' %}">
+        <form method="post" action="{% url 'common:signup' %}">
             {% csrf_token %}
             <h1>Create Account</h1>
-            <div class="social-container">
-                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-            </div>
+            {#            <div class="social-container">#}
+            {#                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>#}
+            {#                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>#}
+            {#                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>#}
+            {#            </div>#}
             <span>or use your email for registration</span>
             <input type="text" class="form-control" name="username" id="username"
                    value="{{ form.username.value|default_if_none:'' }}" placeholder="이름" required/>
@@ -284,6 +294,7 @@
                    value="{{ form.password1.value|default_if_none:'' }}"/>
             <input type="password" class="form-control" name="password2" id="password2" placeholder="비밀번호 확인"
                    value="{{ form.password2.value|default_if_none:'' }}"/>
+            {#            <button type="submit" id="signUpBtn">Sign Up</button>#}
             <button type="submit" id="signUpBtn">Sign Up</button>
         </form>
     </div>
@@ -291,11 +302,11 @@
         <form method="post" action="{% url 'common:login' %}">
             {% csrf_token %}
             <h1>Sign in</h1>
-            <div class="social-container">
-                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
-                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
-                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>
-            </div>
+            {#            <div class="social-container">#}
+            {#                <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>#}
+            {#                <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>#}
+            {#                <a href="#" class="social"><i class="fab fa-linkedin-in"></i></a>#}
+            {#            </div>#}
             <span>or use your account</span>
             <input type="text" class="form-control" name="username" id="username"
                    value="{{ form.username.value|default_if_none:'' }}" placeholder="ID"/>
@@ -309,17 +320,24 @@
         <div class="overlay">
             <div class="overlay-panel overlay-left">
                 <h1>Welcome Back!</h1>
-                <p>To keep connected with us please login with your personal info</p>
+                {#                <p>To keep connected with us please login with your personal info</p>#}
+                <br>
                 <button class="ghost" id="signIn">Sign In</button>
             </div>
             <div class="overlay-panel overlay-right">
                 <h1>Hello, Capstone!</h1>
-                <p>Enter your personal details and start journey with us</p>
+                {#                <p>Enter your personal details and start journey with us</p>#}
+                <br>
                 <button class="ghost" id="signUp">Sign Up</button>
+
+
             </div>
         </div>
     </div>
 </div>
+
+
+
 
 <script>
     const signUpButton = document.getElementById('signUp');
@@ -335,9 +353,10 @@
         container.classList.remove("right-panel-active");
     });
     signUpBtn.addEventListener('click', () => {
-         console.log('click!')
-         document.getElementById("signUp").click();
+        console.log('click!')
+        document.getElementById("signUp").click();
     });
+
 </script>
 </body>
 </html>

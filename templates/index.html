@@ -15,8 +15,8 @@
     {#            {% load django_bootstrap5 %}#}
     {#    {% bootstrap_css %}#}
     {#            {% bootstrap_javascript %}#}
-{#    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>#}
-{#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
+    {#    <script src="{% static 'js/bootstrap.bundle.js' %}"></script>#}
+    {#    <script src="{% static 'js/bootstrap.min.js' %}"></script>#}
     <script src="https://kit.fontawesome.com/9b49798715.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
@@ -41,7 +41,13 @@
 
 
 
-        {#display: flex; Flexbox 사용#}        overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈 */
+
+
+
+
+
+
+        {#display: flex; Flexbox 사용#}              overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈 */
             word-wrap: break-word; /* IE를 위한 속성 */
             word-break: break-all;
         }
@@ -51,7 +57,7 @@
 
             display: inline-block;
             width: 300px;
-            height: 350px;
+            height: 360px;
             background-color: #ffffff;
             border-radius: 10px;
             margin-right: 10px;
@@ -65,10 +71,77 @@
             /*
 
 
-        {#overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈#}        */
+        {#overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈#}              */
             word-break: break-word; /* 긴 단어를 줄 바꿈 (이 옵션을 사용하려면 주석을 해제하세요) */
             /* 또는 */
             overflow-wrap: anywhere; /* 이 속성을 사용할 경우 긴 단어도 줄바꿈되어 넘치지 않습니다. (이 옵션을 사용하려면 주석을 해제하세요) */
+        }
+
+        {#    delete button#}
+
+        .button {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background-color: rgb(20, 20, 20);
+            border: none;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.164);
+            cursor: pointer;
+            transition-duration: .3s;
+            overflow: hidden;
+        {#position: relative;#} position: absolute; /* 절대 위치로 변경 */
+            margin-top: 10px;
+            bottom: 10px; /* 아래에서 10px만큼 띄움 */
+            left: 10px; /* 왼쪽에서 10px만큼 띄움 */
+            opacity: 0; /* 기본적으로 숨김 */
+        }
+
+        .card:hover .button {
+            opacity: 1; /* 호버 시 버튼 나타남 */
+        }
+
+
+        .svgIcon {
+            width: 12px;
+            transition-duration: .3s;
+        }
+
+        .svgIcon path {
+            fill: white;
+        }
+
+        .button:hover {
+            width: 100px;
+            border-radius: 50px;
+            transition-duration: .3s;
+            background-color: rgb(255, 69, 69);
+            align-items: center;
+        }
+
+        .button:hover .svgIcon {
+            width: 45px;
+            transition-duration: .3s;
+            transform: translateY(50%);
+        }
+
+        .button::before {
+            position: absolute;
+            top: -30px;
+            content: "Delete";
+            color: white;
+            transition-duration: .3s;
+            font-size: 2px;
+        }
+
+        .button:hover::before {
+            font-size: 13px;
+            opacity: 1;
+            transform: translateY(30px);
+            transition-duration: .3s;
         }
     </style>
 
@@ -97,7 +170,7 @@
 <div class="container mt-5">
     <div class="card-container">
         {% if data %}
-            <h2>최근 기록</h2>
+            <h2>최근 기록 <i class="bi bi-clock-history"></i> </h2>
             {% for item in data %}
                 <div class="card">
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
@@ -105,7 +178,13 @@
                         {#                        {{ item.text }}#}
                         <a href="#">{{ item.text }}</a>
                     </div>
+                    <button class="button ">
+                        <svg viewBox="0 0 448 512" class="svgIcon">
+                            <path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"></path>
+                        </svg>
+                    </button>
                 </div>
+
             {% endfor %}
         {% else %}
             <div class="col-md-12">
