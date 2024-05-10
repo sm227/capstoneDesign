@@ -57,11 +57,10 @@
                             {{ user.username }}
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item text-danger" href="{% url "common:logout" %}"><i
-                                    class="fa-solid fa-right-from-bracket"></i> 로그아웃</a></li>
                             <li><a class="dropdown-item" href="{% url 'common:update' %}"><i
                                     class="fa-solid fa-user-pen"></i> 정보 수정</a></li>
-                            {#                            <li><a class="dropdown-item" href="#">Something else here</a></li>#}
+                            <li><a class="dropdown-item text-danger" href="{% url "common:logout" %}"><i
+                                    class="fa-solid fa-right-from-bracket"></i> 로그아웃</a></li>
                         </ul>
                     </li>
 
