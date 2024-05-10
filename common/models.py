@@ -14,14 +14,14 @@ from django.contrib.auth.models import User as authUser
 
 
 class Video(models.Model):
-    user = models.ForeignKey(authUser, on_delete=models.CASCADE)
-    text = models.TextField()
-    thumbnail = models.TextField()
+    user = models.ForeignKey(authUser, on_delete=models.CASCADE, null=True)
+    text = models.TextField(null=True)
+    thumbnail = models.TextField(null=True)
 
 
 
 class Memo(models.Model):
-    text = models.CharField(max_length=600)  # 메모 내용
+    text = models.CharField(max_length=600, null=True)  # 메모 내용
     user = models.ForeignKey(authUser, on_delete=models.CASCADE, null=True)
     video = models.ForeignKey(Video, on_delete=models.CASCADE, null=True, blank=True)
     # current_time = models.IntegerField(default=0, null=True, blank=True)
