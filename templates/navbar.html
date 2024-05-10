@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-light bg-transparent border-bottom">
     <div class="container-fluid">
         {#        <a class="navbar-brand" href="{% url 'pybo:index' %}">Pybo</a>#}
         <button class="navbar-toggler" type="button"
@@ -13,7 +14,9 @@
             <ul class="navbar-nav mb-2 mb-lg-0">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'index' %}">Home</a>
+                        <a class="navbar-brand" href="#">
+                            <img src="{% static 'logo.png' %}" width="30" height="30" alt="">
+                        </a>
                     </li>
                 {% else %}
                     <li class="nav-item">
@@ -28,11 +31,23 @@
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
             <ul class="navbar-nav mb-2 mb-lg-0">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'common:update' %}">정보 수정</a>
+                    {#                    <li class="nav-item">#}
+                    {#                        <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>#}
+                    {#                    </li>#}
+                    {#                    <li class="nav-item">#}
+                    {#                        <a class="nav-link" href="{% url 'common:update' %}">정보 수정</a>#}
+                    {#                    </li>#}
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            {{ user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><a class="dropdown-item" href="{% url "common:logout" %}">로그아웃</a></li>
+                            <li><a class="dropdown-item" href="{% url 'common:update' %}">정보 수정</a></li>
+                            {#                            <li><a class="dropdown-item" href="#">Something else here</a></li>#}
+                        </ul>
                     </li>
 
                 {% else %}
