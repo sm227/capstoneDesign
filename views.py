@@ -225,7 +225,7 @@ def edit_memo(request):
             memo = Memo.objects.get(id=memo_id, video_id=video_pk)
             memo.text = edited_text
             memo.save()
-            data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text')
+            data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
             return JsonResponse({'items': list(data_list)})
         except Memo.DoesNotExist:
             return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
@@ -239,7 +239,7 @@ def my_ajax_view(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
     global video_pk
-    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text')
+    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
     print(data_list)
     print("ok")
 

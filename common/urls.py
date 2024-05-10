@@ -16,9 +16,9 @@ urlpatterns = [
     path('login2/', views.signup2),
     # path('memo/', views.add_memo, name='memo'),
     path('update/', views.update, name='update'),
-    path('1/password/', views.update_password, name='update_password'),
+    path('change_password/', views.update_password, name='update_password'),
 
 
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+# urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "django_bootstrap5",
     'markdownify.apps.MarkdownifyConfig',
-    'channels'
+    'channels',
+    # 'common'
 
 ]
 

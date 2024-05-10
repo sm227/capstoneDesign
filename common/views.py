@@ -1,3 +1,4 @@
+from django.contrib import auth
 from django.contrib.auth.forms import PasswordChangeForm
 from django.shortcuts import render
 
@@ -23,7 +24,7 @@ def signup(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)  # 사용자 인증
-            login(request, user)  # 로그인
+            auth.login(request, user)  # 로그인
             return redirect('common:login')
     else:
         form = UserForm()
@@ -44,22 +45,24 @@ def signup2(request):
 
 
 def update(request):
-    if request.method == "POST":
-        form = UserForm2(request.POST, instance=request.user)
+    if request.method == "GET":
+        form = UserForm2( instance=request.user)
+    else:
+        form = UserForm2(request.POST,instance=request.user)
         if form.is_valid():
             form.save()
             return redirect('common:login')
-    else:
-        form = UserForm2(instance=request.user)
+    context = {'form' : form}
     return render(request, 'common/update.html', {'form': form})
 
 def update_password(request):
-    if request.method == "POST":
-        form = PasswordChangeForm(request.POST, instance=request.user)
+    if request.method == "GET":
+        form = PasswordChangeForm(request.user)
+    else:
+        form = PasswordChangeForm(request.user, request.POST)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, form.user)
             return redirect('common:login')
-    else:
-        form = PasswordChangeForm(instance=request.user)
+    context = {'form' : form}
     return render(request, 'common/update_password.html', {'form': form})
