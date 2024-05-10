@@ -1,20 +1,259 @@
-{% extends "base.html" %}
-{% block content %}
-<div class="container my-3">
-    <form method="post" action="{% url 'common:login' %}">
-        {% csrf_token %}
-        {% include "form_errors.html" %}
-        <div class="mb-3">
-            <label for="username">사용자ID</label>
-            <input type="text" class="form-control" name="username" id="username"
-                   value="{{ form.username.value|default_if_none:'' }}">
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{#{% load django_bootstrap5 %}#}
+{#{% bootstrap_css %}#}
+<head>
+
+    {#<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"#}
+    {#      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">#}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+</head>
+{#<!-- Pills navs -->#}
+{#<ul class="nav nav-pills nav-justified mb-3" id="ex1" role="tablist">#}
+{#  <li class="nav-item" role="presentation">#}
+{#    <a class="nav-link active" id="tab-login" data-mdb-pill-init href="#pills-login" role="tab"#}
+{#      aria-controls="pills-login" aria-selected="true">Login</a>#}
+{#  </li>#}
+{#  <li class="nav-item" role="presentation">#}
+{#    <a class="nav-link" id="tab-register" data-mdb-pill-init href="#pills-register" role="tab"#}
+{#      aria-controls="pills-register" aria-selected="false">Register</a>#}
+{#  </li>#}
+{#</ul>#}
+{#<!-- Pills navs -->#}
+{##}
+{#<!-- Pills content -->#}
+{#<div class="tab-content">#}
+{#  <div class="tab-pane fade show active" id="pills-login" role="tabpanel" aria-labelledby="tab-login">#}
+{#    <form>#}
+{#      <div class="text-center mb-3">#}
+{#        <p>Sign in with:</p>#}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-facebook-f"></i>#}
+{#        </button>#}
+{##}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-google"></i>#}
+{#        </button>#}
+{##}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-twitter"></i>#}
+{#        </button>#}
+{##}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-github"></i>#}
+{#        </button>#}
+{#      </div>#}
+{##}
+{#      <p class="text-center">or:</p>#}
+{##}
+{#      <!-- Email input -->#}
+{#      <div data-mdb-input-init class="form-outline mb-4">#}
+{#        <input type="email" id="loginName" class="form-control" />#}
+{#        <label class="form-label" for="loginName">Email or username</label>#}
+{#      </div>#}
+{##}
+{#      <!-- Password input -->#}
+{#      <div data-mdb-input-init class="form-outline mb-4">#}
+{#        <input type="password" id="loginPassword" class="form-control" />#}
+{#        <label class="form-label" for="loginPassword">Password</label>#}
+{#      </div>#}
+{##}
+{#      <!-- 2 column grid layout -->#}
+{#      <div class="row mb-4">#}
+{#        <div class="col-md-6 d-flex justify-content-center">#}
+{#          <!-- Checkbox -->#}
+{#          <div class="form-check mb-3 mb-md-0">#}
+{#            <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked />#}
+{#            <label class="form-check-label" for="loginCheck"> Remember me </label>#}
+{#          </div>#}
+{#        </div>#}
+{##}
+{#        <div class="col-md-6 d-flex justify-content-center">#}
+{#          <!-- Simple link -->#}
+{#          <a href="#!">Forgot password?</a>#}
+{#        </div>#}
+{#      </div>#}
+{##}
+{#      <!-- Submit button -->#}
+{#      <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-4">Sign in</button>#}
+{##}
+{#      <!-- Register buttons -->#}
+{#      <div class="text-center">#}
+{#        <p>Not a member? <a href="#!">Register</a></p>#}
+{#      </div>#}
+{#    </form>#}
+{#  </div>#}
+{#  <div class="tab-pane fade" id="pills-register" role="tabpanel" aria-labelledby="tab-register">#}
+{##}
+{##}
+{#    <form>#}
+{#      <div class="text-center mb-3">#}
+{#        <p>Sign up with:</p>#}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-facebook-f"></i>#}
+{#        </button>#}
+{##}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-google"></i>#}
+{#        </button>#}
+{##}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-twitter"></i>#}
+{#        </button>#}
+{##}
+{#        <button  type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link btn-floating mx-1">#}
+{#          <i class="fab fa-github"></i>#}
+{#        </button>#}
+{#      </div>#}
+{##}
+{#      <p class="text-center">or:</p>#}
+{##}
+{#      <!-- Name input -->#}
+{#      <div data-mdb-input-init class="form-outline mb-4">#}
+{#        <input type="text" id="registerName" class="form-control" />#}
+{#        <label class="form-label" for="registerName">Name</label>#}
+{#      </div>#}
+{##}
+{#      <!-- Username input -->#}
+{#      <div data-mdb-input-init class="form-outline mb-4">#}
+{#        <input type="text" id="registerUsername" class="form-control" />#}
+{#        <label class="form-label" for="registerUsername">Username</label>#}
+{#      </div>#}
+{##}
+{#      <!-- Email input -->#}
+{#      <div data-mdb-input-init class="form-outline mb-4">#}
+{#        <input type="email" id="registerEmail" class="form-control" />#}
+{#        <label class="form-label" for="registerEmail">Email</label>#}
+{#      </div>#}
+{##}
+{#      <!-- Password input -->#}
+{#      <div data-mdb-input-init class="form-outline mb-4">#}
+{#        <input type="password" id="registerPassword" class="form-control" />#}
+{#        <label class="form-label" for="registerPassword">Password</label>#}
+{#      </div>#}
+{##}
+{#      <!-- Repeat Password input -->#}
+{#      <div data-mdb-input-init class="form-outline mb-4">#}
+{#        <input type="password" id="registerRepeatPassword" class="form-control" />#}
+{#        <label class="form-label" for="registerRepeatPassword">Repeat password</label>#}
+{#      </div>#}
+{##}
+{#      <!-- Checkbox -->#}
+{#      <div class="form-check d-flex justify-content-center mb-4">#}
+{#        <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked#}
+{#          aria-describedby="registerCheckHelpText" />#}
+{#        <label class="form-check-label" for="registerCheck">#}
+{#          I have read and agree to the terms#}
+{#        </label>#}
+{#      </div>#}
+{##}
+{#      <!-- Submit button -->#}
+{#      <button type="submit" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-block mb-3">Sign in</button>#}
+{#    </form>#}
+{#  </div>#}
+{#</div>#}
+{#<!-- Pills content -->#}
+<body>
+
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <ul class="nav nav-pills justify-content-center mb-3" id="pills-tab" role="tablist">
+                <!-- 가운데 정렬 -->
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active btn-lg btn-block" id="pills-home-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
+                            aria-selected="true">로그인
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link btn-lg btn-block" id="pills-profile-tab" data-bs-toggle="pill"
+                            data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile"
+                            aria-selected="false">회원가입
+                    </button>
+                </li>
+            </ul>
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                    <form>
+
+
+                        <div data-mdb-input-init class="form-outline mb-4">
+                           <input type="text" class="form-control" name="username" id="username"
+                   value="{{ form.username.value|default_if_none:'' }}" placeholder="ID"/>
+                        </div>
+                        <div data-mdb-input-init class="form-outline mb-4">
+                           <input type="password" class="form-control" name="password" id="password"
+                   value="{{ form.password.value|default_if_none:'' }}" placeholder="Password"/>
+            <a href="#">Forgot your password?</a>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6 d-flex justify-content-center">
+                                <div class="form-check mb-3 mb-md-0">
+                                    <input class="form-check-input" type="checkbox" value="" id="loginCheck" checked/>
+                                    <label class="form-check-label" for="loginCheck"> Remember me </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex justify-content-center">
+                                <a href="#!">Forgot password?</a>
+                            </div>
+                        </div>
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-primary btn-block mb-4">Sign in
+                        </button>
+                        <div class="text-center">
+                            <p>Not a member? <a href="#!">Register</a></p>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                    <form>
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="text" id="registerName" class="form-control"/>
+                            <label class="form-label" for="registerName">Name</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="text" id="registerUsername" class="form-control"/>
+                            <label class="form-label" for="registerUsername">Username</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="email" id="registerEmail" class="form-control"/>
+                            <label class="form-label" for="registerEmail">Email</label>
+                        </div>
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="password" id="registerPassword" class="form-control"/>
+                            <label class="form-label" for="registerPassword">Password</label>
+                        </div>
+
+                        <!-- Repeat Password input -->
+                        <div data-mdb-input-init class="form-outline mb-4">
+                            <input type="password" id="registerRepeatPassword" class="form-control"/>
+                            <label class="form-label" for="registerRepeatPassword">Repeat password</label>
+                        </div>
+
+                        <!-- Checkbox -->
+                        <div class="form-check d-flex justify-content-center mb-4">
+                            <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
+                                   aria-describedby="registerCheckHelpText"/>
+                            <label class="form-check-label" for="registerCheck">
+                                I have read and agree to the terms
+                            </label>
+                        </div>
+
+                        <!-- Submit button -->
+                        <button type="submit" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-primary btn-block mb-3">Sign in
+                        </button>
+                    </form>
+                </div>
+
+            </div>
         </div>
-        <div class="mb-3">
-            <label for="password">비밀번호</label>
-            <input type="password" class="form-control" name="password" id="password"
-                   value="{{ form.password.value|default_if_none:'' }}">
-        </div>
-        <button type="submit" class="btn btn-primary">로그인2</button>
-    </form>
+    </div>
 </div>
-{% endblock %}
+</body>
+</html>

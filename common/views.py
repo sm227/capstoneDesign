@@ -32,7 +32,7 @@ def signup(request):
 
 
 def signup2(request):
-    return render(request, 'common/login.html')
+    return render(request, 'common/login3.html')
 
 # def add_memo(request):
 #     if request.method == 'POST':
