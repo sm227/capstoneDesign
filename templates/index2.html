@@ -442,7 +442,19 @@
                         memoItem.className = "list-group list-group-item"; // 부트스트랩 5 목록 그룹 클래스 추가
                         memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
                         memoItem.innerHTML = `
-                            <div class="d-flex justify-content-between align-items-end">
+                            <div class="row">
+                                <div class="col-9">
+                                    <div class="fw-bold text-sm text-start" style="font-size: 10px;">${item.id}</div>
+                                    <div class="text-start">${item.text}</div>
+                                </div>
+                                <div class="col-3">
+                                    <p></p>
+                                    <p></p>
+                                    <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
+                                    <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
+                                </div>
+                            </div>
+                            <!--<div class="d-flex justify-content-between align-items-end">
                                 <div>
                                     <div class="fw-bold text-sm" style="font-size: 10px;">${item.id}</div>
                                     <div>${item.text}</div>
@@ -451,7 +463,7 @@
                                     <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
                                     <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
                                 </div>
-                            </div>
+                            </div>-->
                         `;
                         $('#memo-list').append(memoItem); // 목록 그룹에 append
                     }
@@ -526,12 +538,14 @@
                         memoItem.className = "list-group list-group-item"; // 부트스트랩 5 목록 그룹 클래스 추가
                         memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
                         memoItem.innerHTML = `
-                            <div class="d-flex justify-content-between align-items-end">
-                                <div>
-                                    <div class="fw-bold text-sm" style="font-size: 10px;">${item.id}</div>
-                                    <div>${item.text}</div>
+                            <div class="row">
+                                <div class="col-9">
+                                    <div class="fw-bold text-sm text-start" style="font-size: 10px;">${item.id}</div>
+                                    <div class="text-start">${item.text}</div>
                                 </div>
-                                <div>
+                                <div class="col-3">
+                                    <p></p>
+                                    <p></p>
                                     <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
                                     <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
                                 </div>

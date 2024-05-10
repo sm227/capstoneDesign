@@ -15,7 +15,6 @@ from googleapiclient.discovery import build
 
 # from capstoneDesign.models import Memo
 
-
 @csrf_exempt
 @login_required(login_url='common:login')
 def index(request):
