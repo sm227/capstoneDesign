@@ -55,14 +55,6 @@ def update(request):
     context = {'form' : form}
     return render(request, 'common/update.html', {'form': form})
 
-def update_password(request):
-    if request.method == "GET":
-        form = PasswordChangeForm(request.user)
-    else:
-        form = PasswordChangeForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            update_session_auth_hash(request, form.user)
-            return redirect('common:login')
-    context = {'form' : form}
-    return render(request, 'common/update_password.html', {'form': form})
+
+
+

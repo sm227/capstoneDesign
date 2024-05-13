@@ -14,6 +14,8 @@ from django.contrib.auth.models import User as authUser
 
 from googleapiclient.discovery import build
 
+from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
+from django.contrib.auth import get_user_model, update_session_auth_hash
 
 # from capstoneDesign.models import Memo
 
@@ -251,3 +253,36 @@ def my_ajax_view(request):
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
+
+
+# def update_password(request, user_id):
+#     User = get_user_model()
+#     user = User.objects.get(pk=user_id)
+#
+#     if request.method == "POST":
+#         form = SetPasswordForm(user, request.POST)
+#         if form.is_valid():
+#             form.save()
+#             update_session_auth_hash(request, user)
+#             return redirect('common:login')
+#     else:
+#         form = SetPasswordForm(user)
+#
+#     context = {'form': form}
+#     return render(request, 'update_password.html', context)
+
+def update_password(request, user_id):
+    User = get_user_model()
+    user = User.objects.get(pk=user_id)
+
+    if request.method == "POST":
+        form = PasswordChangeForm(user, request.POST)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request, user)
+            return redirect('common:login')
+    else:
+        form = PasswordChangeForm(user)
+
+    context = {'form': form}
+    return render(request, 'update_password.html', context)
