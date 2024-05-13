@@ -255,18 +255,34 @@ def my_ajax_view(request):
     return JsonResponse({'items': list(data_list)})
 
 
+# def update_password(request, user_id):
+#     User = get_user_model()
+#     user = User.objects.get(pk=user_id)
+#
+#     if request.method == "POST":
+#         form = SetPasswordForm(user, request.POST)
+#         if form.is_valid():
+#             form.save()
+#             update_session_auth_hash(request, user)
+#             return redirect('common:login')
+#     else:
+#         form = SetPasswordForm(user)
+#
+#     context = {'form': form}
+#     return render(request, 'update_password.html', context)
+
 def update_password(request, user_id):
     User = get_user_model()
     user = User.objects.get(pk=user_id)
 
     if request.method == "POST":
-        form = SetPasswordForm(user, request.POST)
+        form = PasswordChangeForm(user, request.POST)
         if form.is_valid():
             form.save()
             update_session_auth_hash(request, user)
             return redirect('common:login')
     else:
-        form = SetPasswordForm(user)
+        form = PasswordChangeForm(user)
 
     context = {'form': form}
     return render(request, 'update_password.html', context)
