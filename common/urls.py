@@ -16,8 +16,8 @@ urlpatterns = [
     path('login2/', views.signup2),
     # path('memo/', views.add_memo, name='memo'),
     path('update/', views.update, name='update'),
-    path('change_password/', views.update_password, name='update_password'),
-
+    # path('change_password/', views.update_password, name='update_password'),
+    # path('password/', views.update_password, name='update_password'),
 
 ]
 

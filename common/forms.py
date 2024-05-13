@@ -24,7 +24,6 @@ class MemoForm(forms.ModelForm):
 
 
 class UserForm2(UserChangeForm):
-
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
         fields = ('email', 'username', 'password')

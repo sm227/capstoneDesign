@@ -18,3 +18,5 @@ class MemoForm(forms.ModelForm):
         model = Memo
         fields = ['text']
 
+
+
