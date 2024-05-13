@@ -1,3 +1,5 @@
+import os
+
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
@@ -145,8 +147,12 @@ def index2(request):
         },
     ]
 
+    gemini_key = os.environ.get('gemini_api_key')
+    print("your api : ", gemini_key)
+    print("ok")
+
     # 본인 api key 삽입
-    genai.configure(api_key="AIzaSyB842rnY66Om_-2SwSnh-R98c7v_OWiB9Q")
+    genai.configure(api_key=gemini_key)
     model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
     with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
