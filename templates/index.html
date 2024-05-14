@@ -35,26 +35,6 @@
             overflow-x: auto; /* 가로 스크롤 가능하도록 설정 */
             white-space: nowrap; /* 자식 요소들이 줄바꿈되지 않도록 설정 */
             /*
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         {#display: flex; Flexbox 사용#}                      overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈 */
             word-wrap: break-word; /* IE를 위한 속성 */
             word-break: break-all;
@@ -226,7 +206,7 @@
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
                     <div class="ms-2 me-2 mt-2 container text-wrap">
                         {#                        {{ item.text }}#}
-                        <a href="#">{{ item.text }}</a>
+                        <a href="{% url 'history'  item.id  %}">{{ item.text }}</a>
                     </div>
                     <button class="dbtn">
                         <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg"
@@ -288,7 +268,7 @@
                     </svg>
                 </a>
 
-                <p class="mt-3">Copyright &copy; 2024. All rights reserved.</p>
+                <p class="mt-3">Copyright &copy; 2024 쾌남. All rights reserved.</p>
             </div>
         </div>
     </div>

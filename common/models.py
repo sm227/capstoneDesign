@@ -17,6 +17,7 @@ class Video(models.Model):
     user = models.ForeignKey(authUser, on_delete=models.CASCADE, null=True)
     text = models.TextField(null=True)
     thumbnail = models.TextField(null=True)
+    video_key = models.TextField(null=True)
 
 
 

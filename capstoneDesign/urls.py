@@ -48,6 +48,7 @@ urlpatterns = [
     path('edit-memo/', views.edit_memo, name='edit_memo'),
     path('index/', views.index, name='index'),
     path('<int:user_id>/password/', views.update_password, name='update_password'),
+    path('history/<int:videoo_id>/', views.history,name='history'),
 
 ]
 

@@ -81,7 +81,7 @@ def index2(request):
     # --------------
 
     user = get_object_or_404(authUser, id=user_id)
-    link = Video(user=user, text=video_title, thumbnail=video_thumbnail)
+    link = Video(user=user, text=video_title, thumbnail=video_thumbnail, video_key=real_id)
     link.save()
     global video_pk
     video_pk = link.id
@@ -155,7 +155,7 @@ def index2(request):
 
     # 본인 api key 삽입
     genai.configure(api_key=gemini_key)
-    model = genai.GenerativeModel('gemini-1.5-pro-latest', safety_settings=safety_settings)
+    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
     with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
@@ -166,6 +166,135 @@ def index2(request):
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
                   {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a})
+
+
+
+@login_required(login_url='common:login')
+def history(request, videoo_id):
+    # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
+
+
+    temp = Video.objects.get(id=videoo_id)
+    real_id = temp.video_key
+
+    # print(youtube_id[1])
+    # print(youtube_id[1])
+    api.download_script_json(real_id)
+
+    user_id = request.user.id
+    # --------
+    # API 키와 API 버전 지정
+    api_key = 'AIzaSyB1ZzrTmFpdSNc2gHmF9n9S11A4vgHrKbc'
+    api_service_name = 'youtube'
+    api_version = 'v3'
+
+    # YouTube API 클라이언트 생성
+    youtube = build(api_service_name, api_version, developerKey=api_key)
+
+    # 동영상 ID 지정
+    video_id = real_id
+
+    # videos.list API를 호출하여 동영상 정보 가져오기
+    requestt = youtube.videos().list(
+        part='snippet',
+        id=video_id
+    )
+    responsee = requestt.execute()
+    print(responsee)
+
+    # # 동영상 제목 추출
+    video_title = responsee['items'][0]['snippet']['title']
+    video_thumbnail = responsee['items'][0]['snippet']['thumbnails']['high']['url']
+    print("동영상 제목:", video_title)
+
+    # --------------
+
+    user = get_object_or_404(authUser, id=user_id)
+
+    global video_pk
+    video_pk = videoo_id
+    print(f"현재 동영상의 id : {video_pk}")
+    print(type(video_pk))
+    print("ok")
+
+    # link.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
+
+    with open(f'script_{real_id}.json', 'r', encoding='UTF-8') as f:
+        json_data = json.load(f)
+    script_data = []
+    text_data = []
+
+    for item in json_data:
+        temp = {
+            'text': item['text'],
+            'start': item['start'],
+            # round 는 소수점 반올림 함수
+            'minutes': round(item['start'] // 60),  # 분
+            'seconds': round(item['start'] % 60)  # 초
+        }
+        text_data.append(item['text'])
+        # print(item['text'])
+        script_data.append(temp)
+
+    result_list = ['aaa', 'Hello', 123]
+    w = open(f'script_{real_id}.txt', 'w', encoding='UTF-8')
+
+    for element in text_data:
+        # element 가 문자형이 아니면 문자형으로 변환
+        if type(element) != 'str':
+            element = str(element)
+        # 텍스트 입력시 마지막에 줄바꿈 문자도 함께 포함
+        w.write(element + '\n')
+
+    # w.close() 를 해줘야 텍스트 파일에 저장됨
+    w.write('\n')
+    w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+
+    w.close()
+    # print(script_data)
+
+    # 유해성 조정
+    safety_settings = [
+        {
+            "category": "HARM_CATEGORY_DANGEROUS",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_NONE",
+        },
+    ]
+
+    gemini_key = os.environ.get('gemini_api_key')
+    print("your api : ", gemini_key)
+    print("ok")
+
+    # 본인 api key 삽입
+    genai.configure(api_key=gemini_key)
+    model = genai.GenerativeModel('gemini-1.5-pro-latest', safety_settings=safety_settings)
+    with open(f'script_{real_id}.txt', "r", encoding='UTF8') as f:
+        example = f.read()
+
+    response = model.generate_content(example)
+    # response = model.generate_content("보기 좋게 요약해줘.", example)
+
+    # print(response.text)
+    a = "<h1>aa</h1>"
+    return render(request, 'index2.html',
+                  {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a})
+
 
 
 @login_required(login_url='common:login')
