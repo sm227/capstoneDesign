@@ -283,7 +283,7 @@ def history(request, videoo_id):
 
     # 본인 api key 삽입
     genai.configure(api_key=gemini_key)
-    model = genai.GenerativeModel('gemini-1.5-pro-latest', safety_settings=safety_settings)
+    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
     with open(f'script_{real_id}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
