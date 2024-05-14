@@ -225,7 +225,7 @@
                         {#                        {{ item.text }}#}
                         <a href="{% url 'history'  item.id  %}" id="history-url">{{ item.text }}</a> {# 눌리는 부분 #}
                     </div>
-                    <button class="dbtn"> {# 삭제버튼 #}
+                    <button class="dbtn" onclick="deleteHistory({{ item.id }})">
                         <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg"
                              class="icon">
                             <path transform="translate(-2.5 -1.25)"
@@ -308,7 +308,11 @@
         })
     });
 
-
+    function deleteHistory(id) {
+    if (confirm('삭제하시겠습니까?')) {
+        window.location.href = '/delete_history/' + id + '/';
+    }
+}
 </script>
 
 

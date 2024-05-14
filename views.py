@@ -17,6 +17,7 @@ from googleapiclient.discovery import build
 from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
 
+
 # from capstoneDesign.models import Memo
 
 @csrf_exempt
@@ -168,11 +169,9 @@ def index2(request):
                   {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a})
 
 
-
 @login_required(login_url='common:login')
 def history(request, videoo_id):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
-
 
     temp = Video.objects.get(id=videoo_id)
     real_id = temp.video_key
@@ -295,6 +294,25 @@ def history(request, videoo_id):
     return render(request, 'index2.html',
                   {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a})
 
+
+def delete_history(request, videoo_id):
+    global video_pk
+    video_pk = videoo_id
+
+    data = Video.objects.get(id=videoo_id)
+    data.delete()
+
+    recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
+    # recent_data = Video.objects.order_by('-id')[:3]
+
+
+    return redirect('main_page')
+    # if request.method == 'POST':
+    #     youtube_link = request.POST.get('youtube_link')
+    #     full_link = youtube_link.split('/')
+    #     return render(request, 'index2.html', {'youtube_link': youtube_link, 'full': full_link[2]})
+    #
+    # return render(request, 'index.html', {'data': recent_data})
 
 
 @login_required(login_url='common:login')
