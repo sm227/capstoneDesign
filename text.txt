@@ -65,3 +65,26 @@
             overflow-x: auto; /* 가로 스크롤 가능하도록 설정 */
             white-space: nowrap; /* 자식 요소들이 줄바꿈되지 않도록 설정 */
         }
+
+
+
+
+
+        $(document).ready(function () {
+        // 아이콘 클릭 시 다크 모드와 라이트 모드 간 전환
+        $('#mode-icon').click(function () {
+            // 현재 모드를 가져옴
+            let mode = $('html').attr("data-bs-theme");
+
+            // 현재 모드와 반대되는 모드로 설정
+            if (mode == 'dark') {
+                $('html').attr("data-bs-theme", "light");
+                $('#mode-icon').attr("class", "bi-sun")
+
+            } else {
+                $('html').attr("data-bs-theme", "dark");
+                $('#mode-icon').attr("class", "bi-moon-stars")
+
+            }
+        });
+    });

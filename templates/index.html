@@ -1,6 +1,6 @@
 {% load static %}
 <!doctype html>
-<html lang="ko">
+<html lang="ko" data-bs-theme="light">
 <head>
 
 
@@ -28,6 +28,10 @@
 
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <style>
         .card-container {
@@ -35,7 +39,17 @@
             overflow-x: auto; /* 가로 스크롤 가능하도록 설정 */
             white-space: nowrap; /* 자식 요소들이 줄바꿈되지 않도록 설정 */
             /*
-        {#display: flex; Flexbox 사용#}                      overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈 */
+
+
+
+
+
+
+
+
+
+        
+        {#display: flex; Flexbox 사용#}                                overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈 */
             word-wrap: break-word; /* IE를 위한 속성 */
             word-break: break-all;
         }
@@ -46,8 +60,7 @@
             display: inline-block;
             width: 300px;
             height: 360px;
-            background-color: #ffffff;
-            border-radius: 10px;
+        {#background-color: #ffffff;#} border-radius: 10px;
             margin-right: 10px;
             overflow: hidden; /* 넘치는 부분을 숨김 */
 
@@ -67,7 +80,17 @@
 
 
 
-        {#overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈#}                      */
+
+
+
+
+
+
+
+
+
+        
+        {#overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈#}                                */
             word-break: break-word; /* 긴 단어를 줄 바꿈 (이 옵션을 사용하려면 주석을 해제하세요) */
             /* 또는 */
             overflow-wrap: anywhere; /* 이 속성을 사용할 경우 긴 단어도 줄바꿈되어 넘치지 않습니다. (이 옵션을 사용하려면 주석을 해제하세요) */
@@ -78,6 +101,7 @@
 
         .dbtn {
             background-color: transparent;
+            color:white;
             position: absolute;
             border: none;
             bottom: 10px; /* 아래에서 10px만큼 띄움 */
@@ -208,7 +232,7 @@
                     <div>로딩중이에요!</div>
                     <img src='{% static 'history.gif' %}'>
                 </div>
-               {#  <img src='{% static 'history.gif' %}'> #}
+                {#  <img src='{% static 'history.gif' %}'> #}
             </div>
         </div>
     </div>
@@ -223,7 +247,7 @@
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
                     <div class="ms-2 me-2 mt-2 container text-wrap">
                         {#                        {{ item.text }}#}
-                        <a href="{% url 'history'  item.id  %}" id="history-url">{{ item.text }}</a> {# 눌리는 부분 #}
+                        <a href="{% url 'history'  item.id %}" id="history-url">{{ item.text }}</a> {# 눌리는 부분 #}
                     </div>
                     <button class="dbtn" onclick="deleteHistory({{ item.id }})">
                         <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg"
@@ -272,7 +296,8 @@
     </div>
 </div>
 
-<footer class="bg-white py-4">
+
+<footer class=" py-4">
     <hr>
     <div class="container">
         <div class="row">
@@ -302,17 +327,22 @@
         });
 
         //history 클릭
-        document.getElementById("history-url").addEventListener("click", function(){
+        document.getElementById("history-url").addEventListener("click", function () {
             var historyModal = new bootstrap.Modal(document.getElementById('history'));
             historyModal.show();
         })
     });
 
     function deleteHistory(id) {
-    if (confirm('삭제하시겠습니까?')) {
-        window.location.href = '/delete_history/' + id + '/';
+        if (confirm('삭제하시겠습니까?')) {
+            window.location.href = '/delete_history/' + id + '/';
+        }
     }
-}
+
+    
+
+   
+
 </script>
 
 
