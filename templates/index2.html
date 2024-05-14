@@ -63,6 +63,18 @@
             padding: 10px;
         }
 
+        .btn-fixed-size {
+            width: 55px;
+            height: 30px;
+            font-size: 13px;
+            float : left;
+        }
+
+        .memo-container {
+            max-width: calc(100% - 65px); /* 버튼 너비(55px) + 여백(10px) 만큼을 제외한 영역 */
+            overflow: hidden; /* 넘치는 텍스트를 감춤 */
+        }
+
 
     </style>
 </head>
@@ -299,6 +311,7 @@
 </div>
 <script>
     // 2. This code loads the IFrame Player API code asynchronously.
+
     var tag = document.createElement('script');
 
     tag.src = "https://www.youtube.com/iframe_api";
@@ -336,11 +349,19 @@
 
     function moveTime(time) {
         if (player) {
-            player.seekTo(time, true);
+            player.seekTo(parseFloat(time), true);
         }
-        {#this.num = num;#}
-        //event.target.seekTo(num, true)
     }
+
+
+
+    function getCurrentTime() {
+        if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
+            return player.getCurrentTime();
+        }
+        return 0;
+    }
+
 
     // 5. The API calls this function when the player's state changes.
     //    The function indicates that when playing a video (state=1),
@@ -353,34 +374,6 @@
         const memoList = document.getElementById("memo-list"); // id가 "memo-list"인 요소를 찾아 'memolist'에 할당
         const memoItems = document.getElementById("memo-items"); // 메모 목록에 들어가는 아이템이 들어가는 리스트
 
-
-        //메모 추가 버튼 클릭 시 동작
-        {% comment %}addMemoButton.addEventListener("click", function () {
-            const memoText = document.getElementById("memo-text").value.trim(); // 메모 내용을 'memoText' 변수에 할당
-            if (memoText !== "") {
-                const memoItem = document.createElement("li"); // 새 리스트 생성
-                const tempSeconds = player.getCurrentTime(); // 현재 시간 가져오기
-                const memoSeconds = changeSeconds(tempSeconds);
-
-                memoItem.textContent = memoText + "\t" + memoSeconds;
-                memoItem.className = "list-group-item";
-                memoItems.appendChild(memoItem); // 리스트에 append
-                document.getElementById("memo-text").value = "";
-
-                {#$('#memoModal').modal('show'); //모달 창 띄우기#}
-
-                const xhr = new XMLHttpRequest();
-                xhr.open("POST", "/add_memo/", true);
-                xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                xhr.onreadystatechange = function () {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        // 성공적으로 메모가 추가되었을 때의 처리
-                        // $('#memoModal').modal('show'); // 모달 창 띄우기
-                    }
-                };
-            }
-        });
-{% endcomment %}
         // 초를 분으로 변경하는 함수
         function changeSeconds(seconds) {
             if (seconds < 61) {
@@ -424,6 +417,35 @@
             event.stopPropagation();
         });
     });
+    {% comment %}function changeSeconds(seconds) {
+            if (seconds < 61) {
+                return '00:' + addZero(seconds)
+            }
+            // sec
+            var hours = Math.floor(seconds / 3600)
+            var mins = Math.floor((seconds - hours * 3600) / 60)
+            var secs = Math.floor(seconds % 60)
+            return addZero(hours) + ':' + addZero(mins) + ':' + addZero(secs)
+
+            function addZero(num) {
+                return ((num < 10) ? '0' : '') + num
+            }
+        }{% endcomment %}
+
+    function changeSeconds(seconds) {
+        if (seconds < 61) {
+            return addZero(Math.floor(seconds / 60)) + ':' + addZero(Math.floor(seconds % 60));
+        }
+
+        var hours = Math.floor(seconds / 3600);
+        var mins = Math.floor((seconds - hours * 3600) / 60);
+        var secs = Math.floor(seconds % 60);
+        return (hours > 0 ? addZero(hours) + ':' : '') + addZero(mins) + ':' + addZero(secs);
+
+        function addZero(num) {
+            return ((num < 10 && num >= 0) ? '0' : '') + num;
+        }
+    }
 
 
     $(document).ready(function () {
@@ -441,13 +463,18 @@
                         // 이미 목록에 있는 아이템인지 확인
                        if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
                         const memoItem = document.createElement("li"); // 새 리스트 생성
+                        const currentTime = player.getCurrentTime()
+                        const changeTime = changeSeconds(currentTime)
+
                         memoItem.className = "list-group list-group-item"; // 부트스트랩 5 목록 그룹 클래스 추가
                         memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
                         memoItem.innerHTML = `
-                            <div class="row">
+                            <div class="row align-items-center">
                                 <div class="col-9">
-                                    <div class="fw-bold text-sm text-start" style="font-size: 10px;">${item.id}</div>
-                                    <div class="text-start">${item.text}</div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="btn btn-primary btn-sm btn-fixed-size" style="width: 55px" href="#" role="button" onclick="moveTime(${currentTime});">${changeTime}</div>
+                                        <div class="text-start ms-2 memo-container">${item.text}</div>
+                                    </div>
                                 </div>
                                 <div class="col-3">
                                     <p></p>
@@ -475,6 +502,8 @@
             });
         });
     });
+
+
 
 
     //삭제
@@ -537,12 +566,13 @@
                         // 이미 목록에 있는 아이템인지 확인
                        if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
                         const memoItem = document.createElement("li"); // 새 리스트 생성
+                        const currentTime = player.getCurrentTime()
                         memoItem.className = "list-group list-group-item"; // 부트스트랩 5 목록 그룹 클래스 추가
                         memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
                         memoItem.innerHTML = `
                             <div class="row">
                                 <div class="col-9">
-                                    <div class="fw-bold text-sm text-start" style="font-size: 10px;">${item.id}</div>
+                                    <button class="btn btn-sm btn-secondary moveTimeBtn" type="button" data-time="${currentTime}"></button>
                                     <div class="text-start">${item.text}</div>
                                 </div>
                                 <div class="col-3">
