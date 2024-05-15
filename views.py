@@ -138,10 +138,22 @@ def index2(request):
         s.write(element2 + '\n')
 
     s.write('\n')
-    #w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+    #w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘') 문장 앞에 '0.0'초 형식을 숫자로 생각하여 60으로 나눠서 몫은 분, 나머지는 초로 사용해주세요. 분, 초 형식으로만 작성해주세요.
     s.write("""
-    문장 앞에 '0.0' 형식으로 되어있는 것을 60으로 나눠서 몫은 분, 나머지는 초로 사용해주세요. 
-    내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 내용이 해당하는 부분이 몇 분 몇 초 사이의 내용인지를 소제목 옆에만 적고 내용을 요약해주세요.
+    0.0형식의 초를 분, 초로 바꾸는 예시입니다. 아래와 같이 분, 초로 작성해주세요.
+    0.0 초 -> 0초
+    3.86초 -> 3초
+    12.44초 -> 12초
+    35.77초 -> 35초
+    61.78초 -> 1분 1초
+    69.23초 -> 1분 9초
+    220.54초 -> 3분 40초
+    
+    들여 쓰기, 단락 구분 보기 좋게 잘 해 주세요.
+    
+    다른 내용 마다 단락 구분 해주세요.
+    내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 소제목 옆 괄호에 몇 분 몇 초 사이의 내용 인지를 적어주세요. 시간은 소제목 옆에만 적어주세요.
+    들여 쓰기하고 내용을 요약해주세요.
     단락 구분을 잘 해주세요. 들여 쓰기를 잘 해주세요.
     짧은 영상(5분 이하)은 영상의 핵심 주제와 가장 중요한 정보를 5문장 이하로 요약해주세요.
     중간 길이 영상(5-20분)은 영상의 주요 포인트를 20문장 이하로 요약하고, 각 포인트별로 핵심적인 세부 사항을 추가해주세요.
@@ -281,7 +293,7 @@ def history(request, videoo_id):
 
     # w.close() 를 해줘야 텍스트 파일에 저장됨
     w.write('\n')
-    w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+    w.write('마지막에 "abcd"를 작성해줘.')
 
     w.close()
     # print(script_data)
@@ -317,7 +329,7 @@ def history(request, videoo_id):
     # 본인 api key 삽입
     genai.configure(api_key=gemini_key)
     model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
-    with open(f'script_{real_id}.txt', "r", encoding='UTF8') as f:
+    with open(f'summary_{real_id}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
     response = model.generate_content(example)
