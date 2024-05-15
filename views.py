@@ -96,6 +96,7 @@ def index2(request):
         json_data = json.load(f)
     script_data = []
     text_data = []
+    summary_data = []
 
     for item in json_data:
         temp = {
@@ -106,6 +107,12 @@ def index2(request):
             'seconds': round(item['start'] % 60)  # 초
         }
         text_data.append(item['text'])
+
+        summary_data.append(item['start'])
+        summary_data.append('초')
+        summary_data.append(item['text'])
+        summary_data.append('\n')
+
         # print(item['text'])
         script_data.append(temp)
 
@@ -121,9 +128,35 @@ def index2(request):
 
     # w.close() 를 해줘야 텍스트 파일에 저장됨
     w.write('\n')
-    w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
-
     w.close()
+
+    s = open(f'summary_{final_link[0]}.txt', 'w', encoding='UTF-8')
+
+    for element2 in summary_data:
+        if type(element2) != 'str':
+            element2 = str(element2)
+        s.write(element2 + '\n')
+
+    s.write('\n')
+    #w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+    s.write("""
+    문장 앞에 '0.0' 형식으로 되어있는 것을 60으로 나눠서 몫은 분, 나머지는 초로 사용해주세요. 
+    내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 내용이 해당하는 부분이 몇 분 몇 초 사이의 내용인지를 소제목 옆에만 적고 내용을 요약해주세요.
+    단락 구분을 잘 해주세요. 들여 쓰기를 잘 해주세요.
+    짧은 영상(5분 이하)은 영상의 핵심 주제와 가장 중요한 정보를 5문장 이하로 요약해주세요.
+    중간 길이 영상(5-20분)은 영상의 주요 포인트를 20문장 이하로 요약하고, 각 포인트별로 핵심적인 세부 사항을 추가해주세요.
+    긴 영상(20분 이상)은 영상을 여러 주제으로 나누고 각 주제의 핵심 요약을 제공해주세요. 또한 전체적인 주제와 결론을 포함하는 종합 요약을 추가해주세요.
+    
+    교육적 내용은 영상에서 다루는 주요 교훈이나 학습 포인트를 강조하여 요약해주세요.
+    엔터테인먼트 내용은 영상의 주요 이벤트, 등장인물, 그리고 주요 전환점을 요약해주세요. 감정적인 반응이나 흥미로운 순간도 강조해주세요.
+    뉴스/시사 내용은 영상에서 다루는 주요 사건, 관련된 인물, 그리고 영향을 요약해주세요. 중요한 날짜나 위치 정보도 포함해주세요.
+    인터뷰 형식은 인터뷰에서 논의된 주요 주제들과 각각에 대한 인터뷰이의 주요 의견을 요약해주세요. 중요한 질문과 그에 대한 답변도 강조해주세요.
+    튜토리얼/가이드 내용은 영상에서 제공하는 주요 지침이나 단계들을 순서대로 요약해주세요. 중요한 팁이나 주의사항도 포함해주세요.
+    리뷰/평가 내용은 제품이나 서비스의 주요 특징, 장단점, 그리고 최종 평가를 요약해주세요. 리뷰어의 개인적인 의견이나 경험도 포함할 수 있습니다.
+    """)
+
+
+    s.close()
     # print(script_data)
 
     # 유해성 조정
@@ -156,8 +189,9 @@ def index2(request):
 
     # 본인 api key 삽입
     genai.configure(api_key=gemini_key)
+    # model = genai.GenerativeModel('gemini-pro-1.5-pro-latest', safety_settings=safety_settings)
     model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
-    with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
+    with open(f'summary_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
     response = model.generate_content(example)
