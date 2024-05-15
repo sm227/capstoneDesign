@@ -160,12 +160,12 @@ def index2(request):
     with open(f'script_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
-    response = model.generate_content(example)
-    # response = model.generate_content("보기 좋게 요약해줘.", example)
-    
-    #remove script and summery files from os
+    #txt, json 삭제.
     os.remove(f'script_{final_link[0]}.txt')
     os.remove(f'script_{final_link[0]}.json')
+
+    response = model.generate_content(example)
+    # response = model.generate_content("보기 좋게 요약해줘.", example)
     
 
     # print(response.text)
