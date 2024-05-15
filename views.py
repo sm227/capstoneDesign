@@ -162,11 +162,18 @@ def index2(request):
 
     response = model.generate_content(example)
     # response = model.generate_content("보기 좋게 요약해줘.", example)
+    
+    #remove script files from os
+    os.remove(f'script_{final_link[0]}.txt')
+    os.remove(f'script_{final_link[0]}.json')
+    os.remove(f'summery_{final_link[0]}.txt')
 
     # print(response.text)
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
                   {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a})
+
+
 
 
 @login_required(login_url='common:login')
