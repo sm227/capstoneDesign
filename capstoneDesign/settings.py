@@ -30,11 +30,12 @@ SECRET_KEY = 'django-insecure-tt*1!y_!rq*2^il!*v_i1ro-7_wcy^9xif%th1*fw&a2asa#rl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '1.236.13.63']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '1.236.13.63','127.0.0.1']
 
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'common.apps.CommonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "django_bootstrap5",
     'markdownify.apps.MarkdownifyConfig',
-    'channels',
+    'chat',
     # 'common'
 
 ]
@@ -148,3 +149,12 @@ STATICFILES_DIRS=[
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 ASGI_APPLICATION = 'capstoneDesign.asgi.application'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}

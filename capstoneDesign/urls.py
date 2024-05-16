@@ -29,6 +29,7 @@ from django.views.static import serve
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('chat/', include('chat.urls')),
     path('', views.index, name='main_page'),
     path('index2/', views.index2, name='index2'),
     # path('login', auth_views.LoginView.as_view(), name='login'),

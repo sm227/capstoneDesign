@@ -3,7 +3,8 @@ version: '3.10'
 services:
   web:
     build: .  # Dockerfile 빌드
-    command: python manage.py runserver --insecure 0.0.0.0:8000  # 장고 서버 실행 시키는 방법
+#    command: python manage.py runserver 127.0.0.1:8000  # 장고 서버 실행 시키는 방법
+    command: daphne capstoneDesign.asgi:application --port 8000 --bind 0.0.0.0 -v2  # 장고 서버 실행 시키는 방법
     volumes:
       - ./:/usr/src/app/
     ports:
@@ -34,3 +35,8 @@ services:
     # 볼륨 설정
     volumes:
       - ./data/pgadmin/:/var/lib/pgadmin
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
