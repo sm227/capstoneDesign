@@ -1,0 +1,114 @@
+
+body, html {
+    margin: 0;
+    padding: 0;
+}
+
+.frameContainer {
+
+}
+
+.text-controll {
+    margin-top: 15px;
+    font-size: 17px;
+}
+
+.summary-scroll {
+    max-height: 400px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+
+/* 타임라인 밑 줄 제거 */
+a {
+    text-decoration: none;
+    color: #307AE9;
+}
+
+/* 타임라인 선택 시 파란색 밑줄 표시 */
+a:hover, a:focus {
+    font-weight: bold;
+    text-decoration: underline;
+    color: #ffffff;
+}
+
+.container {
+    position: sticky;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.btn-fixed-size {
+    width: 55px;
+    height: 30px;
+    font-size: 13px;
+    float : left;
+}
+
+.memo-container {
+    max-width: calc(100% - 65px); /* 버튼 너비(55px) + 여백(10px) 만큼을 제외한 영역 */
+    overflow: hidden; /* 넘치는 텍스트를 감춤 */
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #196EF7;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pen1-floating-btn {
+    position: fixed;
+    bottom: 77px;
+    right: 28px;
+    background-color: white;
+    color: #196EF7;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.pen2-floating-btn{
+    position: fixed;
+    bottom: 120px;
+    right: 28px;
+    background-color: white;
+    color: #196EF7;
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.floating-btn:hover {
+    background-color: #155ED2;
+}
+
+
+
