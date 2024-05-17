@@ -392,10 +392,9 @@ def my_ajax_view(request):
     # data_list = ['사과', '바나나', '체리']
     global video_pk
 
-    current_time = int(request.GET.get('current_time'))
-    print(current_time)
 
-    data_list = Memo.objects.filter(user=request.user, video_id=video_pk, current_time = current_time).values('id', 'text').order_by('id')
+
+    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
     print(data_list)
     print("ok")
 
