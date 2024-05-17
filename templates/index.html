@@ -6,7 +6,7 @@
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Bootstrap CSS -->
 
     {#    <link rel="" type="text/css" href="{% static 'js/bootstrap.min.js' %}">#}
@@ -241,18 +241,18 @@
 </div>
 
 {#</div>#}
-<h2 class="text-center  mt-5">🌏 전 세계의 모든 영상을 요약해 보세요 &#128171;</h2>
+<h3 class="text-center col-lg-12  mt-5">🌏 전 세계의 모든 영상을 요약해 보세요 &#128171;</h3>
 <div class="container d-flex justify-content-center align-items-center mb-5 mt-5">
     <div class="row">
 
         <form id="youtubeForm" action="{% url 'index2' %}" method="get"> {# 유튜브 링크 #}
             <div class=" d-flex ">
                 {% csrf_token %}
-                <div class="col-9 text-center">
+                <div class="col-lg-9 text-center">
                     <input id="youtubeLink" type="text" class="form-control" name="youtube_link" 
                            placeholder="요약할 URL 붙여넣기">
                 </div>
-                <div class="col-3  ms-3 me-3 text-right">
+                <div class="col-lg-3  ms-3 me-3 text-right">
                     {#                    <button type="submit" class="btn btn-success">요약하기</button>#}
                     <button class="btn">
                         <svg height="10" width="10" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1"
