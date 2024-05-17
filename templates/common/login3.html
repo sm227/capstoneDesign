@@ -158,6 +158,8 @@
 {#</div>#}
 {#<!-- Pills content -->#}
 <body>
+{% include "navbar.html" %}
+{% include "form_errors.html" %}
 
 <div class="container">
     <div class="row justify-content-center mt-5">
@@ -179,17 +181,16 @@
             </ul>
             <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                    <form>
-
-
+                    <form method="post" action="{% url 'common:login' %}">
+                        {% csrf_token %}
                         <div data-mdb-input-init class="form-outline mb-4">
-                           <input type="text" class="form-control" name="username" id="username"
-                   value="{{ form.username.value|default_if_none:'' }}" placeholder="ID"/>
+                            <input type="text" class="form-control" name="username" id="username"
+                                   value="{{ form.username.value|default_if_none:'' }}" placeholder="ID"/>
                         </div>
                         <div data-mdb-input-init class="form-outline mb-4">
-                           <input type="password" class="form-control" name="password" id="password"
-                   value="{{ form.password.value|default_if_none:'' }}" placeholder="Password"/>
-            <a href="#">Forgot your password?</a>
+                            <input type="password" class="form-control" name="password" id="password"
+                                   value="{{ form.password.value|default_if_none:'' }}" placeholder="Password"/>
+
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6 d-flex justify-content-center">
@@ -203,50 +204,35 @@
                             </div>
                         </div>
                         <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-block mb-4">Sign in
+                                class="btn btn-primary btn-block mb-4">로그인
                         </button>
-                        <div class="text-center">
-                            <p>Not a member? <a href="#!">Register</a></p>
-                        </div>
                     </form>
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
-                    <form>
+                    <form method="post" action="{% url 'common:signup' %}">
+                        {% csrf_token %}
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="text" id="registerName" class="form-control"/>
-                            <label class="form-label" for="registerName">Name</label>
+                            <input type="text" class="form-control" name="username" id="username"
+                   value="{{ form.username.value|default_if_none:'' }}" placeholder="이름" required/>
                         </div>
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="text" id="registerUsername" class="form-control"/>
-                            <label class="form-label" for="registerUsername">Username</label>
+                            <input type="text" class="form-control" name="email" id="email"
+                   value="{{ form.email.value|default_if_none:'' }}" placeholder="Email" required/>
                         </div>
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="email" id="registerEmail" class="form-control"/>
-                            <label class="form-label" for="registerEmail">Email</label>
+                             <input type="password" class="form-control" name="password1" id="password1" placeholder="비밀번호"
+                   value="{{ form.password1.value|default_if_none:'' }}"/>
                         </div>
                         <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="password" id="registerPassword" class="form-control"/>
-                            <label class="form-label" for="registerPassword">Password</label>
+                            <input type="password" class="form-control" name="password2" id="password2" placeholder="비밀번호 확인"
+                   value="{{ form.password2.value|default_if_none:'' }}"/>
                         </div>
 
-                        <!-- Repeat Password input -->
-                        <div data-mdb-input-init class="form-outline mb-4">
-                            <input type="password" id="registerRepeatPassword" class="form-control"/>
-                            <label class="form-label" for="registerRepeatPassword">Repeat password</label>
-                        </div>
-
-                        <!-- Checkbox -->
-                        <div class="form-check d-flex justify-content-center mb-4">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="registerCheck" checked
-                                   aria-describedby="registerCheckHelpText"/>
-                            <label class="form-check-label" for="registerCheck">
-                                I have read and agree to the terms
-                            </label>
-                        </div>
+                        
 
                         <!-- Submit button -->
-                        <button type="submit" data-mdb-button-init data-mdb-ripple-init
-                                class="btn btn-primary btn-block mb-3">Sign in
+                        <button type="submit" id="signUpBtn" data-mdb-button-init data-mdb-ripple-init
+                                class="btn btn-primary btn-block mb-3">가입하기
                         </button>
                     </form>
                 </div>

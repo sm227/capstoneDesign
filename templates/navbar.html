@@ -19,12 +19,7 @@
                         </a>
                     </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign_up">회원가입</a>
-                    </li>
+
                 {% endif %}
             </ul>
         </div>
@@ -37,17 +32,15 @@
                             소개</a>
                     </li>
 
+
                 </ul>
             </div>
         </div>
-    
-        
 
 
-       
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav mb-2 mb-lg-0">
                 {% if user.is_authenticated %}
+            <ul class="navbar-nav mb-2 mb-lg-0">
                     {#                    <li class="nav-item">#}
                     {#                        <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>#}
                     {#                    </li>#}
@@ -67,17 +60,18 @@
                                     class="fa-solid fa-right-from-bracket"></i> 로그아웃</a></li>
                         </ul>
                     </li>
+                
 
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'common:login' %}">로그인</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/sign_up">회원가입</a>
-                    </li>
-                {% endif %}
 
             </ul>
+                {% else %}
+
+                    <div>
+                        <div class="ms-2collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+                            <i id="mode-icon" style="font-size: 18px; cursor: pointer;" class="bi bi-sun"></i>
+                        </div>
+                    </div> 
+                {% endif %}
         </div>
 
         <div>
@@ -85,12 +79,13 @@
                 <i id="mode-icon" style="font-size: 18px; cursor: pointer;" class="bi bi-sun"></i>
             </div>
         </div>
-    
+
     </div>
+
 </nav>
 
 <script>
-      // 페이지 로드 시 저장된 테마 설정을 불러와 적용
+    // 페이지 로드 시 저장된 테마 설정을 불러와 적용
     $(document).ready(function () {
         // 로컬 스토리지에서 테마 설정 불러오기
         let savedTheme = localStorage.getItem("theme");

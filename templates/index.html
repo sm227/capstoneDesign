@@ -38,17 +38,7 @@
             width: 100%;
             overflow-x: auto; /* 가로 스크롤 가능하도록 설정 */
             white-space: nowrap; /* 자식 요소들이 줄바꿈되지 않도록 설정 */
-            /*
-
-
-
-
-
-
-
-
-
-        
+            /*        
         {#display: flex; Flexbox 사용#}                                overflow-wrap: break-word; 넘치는 텍스트 줄 바꿈 */
             word-wrap: break-word; /* IE를 위한 속성 */
             word-break: break-all;
@@ -255,13 +245,13 @@
     <div class="row">
 
         <form id="youtubeForm" action="{% url 'index2' %}" method="get"> {# 유튜브 링크 #}
-            <div class="col-md-8 d-flex ">
+            <div class=" d-flex ">
                 {% csrf_token %}
-                <div class="text-center">
-                    <input id="youtubeLink" type="text" class="form-control" name="youtube_link" style="width:300px"
+                <div class="col-9 text-center">
+                    <input id="youtubeLink" type="text" class="form-control" name="youtube_link" 
                            placeholder="요약할 URL 붙여넣기">
                 </div>
-                <div class="col-md-5  ms-3 text-right">
+                <div class="col-3  ms-3 me-3 text-right">
                     {#                    <button type="submit" class="btn btn-success">요약하기</button>#}
                     <button class="btn">
                         <svg height="10" width="10" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1"
