@@ -75,6 +75,64 @@
             overflow: hidden; /* 넘치는 텍스트를 감춤 */
         }
 
+        .floating-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #196EF7;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .pen1-floating-btn {
+            position: fixed;
+            bottom: 77px;
+            right: 28px;
+            background-color: white;
+            color: #196EF7;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .pen2-floating-btn{
+            position: fixed;
+            bottom: 120px;
+            right: 28px;
+            background-color: white;
+            color: #196EF7;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .floating-btn:hover {
+            background-color: #155ED2;
+        }
+
 
     </style>
 </head>
@@ -169,7 +227,7 @@
                                 <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
                                 {#                                <button  class="btn btn-primary mt-2" type="submit">메모 추가</button>#}
                                 <button class="btn btn-primary mt-2" data-bs-toggle="modal"
-                                        data-bs-target="#memoModal" type="submit">메모 추가
+                                        data-bs-target="#memoModal" type="submit" id="add-memo">메모 추가
                                 </button>
                             </div>
                             <div class="tab-pane fade" id="memo-list-tab">
@@ -217,8 +275,62 @@
                 </div>
             </div>
         </div>
-
         <div class="col-md-6">
+            <div class="accordion" id="scriptText">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            <strong>요약내용</strong>
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
+                             data-bs-parent="#scriptText">
+                            <div class="accordion-body p-md-2-">
+                                <div class="summary-scroll">
+                                    {#                                    <strong>요약내용</strong>#}
+                                    {#                                    {% for i in data %}#}
+                                    {{ script|markdownify }}
+                                    {#                                       {% autoescape off %} {{ script }} {% endautoescape %}#}
+                                    <br>
+                                    {#                                    {% endfor %}#}
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                <strong>스크립트 전체 보기</strong>
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                             data-bs-parent="#scriptText">
+                            <div class="accordion-body">
+                                <div class="box-controll">
+                                    <div class="summary-scroll">
+                                        {% for item in data %}
+                                            <div class="row align-items-center">
+                                                <div class="col-2">
+                                                    <a class="btn btn-primary btn-sm" style="width: 55px" href="#"
+                                                       role="button"
+                                                       onclick="moveTime({{ item.start }});">{{ item.minutes|stringformat:"02d" }}:{{ item.seconds|stringformat:"02d" }}</a>
+                                                </div>
+                                                <div class="text-controll col ms-1 mt-n1">
+                                                    <p> {{ item.text }}</p>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        {% comment %}<div class="col-md-6">
             <div class="accordion" id="scriptText">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
@@ -290,7 +402,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>{% endcomment %}
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="row">
                     <div class="col-md">
@@ -309,7 +421,50 @@
         </div>
     </div>
 </div>
+
+<button class="floating-btn" onclick="penTools()">
+    <img src="{% static 'color-palette.png' %}">
+</button>
+<button class="pen1-floating-btn" onclick="pencil()">
+    <img src="{% static 'pencil.png' %}">
+</button>
+<button class="pen2-floating-btn" onclick="markerPen()">
+    <img src="{% static 'marker.png' %}">
+</button>
 <script>
+    //플로팅 버튼 숨기기, 나타내기
+    function penTools(){
+        var pen1 = document.querySelector('.pen1-floating-btn');
+        var pen2 = document.querySelector('.pen2-floating-btn');
+            
+        if (pen1.style.display === 'none' || pen1.style.display === '') {
+            pen1.style.display = 'flex';
+            pen2.style.display = 'flex';
+        } else {
+            pen1.style.display = 'none';
+            pen2.style.display = 'none';
+        }
+    }
+    
+    function pallett(){
+        //팔레트 나오게,
+        //색깔 정할 수 있게 하고
+        //rgb값 저장
+    }
+    
+    //연필 도구
+    function pencil(){
+        pallett()
+        //pallett() 에서 정한 색
+        //마우스 포인터 누르면 좌표따서 필기
+    }
+    
+    //형광펜 도구
+    function markerPen(){
+        pallett()
+        //pencil()과 동일
+    }
+
     // 2. This code loads the IFrame Player API code asynchronously.
 
     var tag = document.createElement('script');
@@ -417,20 +572,6 @@
             event.stopPropagation();
         });
     });
-    {% comment %}function changeSeconds(seconds) {
-            if (seconds < 61) {
-                return '00:' + addZero(seconds)
-            }
-            // sec
-            var hours = Math.floor(seconds / 3600)
-            var mins = Math.floor((seconds - hours * 3600) / 60)
-            var secs = Math.floor(seconds % 60)
-            return addZero(hours) + ':' + addZero(mins) + ':' + addZero(secs)
-
-            function addZero(num) {
-                return ((num < 10) ? '0' : '') + num
-            }
-        }{% endcomment %}
 
     function changeSeconds(seconds) {
         if (seconds < 61) {
@@ -447,7 +588,9 @@
         }
     }
 
-
+    
+    
+    //메모 보기 탭
     $(document).ready(function () {
         $("#loadData").click(function () {
             $.ajax({
@@ -567,14 +710,18 @@
                        if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
                         const memoItem = document.createElement("li"); // 새 리스트 생성
                         const currentTime = player.getCurrentTime()
+                        const changeTime = changeSeconds(currentTime)
+
                         memoItem.className = "list-group list-group-item"; // 부트스트랩 5 목록 그룹 클래스 추가
                         memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
                         memoItem.innerHTML = `
-                            <div class="row">
+                            <div class="row align-items-center">
                                 <div class="col-9">
-                                    <button class="btn btn-sm btn-secondary moveTimeBtn" type="button" data-time="${currentTime}"></button>
-                                    <div class="text-start">${item.text}</div>
-                                </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="btn btn-primary btn-sm btn-fixed-size" style="width: 55px" href="#" role="button" onclick="moveTime(${currentTime});">${changeTime}</div>
+                                        <div class="text-start ms-2 memo-container">${item.text}</div>
+                                    </div>
+                                 </div>
                                 <div class="col-3">
                                     <p></p>
                                     <p></p>

@@ -18,8 +18,6 @@ from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
 
 
-# from capstoneDesign.models import Memo
-
 @csrf_exempt
 @login_required(login_url='common:login')
 def index(request):
@@ -312,7 +310,6 @@ def delete_history(request, videoo_id):
     recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
     # recent_data = Video.objects.order_by('-id')[:3]
 
-
     return redirect('main_page')
     # if request.method == 'POST':
     #     youtube_link = request.POST.get('youtube_link')
@@ -338,16 +335,10 @@ def sign_up_complete(request):
 def add_memo(request):
     if request.method == 'POST':
         global video_pk
-        text = request.POST.get('text')  # aaaaa
-        # user = get_object_or_404(authUser, id=user_id)
+        text = request.POST.get('text')
 
         memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk)
-        # return JsonResponse({'sucess': True, 'message': 'good'})
 
-        # return HttpResponse("<script>console.log(dd);</script>")
-        # return redirect(request.META.get('HTTP_REFERER', 'redirect_if_referer_not_found'))
-
-        # memoList = Memo.objects.all().values('text')
         return render(request, 'memo.html')
     return JsonResponse({'error': 'Bad request,'}, status=400)
 
@@ -400,14 +391,17 @@ def my_ajax_view(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
     global video_pk
-    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
+
+    current_time = int(request.GET.get('current_time'))
+    print(current_time)
+
+    data_list = Memo.objects.filter(user=request.user, video_id=video_pk, current_time = current_time).values('id', 'text').order_by('id')
     print(data_list)
     print("ok")
 
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
-
 
 # def update_password(request, user_id):
 #     User = get_user_model()
