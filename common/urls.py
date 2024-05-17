@@ -10,7 +10,7 @@ from . import views
 from django.views.static import serve
 
 urlpatterns = [
-    path('login/', auth_views.LoginView.as_view(template_name='common/login.html'), name='login'),
+    path('login/', auth_views.LoginView.as_view(template_name='common/login3.html'), name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup, name='signup'),
     path('login2/', views.signup2),
