@@ -39,8 +39,8 @@
 
 
         <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                {% if user.is_authenticated %}
-            <ul class="navbar-nav mb-2 mb-lg-0">
+            {% if user.is_authenticated %}
+                <ul class="navbar-nav mb-2 mb-lg-0">
                     {#                    <li class="nav-item">#}
                     {#                        <a class="nav-link" href="{% url 'common:logout' %}">{{ user.username }} (로그아웃)</a>#}
                     {#                    </li>#}
@@ -60,18 +60,17 @@
                                     class="fa-solid fa-right-from-bracket"></i> 로그아웃</a></li>
                         </ul>
                     </li>
-                
 
 
-            </ul>
-                {% else %}
-
-                    <div>
-                        <div class="ms-2collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                            <i id="mode-icon" style="font-size: 18px; cursor: pointer;" class="bi bi-sun"></i>
-                        </div>
-                    </div> 
-                {% endif %}
+                </ul>
+                {#                {% else %}#}
+                {##}
+                {#                    <div>#}
+                {#                        <div class="ms-2collapse navbar-collapse justify-content-end" id="navbarSupportedContent">#}
+                {#                            <i id="mode-icon" style="font-size: 18px; cursor: pointer;" class="bi bi-sun"></i>#}
+                {#                        </div>#}
+                {#                    </div>#}
+            {% endif %}
         </div>
 
         <div>
