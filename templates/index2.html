@@ -546,6 +546,7 @@
         canvas.height = window.innerHeight;
     }
 
+    //슬라이더 띄우기
     function showEraserSlider() {
         const eraserControls = document.getElementById('eraser-controls');
         if (eraserControls.classList.contains('slider-hide')) {
@@ -559,13 +560,14 @@
         }
     }
     
+    
     function saveEraserSize() {
         const eraserControls = document.getElementById('eraser-controls');
         eraserControls.classList.remove('slider-show');
         eraserControls.classList.add('slider-hide');
         const eraserSlider = document.getElementById('eraser-size-slider');
         eraserSize = eraserSlider.value; // 확인 버튼을 누를 때마다 현재 슬라이더 값으로 크기 설정
-        eraser();
+        eraser(); //설정된 값으로 eraser() 호출
     }
     
 
