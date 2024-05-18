@@ -92,32 +92,36 @@ def index2(request):
 
     # link.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
 
-    with open(f'script_{final_link[0]}.json', 'r', encoding='UTF-8') as f:
+    with open(f'script_{real_id}.json', 'r', encoding='UTF-8') as f:
         json_data = json.load(f)
     script_data = []
     text_data = []
     summary_data = []
 
     for item in json_data:
+        minutes = item['start'] // 60
+        seconds = item['start'] % 60
+
         temp = {
             'text': item['text'],
             'start': item['start'],
             # round 는 소수점 반올림 함수
-            'minutes': round(item['start'] // 60),  # 분
-            'seconds': round(item['start'] % 60)  # 초
+            'minutes': round(minutes),  # 분
+            'seconds': round(seconds)  # 초
         }
         text_data.append(item['text'])
 
-        summary_data.append(item['start'])
-        summary_data.append('초')
-        summary_data.append(item['text'])
-        summary_data.append('\n')
+        summary_data.append({
+            'minutes': round(minutes),  # 분
+            'seconds': round(seconds),  # 초
+            'text': item['text']
+        })
 
         # print(item['text'])
         script_data.append(temp)
 
     result_list = ['aaa', 'Hello', 123]
-    w = open(f'script_{final_link[0]}.txt', 'w', encoding='UTF-8')
+    w = open(f'script_{real_id}.txt', 'w', encoding='UTF-8')
 
     for element in text_data:
         # element 가 문자형이 아니면 문자형으로 변환
@@ -130,7 +134,7 @@ def index2(request):
     w.write('\n')
     w.close()
 
-    s = open(f'summary_{final_link[0]}.txt', 'w', encoding='UTF-8')
+    s = open(f'summary_{real_id}.txt', 'w', encoding='UTF-8')
 
     for element2 in summary_data:
         if type(element2) != 'str':
@@ -138,27 +142,22 @@ def index2(request):
         s.write(element2 + '\n')
 
     s.write('\n')
-    #w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘') 문장 앞에 '0.0'초 형식을 숫자로 생각하여 60으로 나눠서 몫은 분, 나머지는 초로 사용해주세요. 분, 초 형식으로만 작성해주세요.
+    # w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+
     s.write("""
-    0.0형식의 초를 분, 초로 바꾸는 예시입니다. 아래와 같이 분, 초로 작성해주세요.
-    0.0 초 -> 0초
-    3.86초 -> 3초
-    12.44초 -> 12초
-    35.77초 -> 35초
-    61.78초 -> 1분 1초
-    69.23초 -> 1분 9초
-    220.54초 -> 3분 40초
-    
+    'minutes' 는 분, 'seconds' 는 초.
     들여 쓰기, 단락 구분 보기 좋게 잘 해 주세요.
-    
     다른 내용 마다 단락 구분 해주세요.
     내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 소제목 옆 괄호에 몇 분 몇 초 사이의 내용 인지를 적어주세요. 시간은 소제목 옆에만 적어주세요.
+    내용은 시간 순서대로 작성하세요.
     들여 쓰기하고 내용을 요약해주세요.
     단락 구분을 잘 해주세요. 들여 쓰기를 잘 해주세요.
+    중요한 내용은 글씨를 굵게 해주세요.
+
     짧은 영상(5분 이하)은 영상의 핵심 주제와 가장 중요한 정보를 5문장 이하로 요약해주세요.
     중간 길이 영상(5-20분)은 영상의 주요 포인트를 20문장 이하로 요약하고, 각 포인트별로 핵심적인 세부 사항을 추가해주세요.
     긴 영상(20분 이상)은 영상을 여러 주제으로 나누고 각 주제의 핵심 요약을 제공해주세요. 또한 전체적인 주제와 결론을 포함하는 종합 요약을 추가해주세요.
-    
+
     교육적 내용은 영상에서 다루는 주요 교훈이나 학습 포인트를 강조하여 요약해주세요.
     엔터테인먼트 내용은 영상의 주요 이벤트, 등장인물, 그리고 주요 전환점을 요약해주세요. 감정적인 반응이나 흥미로운 순간도 강조해주세요.
     뉴스/시사 내용은 영상에서 다루는 주요 사건, 관련된 인물, 그리고 영향을 요약해주세요. 중요한 날짜나 위치 정보도 포함해주세요.
@@ -167,8 +166,8 @@ def index2(request):
     리뷰/평가 내용은 제품이나 서비스의 주요 특징, 장단점, 그리고 최종 평가를 요약해주세요. 리뷰어의 개인적인 의견이나 경험도 포함할 수 있습니다.
     """)
 
-
     s.close()
+
     # print(script_data)
 
     # 유해성 조정
@@ -268,6 +267,7 @@ def history(request, videoo_id):
         json_data = json.load(f)
     script_data = []
     text_data = []
+    summary_data = []
 
     for item in json_data:
         temp = {
@@ -278,7 +278,13 @@ def history(request, videoo_id):
             'seconds': round(item['start'] % 60)  # 초
         }
         text_data.append(item['text'])
-        # print(item['text'])
+
+        summary_data.append({
+            'minutes': round(minutes),  # 분
+            'seconds': round(seconds),  # 초
+            'text': item['text']
+        })
+
         script_data.append(temp)
 
     result_list = ['aaa', 'Hello', 123]
@@ -293,9 +299,41 @@ def history(request, videoo_id):
 
     # w.close() 를 해줘야 텍스트 파일에 저장됨
     w.write('\n')
-    w.write('마지막에 "abcd"를 작성해줘.')
-
     w.close()
+
+    s = open(f'summary_{real_id}.txt', 'w', encoding='UTF-8')
+
+    for element2 in summary_data:
+        if type(element2) != 'str':
+            element2 = str(element2)
+        s.write(element2 + '\n')
+
+    s.write('\n')
+    # w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+
+    s.write("""
+    'minutes' 는 분, 'seconds' 는 초.
+    들여 쓰기, 단락 구분 보기 좋게 잘 해 주세요.
+    다른 내용 마다 단락 구분 해주세요.
+    내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 소제목 옆 괄호에 몇 분 몇 초 사이의 내용 인지를 적어주세요. 시간은 소제목 옆에만 적어주세요.
+    내용은 시간 순서대로 작성하세요.
+    들여 쓰기하고 내용을 요약해주세요.
+    단락 구분을 잘 해주세요. 들여 쓰기를 잘 해주세요.
+    중요한 내용은 글씨를 굵게 해주세요.
+    
+    짧은 영상(5분 이하)은 영상의 핵심 주제와 가장 중요한 정보를 5문장 이하로 요약해주세요.
+    중간 길이 영상(5-20분)은 영상의 주요 포인트를 20문장 이하로 요약하고, 각 포인트별로 핵심적인 세부 사항을 추가해주세요.
+    긴 영상(20분 이상)은 영상을 여러 주제으로 나누고 각 주제의 핵심 요약을 제공해주세요. 또한 전체적인 주제와 결론을 포함하는 종합 요약을 추가해주세요.
+
+    교육적 내용은 영상에서 다루는 주요 교훈이나 학습 포인트를 강조하여 요약해주세요.
+    엔터테인먼트 내용은 영상의 주요 이벤트, 등장인물, 그리고 주요 전환점을 요약해주세요. 감정적인 반응이나 흥미로운 순간도 강조해주세요.
+    뉴스/시사 내용은 영상에서 다루는 주요 사건, 관련된 인물, 그리고 영향을 요약해주세요. 중요한 날짜나 위치 정보도 포함해주세요.
+    인터뷰 형식은 인터뷰에서 논의된 주요 주제들과 각각에 대한 인터뷰이의 주요 의견을 요약해주세요. 중요한 질문과 그에 대한 답변도 강조해주세요.
+    튜토리얼/가이드 내용은 영상에서 제공하는 주요 지침이나 단계들을 순서대로 요약해주세요. 중요한 팁이나 주의사항도 포함해주세요.
+    리뷰/평가 내용은 제품이나 서비스의 주요 특징, 장단점, 그리고 최종 평가를 요약해주세요. 리뷰어의 개인적인 의견이나 경험도 포함할 수 있습니다.
+    """)
+
+    s.close()
     # print(script_data)
 
     # 유해성 조정
