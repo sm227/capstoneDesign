@@ -553,7 +553,7 @@
         activeTool = 'marker';
         ctx.lineWidth = 8; //형광펜 굵기
         ctx.globalAlpha = markerPenT; //투명도 조절
-        //ctx.globalCompositeOperation = 'source-over';
+        ctx.globalCompositeOperation = 'source-over';
     }
 
     function eraser(){
