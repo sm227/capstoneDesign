@@ -166,6 +166,28 @@
             transform: translateY(10px);
         }
 
+        .eraserAll-btn{
+            position: fixed;
+            display: none;
+            bottom: 206px;
+            right: 28px;
+            background-color: white;
+            color: #196EF7;
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.3s;
+            transform: translateY(10px);
+        }
+
 
         {# 버튼 애니메이션 #}
         .showP{
@@ -436,6 +458,9 @@
 <button class="eraser-btn" onclick="eraser()">
     <img src="{% static 'eraser.png' %}">
 </button>
+<button class="eraserAll-btn" onclick="eraserAll()">
+    <img src="{% static 'bin.png' %}">
+</button>
 
 {# 색 고르는 버튼 #}
 <div id="color-palette" class="palette hidden card p-3">
@@ -460,6 +485,7 @@
         document.querySelector('.pen1-floating-btn').classList.add('hide');
         document.querySelector('.pen2-floating-btn').classList.add('hide');
         document.querySelector('.eraser-btn').classList.add('hide');
+        document.querySelector('.eraserAll-btn').classList.add('hide');
 
         //캔버스를 웹 사이트 전체로 설정
         const canvas = document.getElementById('drawing-canvas');
@@ -475,7 +501,7 @@
         document.addEventListener('keydown', handleKeyDown);
     });
 
-    
+
     //창 크기 변경 될 때 캔버스 사이즈 동기화
     function resizeCanvas() {
         const canvas = document.getElementById('drawing-canvas');
@@ -487,6 +513,7 @@
         var pen1 = document.querySelector('.pen1-floating-btn');
         var pen2 = document.querySelector('.pen2-floating-btn');
         var eraser = document.querySelector('.eraser-btn');
+        var eraserAll = document.querySelector('.eraserAll-btn');
 
         //버튼이 이미 보이는 경우 showP 제거, hide로 숨기기
         //300은 setTimeout() 사용해 300ms 뒤 사라지고, 보임
@@ -497,17 +524,21 @@
             pen2.classList.add('hide');
             eraser.classList.remove('showP');
             eraser.classList.add('hide');
+            eraserAll.classList.remove('showP');
+            eraserAll.classList.add('hide');
 
             setTimeout(() => {
                 pen1.style.display = 'none';
                 pen2.style.display = 'none';
                 eraser.style.display = 'none';
+                eraserAll.style.display = 'none';
             }, 300);
         } else {
             //버튼이 숨겨진 경우 flex로 보이게
             pen1.style.display = 'flex';
             pen2.style.display = 'flex';
             eraser.style.display = 'flex';
+            eraserAll.style.display = 'flex';
 
             setTimeout(() => {
                 pen1.classList.remove('hide');
@@ -516,6 +547,8 @@
                 pen2.classList.add('showP');
                 eraser.classList.remove('hide');
                 eraser.classList.add('showP');
+                eraserAll.classList.remove('hide');
+                eraserAll.classList.add('showP');
             }, 10);
         }
     }
@@ -561,7 +594,14 @@
         ctx.lineWidth = 10;
         ctx.globalAlpha = 1;
         ctx.globalCompositeOperation = 'destination-out'; //기존에 있던 펜 자국 위에 새로운 그림 덮어씌우기
+    }
 
+    //캔버스 전체 지우기
+    function eraserAll(){
+        const canvas = document.getElementById('drawing-canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        ctx.clearRect(0,0, window.width, window.height);
     }
 
     function startDrawing(event) {
