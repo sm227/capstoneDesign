@@ -110,7 +110,7 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            cursor: url(img/pencil.png), auto;
+            cursor: url(img/pencilCur.png), auto;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             opacity: 0;
@@ -132,7 +132,7 @@
             align-items: center;
             justify-content: center;
             font-size: 24px;
-            cursor: url("{% static 'pencil.png' %}"), auto;
+            cursor: url("{% static 'eraserCur.png' %}"), auto;
             z-index: 1000;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             opacity: 0;
@@ -188,6 +188,29 @@
             transform: translateY(10px);
         }
 
+        .slider-hide{
+            display: none;
+        }
+
+        .slider-show{
+            display: block;
+        }
+
+        #eraser-controls {
+          position: absolute;
+          top: 80%;
+          left: 90%;
+          transform: translate(-50%, -50%);
+          background-color: rgba(255, 255, 255, 0.7);
+          padding: 10px;
+          border-radius: 5px;
+          z-index: 1000;
+        }
+        
+        texterea {
+            color: black;
+        }
+
 
         {# 버튼 애니메이션 #}
         .showP{
@@ -210,8 +233,8 @@
         {# 색 고르는 팔레트 사이즈 #}
         #color-palette{
             position: fixed;
-            top: 20px;
-            left: 20px;
+            top: 80%;
+            left: 80%;
             background-color: white;
             padding: 10px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -455,9 +478,18 @@
 <button class="pen2-floating-btn" onclick="markerPen()">
     <img src="{% static 'marker.png' %}">
 </button>
-<button class="eraser-btn" onclick="eraser()">
-    <img src="{% static 'eraser.png' %}">
-</button>
+<div>
+    <button class="eraser-btn" onclick="showEraserSlider()">
+        <img src="{% static 'eraser.png' %}">
+    </button>
+    <div id="eraser-controls" class="mt-3 slider-hide">
+        <texterea>지우개 크기를 조절하세요!!</texterea>
+        <input type="range" id="eraser-size-slider" class="form-range mb-2" min="1" max="50" value="10">
+        <button class="btn btn-primary btn-sm w-100" onclick="saveEraserSize()">확인</button>
+      </div>
+</div>
+
+
 <button class="eraserAll-btn" onclick="eraserAll()">
     <img src="{% static 'bin.png' %}">
 </button>
@@ -479,12 +511,13 @@
     let drawing = false;
     let ctx;
     let activeTool = ''; //현재 그리기 도구
+    let eraserSize = 10; //지우개 크기
 
     document.addEventListener('DOMContentLoaded', function() {
         //웹 페이지 로딩 되었을 때 querySelector안에 있는 클래스를 가진 버튼 안보이게 설정
         document.querySelector('.pen1-floating-btn').classList.add('hide');
         document.querySelector('.pen2-floating-btn').classList.add('hide');
-        document.querySelector('.eraser-btn').classList.add('hide');
+        //document.querySelector('.eraser-btn').classList.add('hide');
         document.querySelector('.eraserAll-btn').classList.add('hide');
 
         //캔버스를 웹 사이트 전체로 설정
@@ -492,13 +525,17 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         ctx = canvas.getContext('2d');
-
         //캔버스 조작
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mousemove', draw);
         window.addEventListener('resize', resizeCanvas);
         document.addEventListener('keydown', handleKeyDown);
+
+        const eraserSlider = document.getElementById('eraser-size-slider');
+        eraserSlider.addEventListener('input', function(){
+            eraserSize = eraserSlider.value;
+        });
     });
 
 
@@ -509,12 +546,36 @@
         canvas.height = window.innerHeight;
     }
 
+    //슬라이더 띄우기
+    function showEraserSlider() {
+        const eraserControls = document.getElementById('eraser-controls');
+        if (eraserControls.classList.contains('slider-hide')) {
+            const eraserSlider = document.getElementById('eraser-size-slider');
+            eraserSize = eraserSlider.value; // 현재 슬라이더 값으로 크기 설정
+            eraserControls.classList.remove('slider-hide');
+            eraserControls.classList.add('slider-show');
+        } else {
+            eraserControls.classList.remove('slider-show');
+            eraserControls.classList.add('slider-hide');
+        }
+    }
+    
+    
+    function saveEraserSize() {
+        const eraserControls = document.getElementById('eraser-controls');
+        eraserControls.classList.remove('slider-show');
+        eraserControls.classList.add('slider-hide');
+        const eraserSlider = document.getElementById('eraser-size-slider');
+        eraserSize = eraserSlider.value; // 확인 버튼을 누를 때마다 현재 슬라이더 값으로 크기 설정
+        eraser(); //설정된 값으로 eraser() 호출
+    }
+    
+
     function penTools() {
         var pen1 = document.querySelector('.pen1-floating-btn');
         var pen2 = document.querySelector('.pen2-floating-btn');
         var eraser = document.querySelector('.eraser-btn');
         var eraserAll = document.querySelector('.eraserAll-btn');
-
         //버튼이 이미 보이는 경우 showP 제거, hide로 숨기기
         //300은 setTimeout() 사용해 300ms 뒤 사라지고, 보임
         if (pen1.classList.contains('showP')) {
@@ -550,6 +611,8 @@
                 eraserAll.classList.remove('hide');
                 eraserAll.classList.add('showP');
             }, 10);
+
+            alert("그리기를 종료하려면 ESC를 눌러주세요!");
         }
     }
 
@@ -574,11 +637,18 @@
     }
 
     function pencil() {
-        pallett(document.querySelector('.pen1-floating-btn'));
+        const style = document.createElement('style');
+        style.textContent = `
+            #drawing-canvas {
+                cursor: url({% static 'pencilCur.png' %}) 0 33, auto;
+            }
+        `;
+        document.head.appendChild(style);
         activeTool = 'pencil';
         ctx.lineWidth = 1;  //연필 굵기
         ctx.globalAlpha = 1; //투명도 적용 x
         ctx.globalCompositeOperation = 'source-over'; //기존에 연필 자국이 있으면 그 위에
+        pallett(document.querySelector('.pen1-floating-btn'));
     }
 
     function markerPen() {
@@ -587,11 +657,12 @@
         ctx.lineWidth = 8; //형광펜 굵기
         ctx.globalAlpha = markerPenT; //투명도 조절
         ctx.globalCompositeOperation = 'source-over';
+
     }
 
     function eraser(){
         activeTool = 'eraser';
-        ctx.lineWidth = 10;
+        ctx.lineWidth = eraserSize;
         ctx.globalAlpha = 1;
         ctx.globalCompositeOperation = 'destination-out'; //기존에 있던 펜 자국 위에 새로운 그림 덮어씌우기
     }
