@@ -336,3 +336,5 @@ $RECYCLE.BIN/
 common/migrations/
 
 *.txt
+
+data/
