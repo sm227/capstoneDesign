@@ -529,6 +529,12 @@
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mousemove', draw);
+        
+        //터치스크린
+        canvas.addEventListener('touchstart', startDrawing);
+        canvas.addEventListener('touchend', stopDrawing);
+        canvas.addEventListener('touchmove', draw);
+        
         window.addEventListener('resize', resizeCanvas);
         document.addEventListener('keydown', handleKeyDown);
 
@@ -679,7 +685,8 @@
         if (activeTool !== '') { //그리기 도구가 활성화 될때만 실행
             drawing = true;
             ctx.beginPath(); //새 그림 만들기
-            ctx.moveTo(event.clientX, event.clientY); //시작점 설정
+            const { clientX, clientY } = event.touches ? event.touches[0] : event;
+            ctx.moveTo(clientX, clientY); //시작점 설정
         }
     }
 
@@ -693,7 +700,8 @@
     function draw(event) {
         if (drawing) {
             ctx.strokeStyle = selectedColor;
-            ctx.lineTo(event.clientX, event.clientY);
+            const { clientX, clientY } = event.touches ? event.touches[0] : event;
+            ctx.lineTo(clientX, clientY);
             ctx.stroke();
         }
     }
