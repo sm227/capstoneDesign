@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def logout_view(request):
     logout(request)
-    return redirect('common:login')
+    return redirect('main_page')
 
 
 # Create your views here.

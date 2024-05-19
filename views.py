@@ -19,20 +19,21 @@ from django.contrib.auth import get_user_model, update_session_auth_hash
 
 
 @csrf_exempt
-@login_required(login_url='common:login')
+# @login_required(login_url='common:login')
 def index(request):
     logging.basicConfig(level=logging.DEBUG)
-
-    recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
+    if request.user.is_authenticated:
+        recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
     # recent_data = Video.objects.order_by('-id')[:3]
 
-    if request.method == 'POST':
-        youtube_link = request.POST.get('youtube_link')
-        full_link = youtube_link.split('/')
-        return render(request, 'index2.html', {'youtube_link': youtube_link, 'full': full_link[2]})
+        if request.method == 'POST':
+            youtube_link = request.POST.get('youtube_link')
+            full_link = youtube_link.split('/')
+            return render(request, 'index2.html', {'youtube_link': youtube_link, 'full': full_link[2]})
 
-    return render(request, 'index.html', {'data': recent_data})
 
+        return render(request, 'index.html', {'data': recent_data})
+    return render(request, 'index.html')
 
 video_pk = 0
 
@@ -203,20 +204,17 @@ def index2(request):
     with open(f'summary_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
-    #txt, json 삭제.
+    # txt, json 삭제.
     os.remove(f'script_{final_link[0]}.txt')
     os.remove(f'script_{final_link[0]}.json')
 
     response = model.generate_content(example)
     # response = model.generate_content("보기 좋게 요약해줘.", example)
-    
 
     # print(response.text)
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
                   {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a})
-
-
 
 
 @login_required(login_url='common:login')
@@ -476,8 +474,6 @@ def my_ajax_view(request):
     # data_list = ['사과', '바나나', '체리']
     global video_pk
 
-
-
     data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
     print(data_list)
     print("ok")
@@ -485,6 +481,7 @@ def my_ajax_view(request):
     # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
+
 
 # def update_password(request, user_id):
 #     User = get_user_model()
