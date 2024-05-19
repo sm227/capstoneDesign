@@ -273,12 +273,15 @@ def history(request, videoo_id):
     summary_data = []
 
     for item in json_data:
+        minutes = item['start'] // 60
+        seconds = item['start'] % 60
+
         temp = {
             'text': item['text'],
             'start': item['start'],
             # round 는 소수점 반올림 함수
-            'minutes': round(item['start'] // 60),  # 분
-            'seconds': round(item['start'] % 60)  # 초
+            'minutes': round(minutes),  # 분
+            'seconds': round(seconds)  # 초
         }
         text_data.append(item['text'])
 
