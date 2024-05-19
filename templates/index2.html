@@ -529,12 +529,12 @@
         canvas.addEventListener('mousedown', startDrawing);
         canvas.addEventListener('mouseup', stopDrawing);
         canvas.addEventListener('mousemove', draw);
-        
+
         //터치스크린
-        canvas.addEventListener('touchstart', startDrawing);
-        canvas.addEventListener('touchend', stopDrawing);
-        canvas.addEventListener('touchmove', draw);
-        
+        canvas.addEventListener('touchstart', startDrawing, {passive:false});
+        canvas.addEventListener('touchend', stopDrawing, {passive:false});
+        canvas.addEventListener('touchmove', draw, {passive:false});
+
         window.addEventListener('resize', resizeCanvas);
         document.addEventListener('keydown', handleKeyDown);
 
@@ -683,6 +683,7 @@
 
     function startDrawing(event) {
         if (activeTool !== '') { //그리기 도구가 활성화 될때만 실행
+            event.preventDefault();
             drawing = true;
             ctx.beginPath(); //새 그림 만들기
             const { clientX, clientY } = event.touches ? event.touches[0] : event;
@@ -691,6 +692,7 @@
     }
 
     function stopDrawing() {
+        event.preventDefault();
         if (drawing) {
             drawing = false;
             ctx.closePath();
@@ -699,6 +701,7 @@
 
     function draw(event) {
         if (drawing) {
+            event.preventDefault();
             ctx.strokeStyle = selectedColor;
             const { clientX, clientY } = event.touches ? event.touches[0] : event;
             ctx.lineTo(clientX, clientY);
