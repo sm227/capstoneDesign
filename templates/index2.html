@@ -701,6 +701,8 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         ctx.clearRect(0,0, window.width, window.height);
+        
+        stopDrawingMode();
     }
 
     function startDrawing(event) {
