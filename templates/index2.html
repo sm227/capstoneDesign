@@ -573,6 +573,15 @@
         eraserControls.classList.add('slider-hide');
         const eraserSlider = document.getElementById('eraser-size-slider');
         eraserSize = eraserSlider.value; // 확인 버튼을 누를 때마다 현재 슬라이더 값으로 크기 설정
+        
+        const style = document.createElement('style');
+        style.textContent = `
+            #drawing-canvas {
+                cursor: url({% static 'eraserCur.png' %}) 0 33, auto;
+            }
+        `;
+        document.head.appendChild(style);
+        
         eraser(); //설정된 값으로 eraser() 호출
     }
     
@@ -658,12 +667,18 @@
     }
 
     function markerPen() {
-        pallett(document.querySelector('.pen2-floating-btn'));
+        const style = document.createElement('style');
+        style.textContent = `
+            #drawing-canvas {
+                cursor: url({% static 'markerCur.png' %}) 0 33, auto;
+            }
+        `;
+        document.head.appendChild(style);
         activeTool = 'marker';
         ctx.lineWidth = 8; //형광펜 굵기
         ctx.globalAlpha = markerPenT; //투명도 조절
         ctx.globalCompositeOperation = 'source-over';
-
+        pallett(document.querySelector('.pen2-floating-btn'));
     }
 
     function eraser(){
@@ -675,6 +690,13 @@
 
     //캔버스 전체 지우기
     function eraserAll(){
+        const style = document.createElement('style');
+        style.textContent = `
+            #drawing-canvas {
+                cursor: auto;
+            }
+        `;
+        document.head.appendChild(style);
         const canvas = document.getElementById('drawing-canvas');
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
