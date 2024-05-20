@@ -21,7 +21,7 @@
     display: inline-block;
     width: 300px;
     height: 360px;
-/*{#background-color: #ffffff;#} */
+    fill: white;
     border-radius: 10px;
     margin-right: 10px;
     overflow: hidden; /* 넘치는 부분을 숨김 */
