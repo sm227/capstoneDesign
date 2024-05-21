@@ -277,66 +277,6 @@
 
 <script>
 
-    
-
-    // 2. This code loads the IFrame Player API code asynchronously.
-
-    var tag = document.createElement('script');
-
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-    // 3. This function creates an <iframe> (and YouTube player)
-    //    after the API code downloads.
-    var player;
-
-    function onYouTubeIframeAPIReady() {
-        player = new YT.Player('player', {
-            height: '360',
-            width: '100%',
-            videoId: '{{ youtube_link }}',
-            events: {
-                'onReady': onPlayerReady,
-            },
-
-        });
-    }
-
-    var num = 0;
-
-    function setNum(num) {
-        this.num = num;
-        onPlayerReady()
-    }
-
-    // 4. The API will call this function when the video player is ready.
-    function onPlayerReady(event) {
-        //event.target.seekTo(20 , true)
-    }
-
-
-    function moveTime(time) {
-        if (player) {
-            player.seekTo(parseFloat(time), true);
-        }
-    }
-
-
-
-    function getCurrentTime() {
-        if (player && player.getPlayerState() === YT.PlayerState.PLAYING) {
-            return player.getCurrentTime();
-        }
-        return 0;
-    }
-
-
-    // 5. The API calls this function when the player's state changes.
-    //    The function indicates that when playing a video (state=1),
-    //    the player should play for six seconds and then stop.
-    var done = false;
-
     document.addEventListener("DOMContentLoaded", function () {
         const addMemoButton = document.getElementById("add-memo"); // id가 "add-memo"인 요소를 찾아 'addMomoButton'에 할당 <<-- 메모 추가 버튼
         const memoListLink = document.querySelector('.nav-tabs .nav-item:nth-child(2) .nav-link'); // 메모 보기 탭 보기
@@ -558,11 +498,13 @@
     });
 });
 
-    
+// 캔버스 사진 변수로 js파일에 넘겨줌
 const pencilCursorUrl = '/static/pencilCur.png';
 const eraserCursorUrl = '/static/eraserCur.png';
 const markerCursorUrl = '/static/markerCur.png';
 
+// 유튜브 링크 받은 거 js파일에 넘겨줌
+var youtubeLink = "{{ youtube_link }}";
 
 
 
@@ -610,6 +552,8 @@ const markerCursorUrl = '/static/markerCur.png';
 </script>
 
 <script src="{% static 'js/canvas.js' %}"></script>
+
+<script src="{% static 'js/youtube.js' %}"></script>
 
 </body>
 
