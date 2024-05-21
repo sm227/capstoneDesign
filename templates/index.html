@@ -87,15 +87,15 @@
 
 
 <div class="container mt-5">
-    <div class="card-container">
-        {% if data and user.is_authenticated %}
-            <h2>최근 기록 <i class="bi bi-clock-history"></i></h2>
+    {% if data and user.is_authenticated %}
+        <h2>최근 기록 <i class="bi bi-clock-history"></i></h2>
+        <div class="card-container">
             {% for item in data %}
                 <div class="card">
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
-                    <div class="ms-2 me-2 mt-2 container text-wrap">
+                    <div class="ms-1 me-2 mt-2 container text-wrap">
                         {#                        {{ item.text }}#}
-                        <a href="{% url 'history'  item.id %}" id="history-url">{{ item.text }}</a> {# 눌리는 부분 #}
+                        <a href="{% url 'history'  item.id %}" id="history-url" class="text-white" style="text-decoration-line: none">{{ item.text }}</a> {# 눌리는 부분 #}
                     </div>
                     <button class="dbtn" onclick="deleteHistory({{ item.id }})">
                         <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg"
@@ -108,9 +108,9 @@
                 </div>
 
             {% endfor %}
-        {% endif %}
+        </div>
+    {% endif %}
 
-    </div>
 </div>
 
 {% if not user.is_authenticated %}
@@ -203,7 +203,7 @@
 {% endif %}
 
 {#</div>#}
-<p class="text-center fs-3 fw-light col-lg-12  mt-5">전 세계의 모든 영상을 요약해 보세요 &#128171;</p>
+<p class="text-center  fs-3  col-lg-12  mt-5">전 세계의 모든 영상을 요약해 보세요 &#128171;</p>
 <div class="container d-flex justify-content-center align-items-center mb-5 mt-5">
     <div class="row">
 
