@@ -37,6 +37,42 @@ def index(request):
 
 video_pk = 0
 
+def video_prompt(real_id, summary_data):
+    s = open(f'summary_{real_id}.txt', 'w', encoding='UTF-8')
+
+    for element2 in summary_data:
+        if type(element2) != 'str':
+            element2 = str(element2)
+        s.write(element2 + '\n')
+
+    s.write('\n')
+    # w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
+
+    s.write("""
+        'minutes' 는 분, 'seconds' 는 초.
+        들여 쓰기, 단락 구분 보기 좋게 잘 해 주세요.
+        다른 내용 마다 단락 구분 해주세요.
+        내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 소제목 옆 괄호에 몇 분 몇 초 사이의 내용 인지를 적어주세요. 시간은 소제목 옆에만 적어주세요.
+        내용은 시간 순서대로 작성하세요.
+        들여 쓰기하고 내용을 요약해주세요.
+        단락 구분을 잘 해주세요. 들여 쓰기를 잘 해주세요.
+        중요한 내용은 글씨를 굵게 해주세요.
+
+        짧은 영상(5분 이하)은 영상의 핵심 주제와 가장 중요한 정보를 5문장 이하로 요약해주세요.
+        중간 길이 영상(5-20분)은 영상의 주요 포인트를 20문장 이하로 요약하고, 각 포인트별로 핵심적인 세부 사항을 추가해주세요.
+        긴 영상(20분 이상)은 영상을 여러 주제으로 나누고 각 주제의 핵심 요약을 제공해주세요. 또한 전체적인 주제와 결론을 포함하는 종합 요약을 추가해주세요.
+
+        각 주제에 어울리는 이모티콘을 하나씩 추가해주세요.ㅑㅜㅇ
+
+        교육적 내용은 영상에서 다루는 주요 교훈이나 학습 포인트를 강조하여 요약해주세요.
+        엔터테인먼트 내용은 영상의 주요 이벤트, 등장인물, 그리고 주요 전환점을 요약해주세요. 감정적인 반응이나 흥미로운 순간도 강조해주세요.
+        뉴스/시사 내용은 영상에서 다루는 주요 사건, 관련된 인물, 그리고 영향을 요약해주세요. 중요한 날짜나 위치 정보도 포함해주세요.
+        인터뷰 형식은 인터뷰에서 논의된 주요 주제들과 각각에 대한 인터뷰이의 주요 의견을 요약해주세요. 중요한 질문과 그에 대한 답변도 강조해주세요.
+        튜토리얼/가이드 내용은 영상에서 제공하는 주요 지침이나 단계들을 순서대로 요약해주세요. 중요한 팁이나 주의사항도 포함해주세요.
+        리뷰/평가 내용은 제품이나 서비스의 주요 특징, 장단점, 그리고 최종 평가를 요약해주세요. 리뷰어의 개인적인 의견이나 경험도 포함할 수 있습니다.
+        """)
+
+    s.close()
 
 @login_required(login_url='common:login')
 def index2(request):
@@ -116,7 +152,6 @@ def index2(request):
             'text': item['text']
         })
 
-        # print(item['text'])
         script_data.append(temp)
 
     result_list = ['aaa', 'Hello', 123]
@@ -140,36 +175,7 @@ def index2(request):
             element2 = str(element2)
         s.write(element2 + '\n')
 
-    s.write('\n')
-    # w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
-
-    s.write("""
-    'minutes' 는 분, 'seconds' 는 초.
-    들여 쓰기, 단락 구분 보기 좋게 잘 해 주세요.
-    다른 내용 마다 단락 구분 해주세요.
-    내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 소제목 옆 괄호에 몇 분 몇 초 사이의 내용 인지를 적어주세요. 시간은 소제목 옆에만 적어주세요.
-    내용은 시간 순서대로 작성하세요.
-    들여 쓰기하고 내용을 요약해주세요.
-    단락 구분을 잘 해주세요. 들여 쓰기를 잘 해주세요.
-    중요한 내용은 글씨를 굵게 해주세요.
-
-    짧은 영상(5분 이하)은 영상의 핵심 주제와 가장 중요한 정보를 5문장 이하로 요약해주세요.
-    중간 길이 영상(5-20분)은 영상의 주요 포인트를 20문장 이하로 요약하고, 각 포인트별로 핵심적인 세부 사항을 추가해주세요.
-    긴 영상(20분 이상)은 영상을 여러 주제으로 나누고 각 주제의 핵심 요약을 제공해주세요. 또한 전체적인 주제와 결론을 포함하는 종합 요약을 추가해주세요.
-    
-    각 주제에 어울리는 이모티콘을 하나씩 추가해주세요.ㅑㅜㅇ
-
-    교육적 내용은 영상에서 다루는 주요 교훈이나 학습 포인트를 강조하여 요약해주세요.
-    엔터테인먼트 내용은 영상의 주요 이벤트, 등장인물, 그리고 주요 전환점을 요약해주세요. 감정적인 반응이나 흥미로운 순간도 강조해주세요.
-    뉴스/시사 내용은 영상에서 다루는 주요 사건, 관련된 인물, 그리고 영향을 요약해주세요. 중요한 날짜나 위치 정보도 포함해주세요.
-    인터뷰 형식은 인터뷰에서 논의된 주요 주제들과 각각에 대한 인터뷰이의 주요 의견을 요약해주세요. 중요한 질문과 그에 대한 답변도 강조해주세요.
-    튜토리얼/가이드 내용은 영상에서 제공하는 주요 지침이나 단계들을 순서대로 요약해주세요. 중요한 팁이나 주의사항도 포함해주세요.
-    리뷰/평가 내용은 제품이나 서비스의 주요 특징, 장단점, 그리고 최종 평가를 요약해주세요. 리뷰어의 개인적인 의견이나 경험도 포함할 수 있습니다.
-    """)
-
-    s.close()
-
-    # print(script_data)
+    video_prompt(real_id, script_data)
 
     # 유해성 조정
     safety_settings = [
@@ -211,9 +217,7 @@ def index2(request):
     os.remove(f'script_{final_link[0]}.json')
 
     response = model.generate_content(example)
-    # response = model.generate_content("보기 좋게 요약해줘.", example)
 
-    # print(response.text)
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
                   {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a})
@@ -226,8 +230,6 @@ def history(request, videoo_id):
     temp = Video.objects.get(id=videoo_id)
     real_id = temp.video_key
 
-    # print(youtube_id[1])
-    # print(youtube_id[1])
     api.download_script_json(real_id)
 
     user_id = request.user.id
@@ -309,42 +311,7 @@ def history(request, videoo_id):
     w.write('\n')
     w.close()
 
-    s = open(f'summary_{real_id}.txt', 'w', encoding='UTF-8')
-
-    for element2 in summary_data:
-        if type(element2) != 'str':
-            element2 = str(element2)
-        s.write(element2 + '\n')
-
-    s.write('\n')
-    # w.write('위 내용을 소제목과 내용으로 간단하게 요약해서 마크다운으로 작성해줘')
-
-    s.write("""
-    'minutes' 는 분, 'seconds' 는 초.
-    들여 쓰기, 단락 구분 보기 좋게 잘 해 주세요.
-    다른 내용 마다 단락 구분 해주세요.
-    내용을 주제 별로 나눠서 소제목을 적어주세요. 그리고 소제목 옆 괄호에 몇 분 몇 초 사이의 내용 인지를 적어주세요. 시간은 소제목 옆에만 적어주세요.
-    내용은 시간 순서대로 작성하세요.
-    들여 쓰기하고 내용을 요약해주세요.
-    단락 구분을 잘 해주세요. 들여 쓰기를 잘 해주세요.
-    중요한 내용은 글씨를 굵게 해주세요.
-    
-    짧은 영상(5분 이하)은 영상의 핵심 주제와 가장 중요한 정보를 5문장 이하로 요약해주세요.
-    중간 길이 영상(5-20분)은 영상의 주요 포인트를 20문장 이하로 요약하고, 각 포인트별로 핵심적인 세부 사항을 추가해주세요.
-    긴 영상(20분 이상)은 영상을 여러 주제으로 나누고 각 주제의 핵심 요약을 제공해주세요. 또한 전체적인 주제와 결론을 포함하는 종합 요약을 추가해주세요.
-    
-    각 주제에 어울리는 이모티콘을 하나씩 추가해주세요.
-
-    교육적 내용은 영상에서 다루는 주요 교훈이나 학습 포인트를 강조하여 요약해주세요.
-    엔터테인먼트 내용은 영상의 주요 이벤트, 등장인물, 그리고 주요 전환점을 요약해주세요. 감정적인 반응이나 흥미로운 순간도 강조해주세요.
-    뉴스/시사 내용은 영상에서 다루는 주요 사건, 관련된 인물, 그리고 영향을 요약해주세요. 중요한 날짜나 위치 정보도 포함해주세요.
-    인터뷰 형식은 인터뷰에서 논의된 주요 주제들과 각각에 대한 인터뷰이의 주요 의견을 요약해주세요. 중요한 질문과 그에 대한 답변도 강조해주세요.
-    튜토리얼/가이드 내용은 영상에서 제공하는 주요 지침이나 단계들을 순서대로 요약해주세요. 중요한 팁이나 주의사항도 포함해주세요.
-    리뷰/평가 내용은 제품이나 서비스의 주요 특징, 장단점, 그리고 최종 평가를 요약해주세요. 리뷰어의 개인적인 의견이나 경험도 포함할 수 있습니다.
-    """)
-
-    s.close()
-    # print(script_data)
+    video_prompt(real_id, script_data)
 
     # 유해성 조정
     safety_settings = [
@@ -381,9 +348,7 @@ def history(request, videoo_id):
         example = f.read()
 
     response = model.generate_content(example)
-    # response = model.generate_content("보기 좋게 요약해줘.", example)
 
-    # print(response.text)
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
                   {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a})
