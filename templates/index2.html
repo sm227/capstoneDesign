@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 
     {% load django_bootstrap5 %}
-    {#    {% bootstrap_css %}#}
+
     {% bootstrap_javascript %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/index2.css' %}">
@@ -30,58 +30,7 @@
 <body>
 {% include "navbar.html" %}
 {% load markdownify %}
-
-<!-- 메모 추가 모달
-위치 옮기면 안돼요ㅠㅠㅠㅠㅠㅠㅠㅠ -->
-<div class="modal fade" id="memoModal" tabindex="-1" aria-labelledby="memoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="memoModalLabel">알림</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>메모가 추가되었습니다</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">닫기</button>
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div class="modal fade" id="editMemoModal" tabindex="-1" aria-labelledby="editMemoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editMemoModalLabel">메모 수정</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <textarea id="editMemoText" class="form-control" rows="3"></textarea>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-        <button type="button" id="saveEditedMemo" class="btn btn-primary">저장</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="editMemoCompleteModal" tabindex="-1" aria-labelledby="editMemoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content text-center">
-      <div class="modal-header">
-        <h5 class="modal-title" id="editMemoModalLabel">메모 수정 완료!</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-footer">
-        <button id="editMemoComleteBtn" class="btn btn-primary mt-2" type="button">확인</button>
-      </div>
-    </div>
-  </div>
-</div>
+{% include "memo_modal.html" %}
 
 
 <div class="container ">
@@ -108,7 +57,7 @@
                         </li>
                     </ul>
                 </div>
-                {#                {% include "memo.html" %}#}
+  
                 <div class="card-body">
                     <form method="post" action="{% url 'memo' %}">
                         {% csrf_token %}
@@ -116,54 +65,25 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="memo-tab">
                                 <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
-                                {#                                <button  class="btn btn-primary mt-2" type="submit">메모 추가</button>#}
+                                
                                 <button class="btn btn-primary mt-2" data-bs-toggle="modal"
                                         data-bs-target="#memoModal" type="submit" id="add-memo">메모 추가
                                 </button>
                             </div>
-                            <div class="tab-pane fade" id="memo-list-tab">
-                                <!--메모 리스트-->
-                                <div id="memo-list">
-                                    <ul id="dataList"></ul>
-                                </div>
-                                <nav aria-label="Page navigation example" class="mt-3 text-center">
-                                    <ul id="pagination" class="pagination justify-content-center pagination-sm">
-                                        <!-- 이전 페이지 링크 -->
-                                        {% if memo_list.has_previous %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?page={{ memo_list.previous_page_number }}" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
-                                                </a>
-                                            </li>
-                                        {% endif %}
-
-                                        <!-- 페이지 번호 링크 -->
-                                        {% for page_num in memo_list.paginator.page_range %}
-                                            {% if page_num == memo_list.number %}
-                                                <li class="page-item active" aria-current="page">
-                                                    <span class="page-link">{{ page_num }}</span>
-                                                </li>
-                                            {% else %}
-                                                <li class="page-item">
-                                                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
-                                                </li>
-                                            {% endif %}
-                                        {% endfor %}
-
-                                        <!-- 다음 페이지 링크 -->
-                                        {% if memo_list.has_next %}
-                                            <li class="page-item">
-                                                <a class="page-link" href="?page={{ memo_list.next_page_number }}" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
-                                                </a>
-                                            </li>
-                                        {% endif %}
-                                    </ul>
-                                </nav>
-                            </div>
                         </div>
                     </form>
                 </div>
+                
+                <div class="card-body">
+                    <div class="tab-pane fade" id="memo-list-tab">
+                        <!--메모 리스트-->
+                        <div id="memo-list">
+                            <ul id="dataList"></ul>
+                        </div>
+
+                    </div>
+                </div>
+                
             </div>
         </div>
         <div class="col-md-6">
@@ -303,11 +223,11 @@ var youtubeLink = "{{ youtube_link }}";
         let theme = $('html').attr("data-bs-theme");
         // 현재 모드와 반대되는 모드로 설정
         if (theme == 'dark') {
-            {#$('html').attr("data-bs-theme", "light");#}
+            $('html').attr("data-bs-theme", "light");
             $('#mode-icon').attr("class", "bi-moon-stars")
 
         } else {
-            {#$('html').attr("data-bs-theme", "dark");#}
+            $('html').attr("data-bs-theme", "dark");
             $('#mode-icon').attr("class", "bi-sun")
 
         }
@@ -332,6 +252,8 @@ var youtubeLink = "{{ youtube_link }}";
 <script src="{% static 'js/youtube.js' %}"></script>
 
 <script src="{% static 'js/memo.js' %}"></script>
+
+{#<script src="{% static 'js/my_theme.js' %}"></script>#}
 
 </body>
 

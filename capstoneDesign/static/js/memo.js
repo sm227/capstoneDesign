@@ -98,22 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
                                     </div>
                                 </div>
                                 <div class="col-3">
-                                    <p></p>
-                                    <p></p>
                                     <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
                                     <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
                                 </div>
                             </div>
-                            <!--<div class="d-flex justify-content-between align-items-end">
-                                <div>
-                                    <div class="fw-bold text-sm" style="font-size: 10px;">${item.id}</div>
-                                    <div>${item.text}</div>
-                                </div>
-                                <div>
-                                    <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
-                                    <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
-                                </div>
-                            </div>-->
+                            
                         `;
                         $('#memo-list').append(memoItem); // 목록 그룹에 append
                     }
