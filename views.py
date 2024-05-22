@@ -17,6 +17,8 @@ from googleapiclient.discovery import build
 from django.contrib.auth.forms import PasswordChangeForm, SetPasswordForm
 from django.contrib.auth import get_user_model, update_session_auth_hash
 
+from django.conf import settings
+
 
 @csrf_exempt
 # @login_required(login_url='common:login')
@@ -82,8 +84,6 @@ def index2(request):
     print(full_link)
     final_link = full_link[3].split('?')
     real_id = final_link[0]
-    # print(youtube_id[1])
-    # print(youtube_id[1])
     print(final_link)
     print(final_link)
     api.download_script_json(final_link[0])
@@ -91,12 +91,13 @@ def index2(request):
     user_id = request.user.id
     # --------
     # API 키와 API 버전 지정
-    api_key = 'AIzaSyB1ZzrTmFpdSNc2gHmF9n9S11A4vgHrKbc'
+    # 유튜브 api key 로컬 환경 변수에 넣어야 함.
+    youtube_api_key = settings.YOUTUBE_API_KEY
     api_service_name = 'youtube'
     api_version = 'v3'
 
     # YouTube API 클라이언트 생성
-    youtube = build(api_service_name, api_version, developerKey=api_key)
+    youtube = build(api_service_name, api_version, developerKey=youtube_api_key)
 
     # 동영상 ID 지정
     video_id = real_id
@@ -235,12 +236,12 @@ def history(request, videoo_id):
     user_id = request.user.id
     # --------
     # API 키와 API 버전 지정
-    api_key = 'AIzaSyB1ZzrTmFpdSNc2gHmF9n9S11A4vgHrKbc'
+    youtube_api_key = settings.YOUTUBE_API_KEY
     api_service_name = 'youtube'
     api_version = 'v3'
 
     # YouTube API 클라이언트 생성
-    youtube = build(api_service_name, api_version, developerKey=api_key)
+    youtube = build(api_service_name, api_version, developerKey=youtube_api_key);
 
     # 동영상 ID 지정
     video_id = real_id
