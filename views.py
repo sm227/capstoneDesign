@@ -441,7 +441,8 @@ def edit_memo(request):
         return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
 
-def my_ajax_view(request):
+#memo 보기 탭
+def list_memo(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
     global video_pk

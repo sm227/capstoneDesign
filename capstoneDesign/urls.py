@@ -40,11 +40,11 @@ urlpatterns = [
     path('index2', views.index, name='index_page'),
     path('sign_up/', views.sign_up, name='sign_up_page'),
     path('sign_up_complete/', views.sign_up_complete, ),
-    path('memo/', views.add_memo, name='memo'),
+    path('add-memo/', views.add_memo, name='add_memo'),
     path('delete-memo/', views.delete_memo, name='delete_memo'),
     # path('memo2/', views.add_memo, name='memo'),
     # path('ajax_method/', views.add_memo, name='ajax_method'),
-    path('my-ajax-url/', views.my_ajax_view, name='my_ajax_url'),
+    path('list-memo/', views.list_memo, name='list_memo'), #메모 보기 탭
     # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
     path('edit-memo/', views.edit_memo, name='edit_memo'),
     path('index/', views.index, name='index'),

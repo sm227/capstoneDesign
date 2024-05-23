@@ -1,3 +1,26 @@
+$(document).ready(function() {
+    $('#add-memo-form').submit(function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        // Get the form data
+        var formData = $(this).serialize();
+
+        // Send AJAX request
+        $.ajax({
+            type: 'POST',
+            url: '/add-memo/',
+            data: formData,
+            success: function(response) {
+                console.log("Success");
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle error
+                console.log(xhr.status + ": " + xhr.responseText);
+            }
+        });
+    });
+});
+
 document.addEventListener("DOMContentLoaded", function () {
         const addMemoButton = document.getElementById("add-memo"); // id가 "add-memo"인 요소를 찾아 'addMomoButton'에 할당 <<-- 메모 추가 버튼
         const memoListLink = document.querySelector('.nav-tabs .nav-item:nth-child(2) .nav-link'); // 메모 보기 탭 보기
@@ -70,9 +93,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     //메모 보기 탭
     $(document).ready(function () {
-        $("#loadData").click(function () {
+        $("#loadMemo").click(function () {
             $.ajax({
-                url: '/my-ajax-url/', // 요청을 보낼 서버의 URL
+                url: '/list-memo/', // 요청을 보낼 서버의 URL
                 type: 'get', // HTTP 메소드
                 dataType: 'json', // 응답 데이터 타입
                 success: function (response) {

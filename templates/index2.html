@@ -50,7 +50,7 @@
                             <a class="nav-link active" aria-current="true" href="#memo-tab" data-bs-toggle="tab">메모</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="loadData" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
+                            <a class="nav-link" id="loadMemo" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -59,7 +59,7 @@
                 </div>
   
                 <div class="card-body">
-                    <form method="post" action="{% url 'memo' %}">
+                    <form id="add-memo-form">
                         {% csrf_token %}
                         <!--메모 입력-->
                         <div class="tab-content">
@@ -99,12 +99,8 @@
                              data-bs-parent="#scriptText">
                             <div class="accordion-body p-md-2-">
                                 <div class="summary-scroll">
-                                    {#                                    <strong>요약내용</strong>#}
-                                    {#                                    {% for i in data %}#}
                                     {{ script|markdownify }}
-                                    {#                                       {% autoescape off %} {{ script }} {% endautoescape %}#}
                                     <br>
-                                    {#                                    {% endfor %}#}
                                 </div>
                             </div>
                         </div>
@@ -204,6 +200,8 @@ const markerCursorUrl = '/static/markerCur.png';
 
 // 유튜브 링크 받은 거 js파일에 넘겨줌
 var youtubeLink = "{{ youtube_link }}";
+
+
 
 </script>
 
