@@ -40,7 +40,7 @@ urlpatterns = [
     path('index2', views.index, name='index_page'),
     path('sign_up/', views.sign_up, name='sign_up_page'),
     path('sign_up_complete/', views.sign_up_complete, ),
-    path('add-memo/', views.add_memo, name='add_memo'),
+    path('add-memo/<str:video_key>/', views.add_memo, name='add_memo'),
     path('delete-memo/', views.delete_memo, name='delete_memo'),
     # path('memo2/', views.add_memo, name='memo'),
     # path('ajax_method/', views.add_memo, name='ajax_method'),
@@ -49,8 +49,8 @@ urlpatterns = [
     path('edit-memo/', views.edit_memo, name='edit_memo'),
     path('index/', views.index, name='index'),
     path('<int:user_id>/password/', views.update_password, name='update_password'),
-    path('history/<int:videoo_id>/', views.history,name='history'),
-    path('delete_history/<int:videoo_id>/', views.delete_history,name='delete_history'),
+    path('history/<int:video_pk>/', views.history,name='history'),
+    path('delete_history/<int:video_pk>/', views.delete_history,name='delete_history'),
 
 ]
 

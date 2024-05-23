@@ -4,11 +4,15 @@ $(document).ready(function() {
 
         // Get the form data
         var formData = $(this).serialize();
+        var videoId = $('#add-memo-form [name="video_id"]').val()
 
+        var url = '/add-memo/' + encodeURIComponent(videoId) + '/'
+
+        console.log(videoId)
         // Send AJAX request
         $.ajax({
             type: 'POST',
-            url: '/add-memo/',
+            url: url,
             data: formData,
             success: function(response) {
                 console.log("Success");

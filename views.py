@@ -26,7 +26,6 @@ def index(request):
     logging.basicConfig(level=logging.DEBUG)
     if request.user.is_authenticated:
         recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
-    # recent_data = Video.objects.order_by('-id')[:3]
 
         if request.method == 'POST':
             youtube_link = request.POST.get('youtube_link')
@@ -37,7 +36,7 @@ def index(request):
         return render(request, 'index.html', {'data': recent_data})
     return render(request, 'index.html')
 
-video_pk = 0
+
 
 def video_prompt(real_id, summary_data):
     s = open(f'summary_{real_id}.txt', 'w', encoding='UTF-8')
@@ -81,14 +80,12 @@ def index2(request):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
     youtube_link = request.GET.get('youtube_link')
     full_link = youtube_link.split('/')
-    print(full_link)
     final_link = full_link[3].split('?')
     real_id = final_link[0]
-    print(final_link)
-    print(final_link)
     api.download_script_json(final_link[0])
 
     user_id = request.user.id
+
     # --------
     # API 키와 API 버전 지정
     # 유튜브 api key 로컬 환경 변수에 넣어야 함.
@@ -117,14 +114,12 @@ def index2(request):
 
     # --------------
 
-    user = get_object_or_404(authUser, id=user_id)
-    link = Video(user=user, text=video_title, thumbnail=video_thumbnail, video_key=real_id)
-    link.save()
-    global video_pk
-    video_pk = link.id
-    print(f"현재 동영상의 id : {video_pk}")
-    print(type(video_pk))
-    print("ok")
+    video = Video.objects.create(
+        user=request.user,
+        text=video_title,
+        thumbnail=video_thumbnail,
+        video_key=real_id
+    )
 
     # link.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
 
@@ -214,14 +209,14 @@ def index2(request):
 
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
-                  {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a})
+                  {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a, 'video_id':video.video_key})
 
 
 @login_required(login_url='common:login')
-def history(request, videoo_id):
+def history(request, video_pk):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
 
-    temp = Video.objects.get(id=videoo_id)
+    temp = Video.objects.get(id=video_pk)
     real_id = temp.video_key
 
     api.download_script_json(real_id)
@@ -255,12 +250,6 @@ def history(request, videoo_id):
     # --------------
 
     user = get_object_or_404(authUser, id=user_id)
-
-    global video_pk
-    video_pk = videoo_id
-    print(f"현재 동영상의 id : {video_pk}")
-    print(type(video_pk))
-    print("ok")
 
     # link.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
 
@@ -350,27 +339,18 @@ def history(request, videoo_id):
 
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
-                  {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a})
+                  {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a, 'video_id':video_id})
 
 
 
-def delete_history(request, videoo_id):
-    global video_pk
-    video_pk = videoo_id
-
-    data = Video.objects.get(id=videoo_id)
-    data.delete()
+def delete_history(request, video_pk):
+    video = Video.objects.get(id=video_pk)
+    video.delete()
 
     recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
-    # recent_data = Video.objects.order_by('-id')[:3]
 
     return redirect('main_page')
-    # if request.method == 'POST':
-    #     youtube_link = request.POST.get('youtube_link')
-    #     full_link = youtube_link.split('/')
-    #     return render(request, 'index2.html', {'youtube_link': youtube_link, 'full': full_link[2]})
-    #
-    # return render(request, 'index.html', {'data': recent_data})
+
 
 
 @login_required(login_url='common:login')
@@ -386,12 +366,26 @@ def sign_up_complete(request):
     return redirect('common:login')
 
 
-def add_memo(request):
-    if request.method == 'POST':
-        global video_pk
+def add_memo(request, video_key):
+    if request.method == "POST":
+        text = request.POST.get('text')
+        video = Video.objects.get(video_key=video_key, user=request.user)
+
+        Memo.objects.create(video=video, text=text, user=request.user)
+
+        return render(request, 'memo.html')
+    else:
+        return JsonResponse({'error': 'Bad requst'}, status=400)
+
+
+
+
+
+
+
         text = request.POST.get('text')
 
-        memo = Memo.objects.create(text=text, user=request.user, video_id=video_pk)
+
 
         return render(request, 'memo.html')
     return JsonResponse({'error': 'Bad request,'}, status=400)
@@ -423,15 +417,15 @@ def delete_memo(request):
 
 def edit_memo(request):
     if request.method == "POST":
-        global video_pk
+
         memo_id = request.POST.get('memo_id')
         edited_text = request.POST.get('text')
 
         try:
-            memo = Memo.objects.get(id=memo_id, video_id=video_pk)
+            memo = Memo.objects.get(id=memo_id)
             memo.text = edited_text
             memo.save()
-            data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
+            data_list = Memo.objects.filter(user=request.user).values('id', 'text').order_by('id')
             return JsonResponse({'items': list(data_list)})
         except Memo.DoesNotExist:
             return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
@@ -445,7 +439,8 @@ def edit_memo(request):
 def list_memo(request):
     # 예제 데이터 리스트
     # data_list = ['사과', '바나나', '체리']
-    global video_pk
+    video = Video.objects.filter(user=request.user)
+    video_pk = video.id
 
     data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
     print(data_list)
@@ -456,21 +451,6 @@ def list_memo(request):
     return JsonResponse({'items': list(data_list)})
 
 
-# def update_password(request, user_id):
-#     User = get_user_model()
-#     user = User.objects.get(pk=user_id)
-#
-#     if request.method == "POST":
-#         form = SetPasswordForm(user, request.POST)
-#         if form.is_valid():
-#             form.save()
-#             update_session_auth_hash(request, user)
-#             return redirect('common:login')
-#     else:
-#         form = SetPasswordForm(user)
-#
-#     context = {'form': form}
-#     return render(request, 'update_password.html', context)
 
 def update_password(request, user_id):
     User = get_user_model()

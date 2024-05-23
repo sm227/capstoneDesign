@@ -65,7 +65,8 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="memo-tab">
                                 <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
-                                
+                                <div>video id is {{ video_id }}</div>
+                                <input type="hidden" name="video_id" value="{{ video_id }}">
                                 <button class="btn btn-primary mt-2" data-bs-toggle="modal"
                                         data-bs-target="#memoModal" type="submit" id="add-memo">메모 추가
                                 </button>
