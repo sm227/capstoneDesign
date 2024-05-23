@@ -19,6 +19,8 @@ from django.contrib.auth import get_user_model, update_session_auth_hash
 
 from django.conf import settings
 
+from django.utils import timezone
+
 
 @csrf_exempt
 # @login_required(login_url='common:login')
@@ -117,9 +119,13 @@ def index2(request):
 
     # --------------
 
+    # DB에 저장
+    user_id = request.user.id
     user = get_object_or_404(authUser, id=user_id)
-    link = Video(user=user, text=video_title, thumbnail=video_thumbnail, video_key=real_id)
+    current_date = timezone.now()
+    link = Video(user=user, text=video_title, thumbnail=video_thumbnail, video_key=real_id, date=current_date)
     link.save()
+
     global video_pk
     video_pk = link.id
     print(f"현재 동영상의 id : {video_pk}")
@@ -486,3 +492,5 @@ def update_password(request, user_id):
 
     context = {'form': form}
     return render(request, 'update_password.html', context)
+
+

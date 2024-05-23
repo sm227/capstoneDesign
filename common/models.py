@@ -1,11 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User as authUser
+from django.utils import timezone
 
 class Video(models.Model):
     user = models.ForeignKey(authUser, on_delete=models.CASCADE, null=True)
     text = models.TextField(null=True)
     thumbnail = models.TextField(null=True)
     video_key = models.TextField(null=True)
+    date = models.DateTimeField(default=timezone.now)
 
 class Memo(models.Model):
     text = models.CharField(max_length=600, null=True)  # 메모 내용

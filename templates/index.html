@@ -97,6 +97,7 @@
                         {#                        {{ item.text }}#}
                         <a href="{% url 'history'  item.id %}" id="history-url" class="text-white"
                            style="text-decoration-line: none">{{ item.text }}</a> {# 눌리는 부분 #}
+                        <p class="text-muted">{{ item.date|date:"Y-m-d H:i" }}</p> <!-- 날짜 표시 -->
                     </div>
                     <button class="dbtn" onclick="deleteHistory({{ item.id }})">
                         <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg"
