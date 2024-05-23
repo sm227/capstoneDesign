@@ -169,14 +169,7 @@ def index2(request):
     w.write('\n')
     w.close()
 
-    s = open(f'summary_{real_id}.txt', 'w', encoding='UTF-8')
-
-    for element2 in summary_data:
-        if type(element2) != 'str':
-            element2 = str(element2)
-        s.write(element2 + '\n')
-
-    video_prompt(real_id, script_data)
+    video_prompt(real_id, summary_data)
 
     # 유해성 조정
     safety_settings = [
@@ -312,7 +305,7 @@ def history(request, videoo_id):
     w.write('\n')
     w.close()
 
-    video_prompt(real_id, script_data)
+    video_prompt(real_id, summary_data)
 
     # 유해성 조정
     safety_settings = [
@@ -350,9 +343,15 @@ def history(request, videoo_id):
 
     response = model.generate_content(example)
 
+    # txt, json 삭제.
+    os.remove(f'script_{real_id}.txt')
+    os.remove(f'script_{real_id}.json')
+    os.remove(f'summary_{real_id}.txt')
+
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
                   {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a})
+
 
 
 def delete_history(request, videoo_id):
