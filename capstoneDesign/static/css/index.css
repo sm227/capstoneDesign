@@ -56,6 +56,7 @@
     bottom: 10px; /* 아래에서 10px만큼 띄움 */
     left: 20px; /* 왼쪽에서 10px만큼 띄움 */
     opacity: 0; /* 기본적으로 숨김 */
+
 }
 
 .card:hover .dbtn {
