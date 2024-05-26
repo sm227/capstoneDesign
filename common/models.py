@@ -8,6 +8,7 @@ class Video(models.Model):
     thumbnail = models.TextField(null=True)
     video_key = models.TextField(null=True)
     date = models.DateTimeField(default=timezone.now)
+    version = models.CharField(blank=True)
 
 class Memo(models.Model):
     text = models.CharField(max_length=600, null=True)  # 메모 내용
