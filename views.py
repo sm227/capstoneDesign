@@ -21,6 +21,8 @@ from django.conf import settings
 
 from django.utils import timezone
 
+from django.core.paginator import Paginator
+
 
 @csrf_exempt
 # @login_required(login_url='common:login')
