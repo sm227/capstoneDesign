@@ -2,10 +2,17 @@ $(document).ready(function() {
     $('#add-memo-form').submit(function(event) {
         event.preventDefault(); // Prevent default form submission
 
+
+        if (typeof player !== 'undefined') {
+            var currentTime = player.getCurrentTime();
+            console.log("currentTime is " + currentTime);
+            $('#currenttime').val(currentTime); // Set the value of the hidden input field
+        }
+
         // Get the form data
         var formData = $(this).serialize();
         var videoId = $('#add-memo-form [name="video_id"]').val()
-
+        console.log(videoId);
         var url = '/add-memo/' + encodeURIComponent(videoId) + '/'
 
         console.log(videoId)
@@ -93,52 +100,97 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-
-
-    //메모 보기 탭
+    // 메모 보기 탭
     $(document).ready(function () {
         $("#loadMemo").click(function () {
+            var videoId = $(this).data("video-id");
+            console.log(videoId);
+            var url = '/list-memo/' + encodeURIComponent(videoId) + '/';
+
             $.ajax({
-                url: '/list-memo/', // 요청을 보낼 서버의 URL
-                type: 'get', // HTTP 메소드
-                dataType: 'json', // 응답 데이터 타입
+                url: url, // URL to send the request to
+                type: 'get', // HTTP method
+                dataType: 'json', // Expected response data type
                 success: function (response) {
-                    console.log(response)
-                    $('#memo-list').empty()
+                    console.log(response);
+                    $('#memo-list #dataList').empty(); // Clear the current list
 
-                    // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
+                    // Iterate over the items received from the response
                     $.each(response.items, function (i, item) {
-                        // 이미 목록에 있는 아이템인지 확인
-                       if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
-                        const memoItem = document.createElement("li"); // 새 리스트 생성
-                        const currentTime = player.getCurrentTime()
-                        const changeTime = changeSeconds(currentTime)
+                        if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
+                            // Create the list item element
+                            const memoItem = document.createElement("li");
+                            memoItem.className = "list-group list-group-item"; // Bootstrap list group class
+                            memoItem.setAttribute("data-id", item.id); // Set the data-id attribute
 
-                        memoItem.className = "list-group list-group-item"; // 부트스트랩 5 목록 그룹 클래스 추가
-                        memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
-                        memoItem.innerHTML = `
-                            <div class="row align-items-center">
-                                <div class="col-9">
-                                    <div class="d-flex align-items-center">
-                                        <div class="btn btn-primary btn-sm btn-fixed-size" style="width: 55px" href="#" role="button" onclick="moveTime(${currentTime});">${changeTime}</div>
-                                        <div class="text-start ms-2 memo-container">${item.text}</div>
+                            var currentTime = item.current_time;
+                            var changedTime = changeSeconds(currentTime);
+
+                            memoItem.innerHTML = `
+                                <div class="row align-items-center">
+                                    <div class="col-9">
+                                        <div class="d-flex align-items-center">
+                                            <div class="btn btn-primary btn-sm btn-fixed-size" style="width: 55px" role="button" onclick="moveTime(${currentTime});">${changedTime}</div>
+                                            <div class="text-start ms-2 memo-container memo-text">${item.text}</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-3">
+                                        <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
+                                        <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
                                     </div>
                                 </div>
-                                <div class="col-3">
-                                    <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
-                                    <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
-                                </div>
-                            </div>
-                            
-                        `;
-                        $('#memo-list').append(memoItem); // 목록 그룹에 append
-                    }
+                            `;
+
+                            $('#memo-list #dataList').append(memoItem); // Append the list item to the list
+                        }
                     });
-                    console.log("서버 요청 성공!")
+                    console.log("Server request successful!");
+                },
+                error: function (xhr, status, error) {
+                    console.error("Server error:", error);
                 }
             });
         });
     });
+
+    $(document).on("click", ".editMemo", function () {
+        const memoItem = $(this).closest("li");
+        const memoId = memoItem.data("id");
+        const memoTextElement = memoItem.find('.memo-text'); // Get memo text element
+        const memoText = memoTextElement.text(); // Get memo text content
+
+        $('#editMemoModal').modal('show'); // Open modal
+        $('#editMemoText').val(memoText); // Set the textarea value in the modal
+
+        // "Save" button click event handler
+        $('#saveEditedMemo').off().on('click', function () {
+            const editedMemoText = $('#editMemoText').val(); // Get the edited memo content
+
+            // Send the updated content to the server
+            $.ajax({
+                url: '/edit-memo/',
+                type: 'POST',
+                data: {
+                    memo_id: memoId,
+                    text: editedMemoText
+                },
+                dataType: 'json',
+                success: function (response) {
+                    console.log("edited memo is " + editedMemoText);
+                    console.log("Server response:", response);
+                    // Update the memo text in the memo item immediately
+                    memoTextElement.text(editedMemoText);
+                    $('#editMemoModal').modal('hide'); // Close modal
+                },
+                error: function(xhr, status, error){
+                    console.error("Server error:", error);
+                }
+            });
+        });
+    });
+
+
+
 
 
 
@@ -169,68 +221,3 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 
-    $(document).on("click", ".editMemo", function () {
-    const memoItem = $(this).closest("li");
-    const memoId = memoItem.data("id");
-    const memoText = memoItem.find('.memo-text').text(); // 메모 텍스트 가져오기
-
-    $('#editMemoModal').modal('show'); // 모달 열기
-    $('#editMemoText').val(memoText); // 모달 내부의 텍스트 에어리어에 메모 내용 표시
-
-    // "저장" 버튼 클릭 시 수정된 내용을 저장하는 이벤트 핸들러
-    $('#saveEditedMemo').off().on('click', function () {
-        const editedMemoText = $('#editMemoText').val(); // 수정된 메모 내용 가져오기
-
-        // 수정된 내용을 서버에 전송
-        $.ajax({
-            url: '/edit-memo/',
-            type: 'POST',
-            data: {
-                memo_id: memoId,
-                text: editedMemoText
-            },
-            dataType: 'json',
-            success: function (response) {
-                console.log("서버 응답:", response);
-                // 수정된 내용을 메모 리스트에 업데이트
-                memoItem.find('.memo-text').text(editedMemoText);
-                $('#editMemoModal').modal('hide'); // 모달 닫기
-
-                $('#memo-list').empty()
-
-                    // 응답으로 받은 items 리스트를 순회하면서 각 항목을 ul 태그에 추가
-                    $.each(response.items, function (i, item) {
-                        // 이미 목록에 있는 아이템인지 확인
-                       if (!$(`#memo-list li[data-id="${item.id}"]`).length) {
-                        const memoItem = document.createElement("li"); // 새 리스트 생성
-                        const currentTime = player.getCurrentTime()
-                        const changeTime = changeSeconds(currentTime)
-
-                        memoItem.className = "list-group list-group-item"; // 부트스트랩 5 목록 그룹 클래스 추가
-                        memoItem.setAttribute("data-id", item.id); // 아이디 속성 추가
-                        memoItem.innerHTML = `
-                            <div class="row align-items-center">
-                                <div class="col-9">
-                                    <div class="d-flex align-items-center">
-                                        <div class="btn btn-primary btn-sm btn-fixed-size" style="width: 55px" href="#" role="button" onclick="moveTime(${currentTime});">${changeTime}</div>
-                                        <div class="text-start ms-2 memo-container">${item.text}</div>
-                                    </div>
-                                 </div>
-                                <div class="col-3">
-                                    <p></p>
-                                    <p></p>
-                                    <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
-                                    <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
-                                </div>
-                            </div>
-                        `;
-                        $('#memo-list').append(memoItem); // 목록 그룹에 append
-                    }
-                    });
-            },
-            error: function(xhr, status, error){
-                console.error("서버 오류:", error);
-            }
-        });
-    });
-});

@@ -40,13 +40,16 @@ urlpatterns = [
     path('index2', views.index, name='index_page'),
     path('sign_up/', views.sign_up, name='sign_up_page'),
     path('sign_up_complete/', views.sign_up_complete, ),
-    path('add-memo/<str:video_key>/', views.add_memo, name='add_memo'),
+
+
+    #메모 관련
+    path('add-memo/<str:video_id>/', views.add_memo, name='add_memo'),
     path('delete-memo/', views.delete_memo, name='delete_memo'),
-    # path('memo2/', views.add_memo, name='memo'),
-    # path('ajax_method/', views.add_memo, name='ajax_method'),
-    path('list-memo/', views.list_memo, name='list_memo'), #메모 보기 탭
-    # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    path('list-memo/<str:video_id>/', views.list_memo, name='list_memo'), #메모 보기
     path('edit-memo/', views.edit_memo, name='edit_memo'),
+
+
+
     path('index/', views.index, name='index'),
     path('<int:user_id>/password/', views.update_password, name='update_password'),
     path('history/<int:video_pk>/', views.history,name='history'),

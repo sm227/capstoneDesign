@@ -48,9 +48,10 @@
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="true" href="#memo-tab" data-bs-toggle="tab">메모</a>
+                            
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="loadMemo" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
+                            <a class="nav-link" id="loadMemo" data-video-id="{{video_id}}" href="#memo-list-tab" data-bs-toggle="tab">메모 보기</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
@@ -67,6 +68,7 @@
                                 <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
                                 <div>video id is {{ video_id }}</div>
                                 <input type="hidden" name="video_id" value="{{ video_id }}">
+                                <input type="hidden" name="currenttime" id="currenttime">
                                 <button class="btn btn-primary mt-2" data-bs-toggle="modal"
                                         data-bs-target="#memoModal" type="submit" id="add-memo">메모 추가
                                 </button>
@@ -77,9 +79,12 @@
                 
                 <div class="card-body">
                     <div class="tab-pane fade" id="memo-list-tab">
-                        <!--메모 리스트-->
+
                         <div id="memo-list">
-                            <ul id="dataList"></ul>
+                            <ul id="dataList">
+                
+                           
+                            </ul>
                         </div>
 
                     </div>
@@ -191,6 +196,23 @@
 </div>
 
 <canvas id="drawing-canvas"></canvas>
+
+<script type="text/template" id="memo-template">
+    <li class="list-group list-group-item" data-id="{{id}}">
+        <div class="row align-items-center">
+            <div class="col-9">
+                <div class="d-flex align-items-center">
+                    <div class="btn btn-primary btn-sm btn-fixed-size" style="width: 55px" href="#" role="button" onclick="moveTime({{current_time}});">{{changed_time}}</div>
+                    <div class="text-start ms-2 memo-container memo-text">{{text}}</div>
+                </div>
+            </div>
+            <div class="col-3">
+                <button class="btn btn-sm btn-primary editMemo" type="button">수정</button>
+                <button class="btn btn-sm btn-danger deleteMemo" type="button">삭제</button>
+            </div>
+        </div>
+    </li>
+</script>
 
 <script>
 

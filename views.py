@@ -32,10 +32,8 @@ def index(request):
             full_link = youtube_link.split('/')
             return render(request, 'index2.html', {'youtube_link': youtube_link, 'full': full_link[2]})
 
-
         return render(request, 'index.html', {'data': recent_data})
     return render(request, 'index.html')
-
 
 
 def video_prompt(real_id, summary_data):
@@ -74,6 +72,7 @@ def video_prompt(real_id, summary_data):
         """)
 
     s.close()
+
 
 @login_required(login_url='common:login')
 def index2(request):
@@ -209,15 +208,16 @@ def index2(request):
 
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
-                  {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a, 'video_id':video.video_key})
+                  {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a,
+                   'video_id': video.id})
 
 
 @login_required(login_url='common:login')
 def history(request, video_pk):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
 
-    temp = Video.objects.get(id=video_pk)
-    real_id = temp.video_key
+    video = Video.objects.get(id=video_pk)
+    real_id = video.video_key
 
     api.download_script_json(real_id)
 
@@ -339,8 +339,8 @@ def history(request, video_pk):
 
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
-                  {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a, 'video_id':video_id})
-
+                  {'youtube_link': real_id, 'data': script_data, 'script': response.text, 'script2': a,
+                   'video_id': video.id})
 
 
 def delete_history(request, video_pk):
@@ -350,7 +350,6 @@ def delete_history(request, video_pk):
     recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
 
     return redirect('main_page')
-
 
 
 @login_required(login_url='common:login')
@@ -366,29 +365,15 @@ def sign_up_complete(request):
     return redirect('common:login')
 
 
-def add_memo(request, video_key):
+def add_memo(request, video_id):
     if request.method == "POST":
         text = request.POST.get('text')
-        video = Video.objects.get(video_key=video_key, user=request.user)
+        current_time = request.POST.get('currenttime')
 
-        Memo.objects.create(video=video, text=text, user=request.user)
-
-        return render(request, 'memo.html')
+        Memo.objects.create(video_id=video_id, text=text, user=request.user, current_time=current_time)
+        return HttpResponse()
     else:
         return JsonResponse({'error': 'Bad requst'}, status=400)
-
-
-
-
-
-
-
-        text = request.POST.get('text')
-
-
-
-        return render(request, 'memo.html')
-    return JsonResponse({'error': 'Bad request,'}, status=400)
 
 
 # views.py
@@ -425,7 +410,7 @@ def edit_memo(request):
             memo = Memo.objects.get(id=memo_id)
             memo.text = edited_text
             memo.save()
-            data_list = Memo.objects.filter(user=request.user).values('id', 'text').order_by('id')
+            data_list = Memo.objects.filter(id=memo_id, text=edited_text).values('id', 'text').order_by('id')
             return JsonResponse({'items': list(data_list)})
         except Memo.DoesNotExist:
             return JsonResponse({'success': False, 'message': '해당 메모를 찾을 수 없습니다.'})
@@ -435,21 +420,14 @@ def edit_memo(request):
         return JsonResponse({'success': False, 'message': '잘못된 요청입니다.'})
 
 
-#memo 보기 탭
-def list_memo(request):
-    # 예제 데이터 리스트
-    # data_list = ['사과', '바나나', '체리']
-    video = Video.objects.filter(user=request.user)
-    video_pk = video.id
-
-    data_list = Memo.objects.filter(user=request.user, video_id=video_pk).values('id', 'text').order_by('id')
+# memo 보기 탭
+def list_memo(request, video_id):
+    data_list = Memo.objects.filter(user=request.user, video_id=video_id).values('id', 'text', 'current_time').order_by(
+        'id')
     print(data_list)
-    print("ok")
 
-    # print(data_list)
     # JsonResponse를 사용하여 데이터를 JSON 형태로 반환
     return JsonResponse({'items': list(data_list)})
-
 
 
 def update_password(request, user_id):
