@@ -89,6 +89,23 @@
     <img src="static/loading.gif"></div>
 </div>
 
+<div class="modal fade" id="urlModal" tabindex="-1" aria-labelledby="urlModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="urlModalLabel">링크가 존재하지 않아요 😢</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                URL을 입력해주세요! 😒
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div class="container mt-5">
     {% if data and user.is_authenticated %}
@@ -99,7 +116,7 @@
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
                     <div class="ms-1 me-2 mt-2 container text-wrap">
                         {#                        {{ item.text }}#}
-                        <a href="{% url 'history'  item.id %}" id="history-url" class="text-white"
+                        <a href="{% url 'history'  item.id %}" class="history-url text-white" 
                            style="text-decoration-line: none">{{ item.text }}</a> {# 눌리는 부분 #}
 
                     </div>
@@ -285,20 +302,6 @@
 </body>
 
 <script>
-    {% comment %}    document.addEventListener("DOMContentLoaded", function () {
-            //url 제출
-            document.getElementById("youtubeForm").addEventListener("submit", function () {
-                var loadingModal = new bootstrap.Modal(document.getElementById('loading'));
-                loadingModal.show();
-            });
-
-            //history 클릭
-            document.getElementById("history-url").addEventListener("click", function () {
-                var historyModal = new bootstrap.Modal(document.getElementById('history'));
-                historyModal.show();
-            })
-        });{% endcomment %}
-
     function deleteHistory(id) {
         if (confirm('삭제하시겠습니까?')) {
             window.location.href = '/delete_history/' + id + '/';
@@ -334,7 +337,7 @@
     });
 
     $(document).ready(function () {
-        $("#history-url").on("click", function (event) {
+        $(".history-url").on("click", function (event) {
             showSpinner();
         });
     });
@@ -343,6 +346,21 @@
         if (event.persisted) {
             hideSpinner();
         }
+    });
+    
+    //url 비어있을 때 알람
+    $(document).ready(function () {
+        $("form").on("submit", function (event) {
+            var youtubeLink = $("#youtubeLink").val(); //youtubeLink 값 가져오기
+            if (!youtubeLink) {
+                event.preventDefault(); //칸이 비어있으면 폼 제출 막고 모달창 띄우기
+                var urlModal = new bootstrap.Modal(document.getElementById('urlModal'), {
+                    keyboard: false
+                });
+                urlModal.show();
+                hideSpinner();
+            }
+        });
     });
 
 
