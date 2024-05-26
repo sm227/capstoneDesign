@@ -84,6 +84,8 @@ def video_prompt(real_id, summary_data):
 def index2(request):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
     youtube_link = request.GET.get('youtube_link')
+    version = request.GET.get('version')
+
     full_link = youtube_link.split('/')
     print(full_link)
     final_link = full_link[3].split('?')
@@ -125,7 +127,7 @@ def index2(request):
     user_id = request.user.id
     user = get_object_or_404(authUser, id=user_id)
     current_date = timezone.now()
-    link = Video(user=user, text=video_title, thumbnail=video_thumbnail, video_key=real_id, date=current_date)
+    link = Video(user=user, text=video_title, thumbnail=video_thumbnail, video_key=real_id, date=current_date, version=version)
     link.save()
 
     global video_pk
@@ -209,8 +211,14 @@ def index2(request):
 
     # 본인 api key 삽입
     genai.configure(api_key=gemini_key)
-    # model = genai.GenerativeModel('gemini-pro-1.5-pro-latest', safety_settings=safety_settings)
-    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
+
+    # gemini 버전 선택
+    if version == '1.0':
+        model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
+
+    if version == '1.5':
+        model = genai.GenerativeModel('gemini-1.5-pro', safety_settings=safety_settings)
+
     with open(f'summary_{final_link[0]}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
@@ -229,8 +237,10 @@ def index2(request):
 def history(request, videoo_id):
     # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
 
-    temp = Video.objects.get(id=videoo_id)
-    real_id = temp.video_key
+    video = Video.objects.get(id=videoo_id)
+    real_id = video.video_key
+
+
 
     api.download_script_json(real_id)
 
@@ -343,9 +353,24 @@ def history(request, videoo_id):
     print("your api : ", gemini_key)
     print("ok")
 
+
+
     # 본인 api key 삽입
     genai.configure(api_key=gemini_key)
-    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
+
+    # video 객체의 version 속성 가져와서 사용.
+    version = video.version
+
+    test1 = "대기"
+    if version == "1.0":
+        model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
+
+    if version == "1.5":
+        model = genai.GenerativeModel('gemini-1.5-pro', safety_settings=safety_settings)
+        test1 = "test 성공"
+
+    print(test1)
+
     with open(f'summary_{real_id}.txt', "r", encoding='UTF8') as f:
         example = f.read()
 
