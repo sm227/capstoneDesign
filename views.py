@@ -19,6 +19,10 @@ from django.contrib.auth import get_user_model, update_session_auth_hash
 
 from django.conf import settings
 
+from django.utils import timezone
+
+from django.core.paginator import Paginator
+
 
 @csrf_exempt
 # @login_required(login_url='common:login')
@@ -112,13 +116,13 @@ def index2(request):
     print("동영상 제목:", video_title)
 
     # --------------
-
     video = Video.objects.create(
         user=request.user,
         text=video_title,
         thumbnail=video_thumbnail,
         video_key=real_id
     )
+
 
     # link.answer_set.create(content=request.POST.get('content'), create_date=timezone.now())
 
@@ -445,4 +449,3 @@ def update_password(request, user_id):
 
     context = {'form': form}
     return render(request, 'update_password.html', context)
-

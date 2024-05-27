@@ -30,24 +30,37 @@
 {#    </html>#}
 {#{% endblock %}#}
 
-{% extends "base.html" %}
-{% block content %}
-    <!DOCTYPE html>
-    <html lang="ko">
-    <head>
-        <meta charset="UTF-8">
-        <title>회원 정보 수정 페이지</title>
-    </head>
-    <body>
-    <h1>회원정보수정</h1>
+{#{% extends "base.html" %}#}
+{#{% block content %}#}
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>회원 정보 수정 페이지</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Title</title>
+    {#    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>#}
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
 
-    <form method="post" action="{% url 'common:update' %}">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">제출</button>
-    </form>
+
+</head>
+<body>
+{% include "navbar.html" %}
+<h1>회원정보수정</h1>
+
+<form method="post" action="{% url 'common:update' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">제출</button>
+</form>
 
 {#    <a href="{%  url 'update_password' %}">비밀번호 변경하기</a>#}
-    </body>
-    </html>
-{% endblock %}
+</body>
+</html>
+<script src="{% static 'js/theme.js' %}"></script>
+{#{% endblock %}#}

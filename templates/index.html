@@ -46,40 +46,61 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
 
+    <style>
+       {% comment %} #loading-spinner {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }{% endcomment %}
+
+        #loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 9999;
+        }
+
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.2); /* Semi-transparent white */
+            backdrop-filter: blur(3px); /* Apply blur effect */
+            z-index: 9998;
+            display: none;
+        }
+    </style>
 </head>
 
 <body>
 {% include "navbar.html" %}
 
-<!-- url 제출 시 -->
-<div class="modal fade" id="loading" tabindex="-1" aria-labelledby="loadingLable" aria-hidden="hidden"
-     data-bs-backdrop="static">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-body">
-                <div class="text-center">
-                    <div class="spinner-border" role="status"></div>
-                    <div>요약중이에요😁 조금만 기다려 주세요!</div>
-                </div>
-                <img src='{% static 'loading.gif' %}'>
-            </div>
-        </div>
-    </div>
+<div id="loading-overlay"></div>
+<div id="loading-spinner" class="text-center">
+{#    <div class="spinner-border" role="status"></div>#}
+    <div><p class="fs-4">요약중이에요😁 조금만 기다려 주세요!</p></div>
+    <img src="static/loading.gif"></div>
 </div>
 
-
-<!-- 히스토리 클릭 시  -->
-<div class="modal fade" id="history" tabindex="-1" aria-labelledby="historyLable" aria-hidden="hidden"
-     data-bs-backdrop="static">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
+<div class="modal fade" id="urlModal" tabindex="-1" aria-labelledby="urlModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-body">
-                <div class="text-center">
-                    <div class="spinner-border" role="status"></div>
-                    <div>로딩중이에요😁 조금만 기다려 주세요!</div>
-                    <img src='{% static 'history.gif' %}'>
-                </div>
-                {#  <img src='{% static 'history.gif' %}'> #}
+            <div class="modal-header">
+                <h5 class="modal-title text-center" id="urlModalLabel">링크가 존재하지 않아요 😢</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                URL을 입력해주세요! 😒
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
             </div>
         </div>
     </div>
@@ -95,9 +116,12 @@
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
                     <div class="ms-1 me-2 mt-2 container text-wrap">
                         {#                        {{ item.text }}#}
-                        <a href="{% url 'history'  item.id %}" id="history-url" class="text-white"
+                        <a href="{% url 'history'  item.id %}" class="history-url text-white" 
                            style="text-decoration-line: none">{{ item.text }}</a> {# 눌리는 부분 #}
+
                     </div>
+                    {#                    <div class="row d-flex">#}
+                    {#                    <div class="col-4 d-flex">#}
                     <button class="dbtn" onclick="deleteHistory({{ item.id }})">
                         <svg viewBox="0 0 15 17.5" height="17.5" width="15" xmlns="http://www.w3.org/2000/svg"
                              class="icon">
@@ -107,11 +131,11 @@
                         </svg>
                     </button>
                 <p class="text-muted" style="position: absolute; left: 150px; bottom: -10px;">{{ item.date|date:"Y-m-d H:i" }}</p>
-                </div>
 
+                </div>
             {% endfor %}
         </div>
-    {%  elif not data and user.is_authenticated %}
+    {% elif  user.is_authenticated %}
         <div class="col-md-12">
             <h4 class="text-center">이런 ! 아직 보여드릴 기록이 없어요 &#128051;</h4>
         </div>
@@ -216,10 +240,17 @@
         <form id="youtubeForm" action="{% url 'index2' %}" method="get"> {# 유튜브 링크 #}
             <div class=" d-flex ">
                 {% csrf_token %}
-                <div class="col-lg-9 text-center">
-                    <input id="youtubeLink" type="text" class="form-control" name="youtube_link"
-                           placeholder="요약할 URL 붙여넣기">
-                </div>
+                {% if user.is_authenticated %}
+                    <div class="col-lg-9 text-center">
+                        <input id="youtubeLink" type="text" class="form-control" name="youtube_link"
+                               placeholder="요약할 URL 붙여넣기">
+                    </div>
+                {% else %}
+                    <div class="col-lg-9 text-center">
+                        <input id="youtubeLink" type="text" class="form-control" name="youtube_link"
+                               placeholder="로그인이 필요한 서비스입니다." disabled>
+                    </div>
+                {% endif %}
                 <div class="col-lg-3  ms-3 me-3 text-right">
                     {#                    <button type="submit" class="btn btn-success">요약하기</button>#}
                     <button class="btn">
@@ -265,28 +296,72 @@
 </body>
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        //url 제출
-        document.getElementById("youtubeForm").addEventListener("submit", function () {
-            var loadingModal = new bootstrap.Modal(document.getElementById('loading'));
-            loadingModal.show();
-        });
-
-        //history 클릭
-        document.getElementById("history-url").addEventListener("click", function () {
-            var historyModal = new bootstrap.Modal(document.getElementById('history'));
-            historyModal.show();
-        })
-    });
-
     function deleteHistory(id) {
         if (confirm('삭제하시겠습니까?')) {
             window.location.href = '/delete_history/' + id + '/';
         }
     }
 
+    function showSpinner() {
+        document.getElementById('loading-spinner').style.display = 'block';
+        document.getElementById('loading-overlay').style.display = 'block';
+        sessionStorage.setItem('showSpinner', 'true');
+    }
+
+    function hideSpinner() {
+        document.getElementById('loading-spinner').style.display = 'none';
+        document.getElementById('loading-overlay').style.display = 'none';
+        sessionStorage.removeItem('showSpinner');
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        if (sessionStorage.getItem('showSpinner') === 'true') {
+            hideSpinner();
+        }
+    });
+
+    $(document).ready(function () {
+        $("#youtubeForm").submit(function (event) {
+            var buttonText = $(this).find("button span.text").text();
+            if (buttonText !== '로그인') {
+                showSpinner();
+            }
+            return true;
+        });
+    });
+
+    $(document).ready(function () {
+        $(".history-url").on("click", function (event) {
+            showSpinner();
+        });
+    });
+
+    window.addEventListener('pageshow', function (event) {
+        if (event.persisted) {
+            hideSpinner();
+        }
+    });
+    
+    //url 비어있을 때 알람
+    $(document).ready(function () {
+    $("form").on("submit", function (event) {
+        var buttonText = $(this).find("button span.text").text();
+        var youtubeLink = $("#youtubeLink").val();
+        if (buttonText === '로그인') {
+            return true;
+        } else {
+            if (!youtubeLink) {
+                event.preventDefault(); 
+                var urlModal = new bootstrap.Modal(document.getElementById('urlModal'), {
+                    keyboard: false
+                });
+                urlModal.show();
+                hideSpinner();
+            }
+        }
+    });
+});
+
 
 </script>
-
-
 </html>

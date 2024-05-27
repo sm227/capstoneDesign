@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     "django_bootstrap5",
     'markdownify.apps.MarkdownifyConfig',
     'chat',
+    # 'capstoneDesign'
     # 'common,
 
 ]
@@ -122,7 +123,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'ko-kr'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Seoul'
 
 USE_I18N = True
 
