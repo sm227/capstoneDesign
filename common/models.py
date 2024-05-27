@@ -12,6 +12,7 @@ class Video(models.Model):
     date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 
+
 class Memo(models.Model):
     text = models.CharField(max_length=600, null=True)  # 메모 내용
     user = models.ForeignKey(authUser, on_delete=models.CASCADE, null=True)

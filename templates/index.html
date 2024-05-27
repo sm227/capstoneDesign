@@ -241,6 +241,12 @@
             <div class=" d-flex ">
                 {% csrf_token %}
                 {% if user.is_authenticated %}
+                    <div class="col-lg-3">
+                        <select class="form-select" name="version">
+                            <option value="1.0">1.0</option>
+                            <option value="1.5">1.5</option>
+                        </select>
+                    </div>
                     <div class="col-lg-9 text-center">
                         <input id="youtubeLink" type="text" class="form-control" name="youtube_link"
                                placeholder="요약할 URL 붙여넣기">
@@ -251,8 +257,8 @@
                                placeholder="로그인이 필요한 서비스입니다." disabled>
                     </div>
                 {% endif %}
-                <div class="col-lg-3  ms-3 me-3 text-right">
-                    {#                    <button type="submit" class="btn btn-success">요약하기</button>#}
+                <div class="col-lg-3  ms-3 me-3 text-right ">
+
                     <button class="btn">
                         <svg height="10" width="10" fill="#FFFFFF" viewBox="0 0 24 24" data-name="Layer 1" id="Layer_1"
                              class="sparkle">
@@ -265,6 +271,7 @@
                         {% endif %}
 
                     </button>
+                    
                 </div>
             </div>
         </form>
