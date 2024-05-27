@@ -445,3 +445,4 @@ def update_password(request, user_id):
 
     context = {'form': form}
     return render(request, 'update_password.html', context)
+

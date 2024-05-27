@@ -2,11 +2,13 @@ from django.db import models
 from django.contrib.auth.models import User as authUser
 
 
+
 class Video(models.Model):
     user = models.ForeignKey(authUser, on_delete=models.CASCADE, null=True)
     text = models.TextField(null=True)
     thumbnail = models.TextField(null=True)
     video_key = models.TextField(null=True)
+
 
 
 class Memo(models.Model):
