@@ -8,6 +8,7 @@ class Video(models.Model):
     text = models.TextField(null=True)
     thumbnail = models.TextField(null=True)
     video_key = models.TextField(null=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
 
 
@@ -16,5 +17,6 @@ class Memo(models.Model):
     user = models.ForeignKey(authUser, on_delete=models.CASCADE, null=True)
     video = models.ForeignKey(Video, on_delete=models.CASCADE)
     current_time = models.FloatField(null=True, blank=True)  # Add this line for current_time
+
 
 
