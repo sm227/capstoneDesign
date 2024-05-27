@@ -10,6 +10,7 @@ class Video(models.Model):
     thumbnail = models.TextField(null=True)
     video_key = models.TextField(null=True)
     date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    version = models.CharField()
 
 
 
