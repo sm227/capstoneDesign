@@ -350,18 +350,23 @@
     
     //url 비어있을 때 알람
     $(document).ready(function () {
-        $("form").on("submit", function (event) {
-            var youtubeLink = $("#youtubeLink").val(); //youtubeLink 값 가져오기
+    $("form").on("submit", function (event) {
+        var buttonText = $(this).find("button span.text").text();
+        var youtubeLink = $("#youtubeLink").val();
+        if (buttonText === '로그인') {
+            return true;
+        } else {
             if (!youtubeLink) {
-                event.preventDefault(); //칸이 비어있으면 폼 제출 막고 모달창 띄우기
+                event.preventDefault(); 
                 var urlModal = new bootstrap.Modal(document.getElementById('urlModal'), {
                     keyboard: false
                 });
                 urlModal.show();
                 hideSpinner();
             }
-        });
+        }
     });
+});
 
 
 </script>
