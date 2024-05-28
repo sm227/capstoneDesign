@@ -27,6 +27,7 @@ media
 # Distribution / packaging
 .Python
 data/
+data/pgadmin/
 build/
 develop-eggs/
 dist/
