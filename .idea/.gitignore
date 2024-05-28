@@ -22,9 +22,12 @@ media
 
 # C extensions
 *.so
+*.db
 
 # Distribution / packaging
 .Python
+data/
+data/pgadmin/
 build/
 develop-eggs/
 dist/
