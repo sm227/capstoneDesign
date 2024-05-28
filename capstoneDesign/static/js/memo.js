@@ -15,6 +15,9 @@ $(document).ready(function() {
         console.log(videoId);
         var url = '/add-memo/' + encodeURIComponent(videoId) + '/'
 
+        // textarea 초기화
+        $('#memo-text').val('') 
+        
         console.log(videoId)
         // Send AJAX request
         $.ajax({
@@ -38,8 +41,25 @@ document.addEventListener("DOMContentLoaded", function () {
         const memoList = document.getElementById("memo-list"); // id가 "memo-list"인 요소를 찾아 'memolist'에 할당
         const memoItems = document.getElementById("memo-items"); // 메모 목록에 들어가는 아이템이 들어가는 리스트
 
+        $('#memo-tab-button').click(function(event) {
+            $('#memo-tab').css({
+                'display':'block'
+            })
 
+            $('#memo-card-body').css({
+                'display':'none'
+            })
+        })
 
+        $('#loadMemo').click(function(event) {
+            $('#memo-tab').css({
+                'display':'none'
+            })
+
+            $('#memo-card-body').css({
+                'display':'block'
+            })
+        })
 
         // 초를 분으로 변경하는 함수
         function changeSeconds(seconds) {
