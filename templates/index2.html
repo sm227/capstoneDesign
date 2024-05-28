@@ -68,7 +68,6 @@
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="memo-tab">
                                 <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
-                                <div>video id is {{ video_id }}</div>
                                 <input type="hidden" name="video_id" value="{{ video_id }}">
                                 <input type="hidden" name="currenttime" id="currenttime">
 
@@ -79,20 +78,13 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="card-body">
                     <div class="tab-pane fade" id="memo-list-tab">
-
                         <div id="memo-list">
-                            <ul id="dataList">
-                
-                           
-                            </ul>
+                            <ul id="dataList"></ul>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
         <div class="col-md-6">
@@ -146,7 +138,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
             <div class="container d-flex justify-content-center align-items-center">
                 <div class="row">
                     <div class="col-md">
