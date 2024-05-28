@@ -18,5 +18,5 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
 
-  # 서비스 명
-    # 사용할 이미지
+
+

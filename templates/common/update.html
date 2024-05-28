@@ -1,5 +1,4 @@
-{% extends "base.html" %}
-{% block content %}
+{%  load static %}
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,6 +32,7 @@
     </style>
 </head>
 <body>
+{% include 'navbar.html' %}
 <div class="container centered-form">
     <div class="form-container">
         <h1 class="text-center">회원정보수정</h1>
@@ -56,5 +56,6 @@
     </div>
 </div>
 </body>
+<script src="{% static 'js/theme.js' %}"></script>
 </html>
-{% endblock %}
+
