@@ -10,7 +10,7 @@ local_settings.py
 db.sqlite3
 db.sqlite3-journal
 media
-data/pgadmin/sessions/
+data/
 
 # If your build process includes running collectstatic, then you probably don't need or want to include staticfiles/
 # in your Git repository. Update and uncomment the following line accordingly.
@@ -23,7 +23,7 @@ data/pgadmin/sessions/
 
 # C extensions
 *.so
-
+*.db
 # Distribution / packaging
 .Python
 build/
@@ -337,4 +337,3 @@ common/migrations/
 
 *.txt
 
-data/
