@@ -51,6 +51,7 @@ def update(request):
         form = UserForm2(request.POST,instance=request.user)
         if form.is_valid():
             form.save()
+            logout(request)
             return redirect('common:login')
     context = {'form' : form}
     return render(request, 'common/update.html', {'form': form})
