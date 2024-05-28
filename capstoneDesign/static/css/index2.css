@@ -230,4 +230,17 @@ texterea {
 }
 
 
+#memo-tab {
+    display:block;
+}
 
+#memo-card-body {
+    display:none;
+}
+
+
+#dataList {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
