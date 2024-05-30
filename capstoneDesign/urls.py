@@ -56,6 +56,8 @@ urlpatterns = [
     path('history/<int:video_pk>/', views.history,name='history'),
     path('delete_history/<int:video_pk>/', views.delete_history,name='delete_history'),
 
+    path('question/<str:video_id>/', views.question, name='question'),
+
 ]
 
 # url(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
