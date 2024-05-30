@@ -23,7 +23,7 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("Success");
                 console.log(response)
-                $('#answerResult').html("Answer: " + response['answer']);
+                $('#answerResult').html( response['answer']);
             },
             error: function (xhr, errmsg, err) {
                 // Handle error

@@ -45,47 +45,71 @@
                     <p>유튜브 링크를 입력하세요.</p>
                 {% endif %}
             </div>
-            <div class="card text-center">
+            <div class="card text-center" id="tab-content-container">
                 <div class="card-header">
                     <ul class="nav nav-tabs card-header-tabs">
                         <li class="nav-item">
                             <a class="nav-link active" id="memo-tab-button" aria-current="true" href="#memo-tab"
                                data-bs-toggle="tab">메모</a>
-
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" id="loadMemo" data-video-id="{{ video_id }}" href="#memo-list-tab"
                                data-bs-toggle="tab">메모 보기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                            <a class="nav-link" id="question" href="#question-tab" data-bs-toggle="tab">질문 하기</a>
                         </li>
                     </ul>
                 </div>
-
-                <div class="card-body" id="memo-tab">
-                    <form id="add-memo-form">
-                        {% csrf_token %}
-                        <!--메모 입력-->
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active">
-                                <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
-                                <input type="hidden" name="video_id" value="{{ video_id }}">
-                                <input type="hidden" name="currenttime" id="currenttime">
-
-                                <button class="btn btn-primary mt-2" data-bs-toggle="modal"
-                                        data-bs-target="#memoModal" type="submit" id="add-memo">메모 추가
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-
-                <div class="card-body" id="memo-card-body">
+                
+                <div class="card-body tab-content">
+                    <!-- 메모 입력 -->
+                    <div class="tab-pane fade show active" id="memo-tab">
+                        <form id="add-memo-form">
+                            {% csrf_token %}
+                            <!-- 메모 입력 -->
+                            <textarea id="memo-text-area" name="text" class="form-control mt-3" rows="3"></textarea>
+                            <input type="hidden" name="video_id" value="{{ video_id }}">
+                            <input type="hidden" name="currenttime" id="currenttime">
+                            <button class="btn btn-primary mt-2" data-bs-toggle="modal"
+                                    data-bs-target="#memoModal" type="submit" id="add-memo">메모 추가
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- 메모 보기 -->
                     <div class="tab-pane fade" id="memo-list-tab">
                         <div id="memo-list">
                             <ul id="dataList"></ul>
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" id="prevPage">이전</a>
+                                    </li>
+                                    <li class="page-item">
+                                        <a class="page-link" href="#" id="nextPage">다음</a>
+                                    </li>
+                                </ul>
+                            </nav>
                         </div>
+                    </div>
+                    
+                    <!-- 질문 하기 -->
+                    <div class="tab-pane fade" id="question-tab">
+                        <div id="answerResult" class="text-center">여기에 답변이 표시돼요!</div>
+                        <form id="question-form" class="d-flex flex-column align-items-center">
+                            {% csrf_token %}
+                            <!-- 질문 입력 -->
+                            <div class="w-75">
+                                <textarea id="question-text" name="text" class="form-control mt-3" rows="3"></textarea>
+                                <input type="hidden" name="real_id" value="{{ real_id }}">
+                            </div>
+                            <div class="w-75 text-center mt-2">
+                                <button class="btn btn-primary mt-2"
+                                         type="submit">질문 하기
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -286,29 +310,33 @@
 
 <script src="{% static 'js/theme.js' %}"></script>
 
+<script src="{% static 'js/question.js' %}"></script>
+
 {#<script src="{% static 'js/my_theme.js' %}"></script>#}
 
 
+{% comment %}
 <div id="answerResult" class="text-center">
     
 </div>
-<form id="question-form">
+<form id="question-form" class="d-flex flex-column align-items-center">
     {% csrf_token %}
     <!--메모 입력-->
 
-    <div>
+    <div class="w-75">
         <textarea id="memo-text" name="text" class="form-control mt-3" rows="3"></textarea>
         <input type="hidden" name="real_id" value="{{ real_id }}">
-        
-
+    </div>
+    <div class="w-75 text-center mt-2">
         <button class="btn btn-primary mt-2" 
                  type="submit" >질문하기
         </button>
     </div>
 </form>
+{% endcomment %}
 
 
-<script src="{% static 'js/question.js' %}"></script>
+{% comment %}<script src="{% static 'js/question.js' %}"></script>{% endcomment %}
 </body>
 
 </html>
