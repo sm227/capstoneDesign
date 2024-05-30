@@ -17,4 +17,6 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-#2
+
+
+  # 서비스 명
