@@ -217,7 +217,7 @@ def index2(request):
         example = f.read()
 
     # txt, json 삭제.
-    os.remove(f'script_{final_link[0]}.txt')
+    # os.remove(f'script_{final_link[0]}.txt')
     os.remove(f'script_{final_link[0]}.json')
 
     response = model.generate_content(example)
@@ -225,7 +225,7 @@ def index2(request):
     a = "<h1>aa</h1>"
     return render(request, 'index2.html',
                   {'youtube_link': final_link[0], 'data': script_data, 'script': response.text, 'script2': a,
-                   'video_id': video.id})
+                   'video_id': video.id, 'real_id': real_id})
 
 
 @login_required(login_url='common:login')
@@ -477,3 +477,68 @@ def update_password(request, user_id):
 
     context = {'form': form}
     return render(request, 'update_password.html', context)
+
+@login_required(login_url='common:login')
+def question(request, video_id):
+    # https://youtu.be/CdJyI0dNN3o?si=bISh9uGFcpiUve_D
+
+    # video_prompt(video_id, summary_data)
+
+    print(video_id)
+    print('ok')
+
+    # 유해성 조정
+    safety_settings = [
+        {
+            "category": "HARM_CATEGORY_DANGEROUS",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HARASSMENT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_HATE_SPEECH",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+            "threshold": "BLOCK_NONE",
+        },
+        {
+            "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+            "threshold": "BLOCK_NONE",
+        },
+    ]
+
+    gemini_key = os.environ.get('gemini_api_key')
+    print("your api : ", gemini_key)
+    print("ok")
+
+
+
+    # 본인 api key 삽입
+    genai.configure(api_key=gemini_key)
+
+
+
+    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
+
+    q_prompt = request.POST.get('text')
+
+
+    with open(f'script_{video_id}.txt', "r", encoding='UTF8') as f:
+        example = f.read()
+        print(example)
+
+    answer = model.generate_content(example + f"{q_prompt} ")
+
+    print(answer)
+
+
+
+
+
+    a = "<h1>aa</h1>"
+    return JsonResponse({'items': list(answer)})
+
