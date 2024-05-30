@@ -18,9 +18,12 @@ $(document).ready(function () {
             type: 'POST',
             url: url,
             data: formData,
-            dataType: 'json',
+            // data:JSON.stringify(answer),
+            // dataType: 'json',
             success: function (response) {
-                console.log(response);
+                console.log("Success");
+                console.log(response)
+                $('#answerResult').html("Answer: " + response['answer']);
             },
             error: function (xhr, errmsg, err) {
                 // Handle error
