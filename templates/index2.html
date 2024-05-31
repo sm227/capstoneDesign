@@ -26,7 +26,48 @@
 
     <script src="{% static 'js/html2canvas.js' %}"></script>
     <script src="{% static 'js/jspdf.min.js' %}"></script>
+    <style>
+        [data-bs-theme="light"]{
+            .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 9998;
+            }
+        }
 
+        [data-bs-theme="dark"]{
+            .loading-overlay{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.6);
+                z-index: 9998;
+            }
+        }
+
+
+        .loading-spinner {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+        }
+
+        /* 다크 모드 */
+{% comment %}        @media (prefers-color-scheme: dark) {
+            .loading-overlay {
+                background-color: #222624;
+            }
+        }{% endcomment %}
+
+    </style>
 
 </head>
 <body id="fullScreen">
@@ -61,7 +102,7 @@
                         </li>
                     </ul>
                 </div>
-                
+
                 <div class="card-body tab-content">
                     <!-- 메모 입력 -->
                     <div class="tab-pane fade show active" id="memo-tab">
@@ -76,7 +117,7 @@
                             </button>
                         </form>
                     </div>
-                    
+
                     <!-- 메모 보기 -->
                     <div class="tab-pane fade" id="memo-list-tab">
                         <div id="memo-list">
@@ -93,10 +134,15 @@
                             </nav>
                         </div>
                     </div>
-                    
+
                     <!-- 질문 하기 -->
                     <div class="tab-pane fade" id="question-tab">
-                        <div id="answerResult" class="text-center">여기에 답변이 표시돼요!</div>
+                        <div id="loading-overlay" class="loading-overlay" style="display:none;"></div>
+                        <div id="loading-spinner" class="loading-spinner" style="display:none;">
+                            <div class="spinner-border text-primary" role="status"></div>
+                            <div>답변 중이에요!</div>
+                        </div>
+                        <div id="answerResult" class="text-center"></div>
                         <form id="question-form" class="d-flex flex-column align-items-center">
                             {% csrf_token %}
                             <!-- 질문 입력 -->
@@ -105,10 +151,11 @@
                                 <input type="hidden" name="real_id" value="{{ real_id }}">
                             </div>
                             <div class="w-75 text-center mt-2">
-                                <button class="btn btn-primary mt-2"
-                                         type="submit">질문 하기
+                                <button class="btn btn-primary mt-2" id="qbtn"
+                                        type="submit">질문 하기
                                 </button>
                             </div>
+
                         </form>
                     </div>
                 </div>
@@ -299,6 +346,23 @@
 
 
 <script>
+    function showSpinner() {
+        document.getElementById('loading-spinner').style.display = 'block';
+        document.getElementById('loading-overlay').style.display = 'block';
+        sessionStorage.setItem('showSpinner', 'true');
+    }
+
+    function hideSpinner() {
+        document.getElementById('loading-spinner').style.display = 'none';
+        document.getElementById('loading-overlay').style.display = 'none';
+        sessionStorage.removeItem('showSpinner');
+    }
+
+    $(document).ready(function () {
+        $("#qbtn").on("click", function (event) {
+            showSpinner();
+        });
+    });
 
 </script>
 

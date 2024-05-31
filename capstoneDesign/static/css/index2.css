@@ -229,11 +229,13 @@ texterea {
     z-index: 999;
 }
 
+/*
 #tab-content-container {
     min-height: 400px;
     max-height: 400px;
-    overflow-y: auto;
+    !*overflow-y: auto;*!
 }
+*/
 
 #memo-tab {
     display: block;
