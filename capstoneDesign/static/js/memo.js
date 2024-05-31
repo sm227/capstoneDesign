@@ -16,8 +16,9 @@ $(document).ready(function() {
         var url = '/add-memo/' + encodeURIComponent(videoId) + '/'
 
         // textarea 초기화
-        $('#memo-text').val('') 
-        
+        $('#memo-text-area').val('')
+
+        console.log("memo.text val executed")
         console.log(videoId)
         // Send AJAX request
         $.ajax({
@@ -42,13 +43,19 @@ document.addEventListener("DOMContentLoaded", function () {
         const memoItems = document.getElementById("memo-items"); // 메모 목록에 들어가는 아이템이 들어가는 리스트
 
         $('#memo-tab-button').click(function(event) {
+            $('#add-memo-form').css({
+                'display':'block'
+            })
+
             $('#memo-tab').css({
                 'display':'block'
             })
 
-            $('#memo-card-body').css({
+            $('#question-tab').css({
                 'display':'none'
             })
+
+
         })
 
         $('#loadMemo').click(function(event) {
@@ -58,6 +65,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             $('#memo-card-body').css({
                 'display':'block'
+            })
+
+            $('#question-tab').css({
+                'display':'none'
             })
         })
 
