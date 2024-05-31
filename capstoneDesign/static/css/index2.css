@@ -44,7 +44,7 @@ a:hover, a:focus {
     width: 55px;
     height: 30px;
     font-size: 13px;
-    float : left;
+    float: left;
 }
 
 .memo-container {
@@ -95,7 +95,7 @@ a:hover, a:focus {
     transform: translateY(10px);
 }
 
-.pen2-floating-btn{
+.pen2-floating-btn {
     position: fixed;
     display: none;
     bottom: 120px;
@@ -121,7 +121,7 @@ a:hover, a:focus {
     background-color: #155ED2;
 }
 
-.eraser-btn{
+.eraser-btn {
     position: fixed;
     display: none;
     bottom: 163px;
@@ -143,7 +143,7 @@ a:hover, a:focus {
     transform: translateY(10px);
 }
 
-.eraserAll-btn{
+.eraserAll-btn {
     position: fixed;
     display: none;
     bottom: 206px;
@@ -165,23 +165,23 @@ a:hover, a:focus {
     transform: translateY(10px);
 }
 
-.slider-hide{
+.slider-hide {
     display: none;
 }
 
-.slider-show{
+.slider-show {
     display: block;
 }
 
 #eraser-controls {
-  position: absolute;
-  top: 80%;
-  left: 90%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 10px;
-  border-radius: 5px;
-  z-index: 1000;
+    position: absolute;
+    top: 80%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 10px;
+    border-radius: 5px;
+    z-index: 1000;
 }
 
 texterea {
@@ -190,25 +190,25 @@ texterea {
 
 
 /*{# 버튼 애니메이션 #}*/
-.showP{
+.showP {
     display: flex !important;
     opacity: 1;
     transform: translateY(0);
 }
 
 /*{# 버튼 애니메이션 #}*/
-.hide{
+.hide {
     opacity: 0;
     transform: translateY(10px);
 }
 
 /*{# 버튼 애니메이션 #}*/
-.hidden{
+.hidden {
     display: none;
 }
 
 /*{# 색 고르는 팔레트 사이즈 #}*/
-#color-palette{
+#color-palette {
     position: fixed;
     top: 80%;
     left: 80%;
@@ -229,13 +229,18 @@ texterea {
     z-index: 999;
 }
 
+#tab-content-container {
+    min-height: 400px;
+    max-height: 400px;
+    overflow-y: auto;
+}
 
 #memo-tab {
-    display:block;
+    display: block;
 }
 
 #memo-card-body {
-    display:none;
+    display: none;
 }
 
 

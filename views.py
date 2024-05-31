@@ -534,3 +534,28 @@ def question(request, video_id):
     return JsonResponse(context)
 
     # return HttpResponse()
+
+def page_list(request,video_id):
+    page = request.GET.get('page', 1) #페이지 번호 가져오기
+    page_size = 4 #메모 개수
+
+    memos = Memo.object.filter(video_id=video_id).order_by('-id')
+    paginator = Paginator(memos, page_size) #memos를 페이지네이션
+    paged_memos = paginator.get_page(page) #요청한 페이지에 해당하는 메모 출력
+
+    items = [ #item리스ㅡㅌ 딕셔너리 ㅎ형태로 반환해 저장
+        {
+            "id" : memo.id,
+            "current_time" : memo.current_time,
+            "text" : memo.text
+        } for memo in paged_memos
+    ]
+
+    response = {
+        "items": items,
+        "total_pages" : paginator.num_pages,
+        "current_page" : paged_memos.number
+
+    }
+
+    return JsonResponse(response)
