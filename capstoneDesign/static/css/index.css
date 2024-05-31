@@ -163,15 +163,11 @@
 /*{#delete button 2 #}*/
 
 .dbtn2 {
-    background-color: black;
+    background-color: transparent;
     color: white;
-    position: absolute;
     border: none;
-    top: 14%;
-    left: 17.5%;
+    padding: 0;
 
-    /*bottom: 10px; !* 아래에서 10px만큼 띄움 *!*/
-    /*left: 20px; !* 왼쪽에서 10px만큼 띄움 *!*/
 
 }
 /*.dbtn2 .icon {*/
