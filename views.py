@@ -378,6 +378,26 @@ def delete_history(request, video_pk):
 
     return redirect('main_page')
 
+def delete_history_All(request):
+    # video = Video.objects.get(id=video_pk)
+    # recent_data = Video.objects.filter(user=request.user).order_by('-id')[:8]
+    # Video.objects.all().delete()
+
+
+    # user = User.objects.get(id=user_id)
+    Video.objects.filter(user=request.user).delete()
+    # Video.objects.filter(id=list(Video.objects.values_list('pk', flat=True)[:10])).delete()
+
+    # pks = (Statusmessages.objects
+    #        .filter(time__lt=date)
+    #        .values_list('pk')[:30000])
+    # Statusmessages.objects.filter(pk__in=pks).delete()
+
+    #Z
+
+    return redirect('main_page')
+
+
 
 @login_required(login_url='common:login')
 def test(request):

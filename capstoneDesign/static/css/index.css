@@ -46,6 +46,55 @@
 }
 
 
+
+
+
+/*{#    summary button #}*/
+.btn {
+    border: none;
+    width: 7em;
+    height: 2.4em;
+    border-radius: 0.5em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    background: rgba(28, 26, 28, 0.82);
+    cursor: pointer;
+    transition: all 450ms ease-in-out;
+}
+
+.sparkle {
+    fill: #AAAAAA;
+    transition: all 800ms ease;
+}
+
+.text {
+    font-weight: 600;
+    color: #AAAAAA;
+    font-size: medium;
+}
+
+.btn:hover {
+    background: linear-gradient(0deg, #A47CF3, #683FEA);
+    box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
+    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
+    0px 0px 0px 4px rgba(255, 255, 255, 0.2),
+    0px 0px 180px 0px #9917FF;
+    transform: translateY(-2px);
+}
+
+.btn:hover .text {
+    color: white;
+}
+
+.btn:hover .sparkle {
+    fill: white;
+    transform: scale(1.2);
+}
+
+
+
 /*{#delete button #}*/
 
 .dbtn {
@@ -104,47 +153,77 @@
 }
 
 
-/*{#    summary button #}*/
-.btn {
-    border: none;
-    width: 7em;
-    height: 2.4em;
-    border-radius: 0.5em;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    background: rgba(28, 26, 28, 0.82);
-    cursor: pointer;
-    transition: all 450ms ease-in-out;
-}
 
-.sparkle {
-    fill: #AAAAAA;
-    transition: all 800ms ease;
-}
 
-.text {
-    font-weight: 600;
-    color: #AAAAAA;
-    font-size: medium;
-}
 
-.btn:hover {
-    background: linear-gradient(0deg, #A47CF3, #683FEA);
-    box-shadow: inset 0px 1px 0px 0px rgba(255, 255, 255, 0.4),
-    inset 0px -4px 0px 0px rgba(0, 0, 0, 0.2),
-    0px 0px 0px 4px rgba(255, 255, 255, 0.2),
-    0px 0px 180px 0px #9917FF;
-    transform: translateY(-2px);
-}
 
-.btn:hover .text {
+
+
+
+/*{#delete button 2 #}*/
+
+.dbtn2 {
+    background-color: black;
     color: white;
+    position: absolute;
+    border: none;
+    top: 14%;
+    left: 17.5%;
+
+    /*bottom: 10px; !* 아래에서 10px만큼 띄움 *!*/
+    /*left: 20px; !* 왼쪽에서 10px만큼 띄움 *!*/
+
+}
+/*.dbtn2 .icon {*/
+/*            fill: white; !* 아이콘 색상을 흰색으로 설정 *!*/
+/*            width: 20px; !* 아이콘 크기 조정 *!*/
+/*            height: 20px; !* 아이콘 크기 조정 *!*/
+/*            position: absolute; !* 아이콘 위치를 절대 위치로 설정 *!*/
+/*            top: 50%; !* 아이콘을 버튼의 중앙에 위치 *!*/
+/*            left: 50%; !* 아이콘을 버튼의 중앙에 위치 *!*/
+/*            transform: translate(-50%, -50%); !* 중앙 정렬 *!*/
+/*        }*/
+
+
+.dbtn2::after {
+    content: '전체 삭제';
+    position: absolute;
+    top: -40%;
+    left: 50%;
+    transform: translateX(-50%); /* 세로 중앙 정렬 */
+    width: fit-content;
+    height: fit-content;
+    background-color: rgb(168, 7, 7);
+    padding: 4px 8px;
+    border-radius: 5px;
+    transition: .2s linear;
+    transition-delay: .2s;
+    color: white;
+    text-transform: uppercase;
+    font-size: 11px;
+    opacity: 0;
+    visibility: hidden;
+    white-space: nowrap; /* 텍스트를 한 줄로 표시 */
 }
 
-.btn:hover .sparkle {
+.icon {
     fill: white;
+    width: 20px;
+    height: 20px;
+    transform: scale(1.0);
+    transition: .2s linear;
+}
+
+.dbtn2:hover > .icon {
     transform: scale(1.2);
 }
 
+.dbtn2:hover > .icon path {
+    fill: rgb(168, 7, 7);
+}
+
+.dbtn2:hover::after {
+    visibility: visible;
+    opacity: 1;
+    /*top: -100%;*/
+}
