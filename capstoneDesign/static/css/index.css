@@ -128,7 +128,7 @@
     transition-delay: .2s;
     color: white;
     text-transform: uppercase;
-    font-size: 10px;
+    font-size: 9px;
     opacity: 0;
     visibility: hidden;
 }
@@ -196,7 +196,7 @@
     transition-delay: .2s;
     color: white;
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: 10px;
     opacity: 0;
     visibility: hidden;
     white-space: nowrap; /* 텍스트를 한 줄로 표시 */
@@ -204,8 +204,8 @@
 
 .icon {
     fill: white;
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     transform: scale(1.0);
     transition: .2s linear;
     margin-left: -4px;
