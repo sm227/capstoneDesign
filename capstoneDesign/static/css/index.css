@@ -167,8 +167,8 @@
     color: white;
     border: none;
     padding: 0;
-
-
+    margin-left: 10px;
+    position: relative;
 }
 /*.dbtn2 .icon {*/
 /*            fill: white; !* 아이콘 색상을 흰색으로 설정 *!*/
@@ -184,7 +184,7 @@
 .dbtn2::after {
     content: '전체 삭제';
     position: absolute;
-    top: -40%;
+    top: -55%;
     left: 50%;
     transform: translateX(-50%); /* 세로 중앙 정렬 */
     width: fit-content;
@@ -204,10 +204,12 @@
 
 .icon {
     fill: white;
-    width: 20px;
-    height: 20px;
+    width: 22px;
+    height: 22px;
     transform: scale(1.0);
     transition: .2s linear;
+    margin-left: -4px;
+    margin-top: -7px;
 }
 
 .dbtn2:hover > .icon {
