@@ -53,8 +53,9 @@ urlpatterns = [
 
     path('index/', views.index, name='index'),
     path('<int:user_id>/password/', views.update_password, name='update_password'),
-    path('history/<int:video_pk>/', views.history,name='history'),
-    path('delete_history/<int:video_pk>/', views.delete_history,name='delete_history'),
+    path('history/<int:video_pk>/', views.history, name='history'),
+    path('delete_history/<int:video_pk>/', views.delete_history, name='delete_history'),
+    path('delete_history_All/', views.delete_history_All, name='delete_history_All'),
 
     path('question/<str:video_id>/', views.question, name='question'),
 

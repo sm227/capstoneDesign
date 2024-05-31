@@ -47,14 +47,14 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/index.css' %}">
 
     <style>
-       {% comment %} #loading-spinner {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9999;
-        }{% endcomment %}
+        {% comment %} #loading-spinner {
+             display: none;
+             position: fixed;
+             top: 50%;
+             left: 50%;
+             transform: translate(-50%, -50%);
+             z-index: 9999;
+         }{% endcomment %}
 
         #loading-spinner {
             position: fixed;
@@ -84,7 +84,7 @@
 
 <div id="loading-overlay"></div>
 <div id="loading-spinner" class="text-center">
-{#    <div class="spinner-border" role="status"></div>#}
+    {#    <div class="spinner-border" role="status"></div>#}
     <div><p class="fs-4">요약중이에요😁 조금만 기다려 주세요!</p></div>
     <img src="static/loading.gif"></div>
 </div>
@@ -109,14 +109,25 @@
 
 <div class="container mt-5">
     {% if data and user.is_authenticated %}
-        <h2>최근 기록 <i class="bi bi-clock-history"></i></h2>
+        <h2>최근 기록 <i class="bi bi-clock-history"></i>
+            <button class="dbtn2" onclick="deleteHistoryAll()">
+                <svg viewBox="0 0 15 17.5" height="17.5" width="12" style="color:white" xmlns="http://www.w3.org/2000/svg"
+                     class="icon">
+                    <path transform="translate(-2.5 -1.25)"
+                          d="M15,18.75H5A1.251,1.251,0,0,1,3.75,17.5V5H2.5V3.75h15V5H16.25V17.5A1.251,1.251,0,0,1,15,18.75ZM5,5V17.5H15V5Zm7.5,10H11.25V7.5H12.5V15ZM8.75,15H7.5V7.5H8.75V15ZM12.5,2.5h-5V1.25h5V2.5Z"
+                          id="Fill">
+                    </path>
+                </svg>
+            </button>
+        </h2>
+        
         <div class="card-container">
             {% for item in data %}
                 <div class="card">
                     <img src="{{ item.thumbnail }}" style="width: 300px;" alt="Card image cap">
                     <div class="ms-1 me-2 mt-2 container text-wrap">
                         {#                        {{ item.text }}#}
-                        <a href="{% url 'history'  item.id %}" class="history-url text-white" 
+                        <a href="{% url 'history'  item.id %}" class="history-url text-white"
                            style="text-decoration-line: none">{{ item.text }}</a> {# 눌리는 부분 #}
 
                     </div>
@@ -130,8 +141,8 @@
                                   id="Fill"></path>
                         </svg>
                     </button>
-                <p class="text-muted" style="position: absolute; left: 150px; bottom: -10px;">{{ item.date|date:"Y-m-d H:i" }}</p>
-
+                    <p class="text-muted"
+                       style="position: absolute; left: 150px; bottom: -10px;">{{ item.date|date:"Y-m-d H:i" }}</p>
                 </div>
             {% endfor %}
         </div>
@@ -271,7 +282,7 @@
                         {% endif %}
 
                     </button>
-                    
+
                 </div>
             </div>
         </form>
@@ -306,6 +317,12 @@
     function deleteHistory(id) {
         if (confirm('삭제하시겠습니까?')) {
             window.location.href = '/delete_history/' + id + '/';
+        }
+    }
+
+    function deleteHistoryAll() {
+        if (confirm('모두 삭제하시겠습니까?')) {
+            window.location.href = '/delete_history_All/';
         }
     }
 
@@ -348,26 +365,26 @@
             hideSpinner();
         }
     });
-    
+
     //url 비어있을 때 알람
     $(document).ready(function () {
-    $("form").on("submit", function (event) {
-        var buttonText = $(this).find("button span.text").text();
-        var youtubeLink = $("#youtubeLink").val();
-        if (buttonText === '로그인') {
-            return true;
-        } else {
-            if (!youtubeLink) {
-                event.preventDefault(); 
-                var urlModal = new bootstrap.Modal(document.getElementById('urlModal'), {
-                    keyboard: false
-                });
-                urlModal.show();
-                hideSpinner();
+        $("form").on("submit", function (event) {
+            var buttonText = $(this).find("button span.text").text();
+            var youtubeLink = $("#youtubeLink").val();
+            if (buttonText === '로그인') {
+                return true;
+            } else {
+                if (!youtubeLink) {
+                    event.preventDefault();
+                    var urlModal = new bootstrap.Modal(document.getElementById('urlModal'), {
+                        keyboard: false
+                    });
+                    urlModal.show();
+                    hideSpinner();
+                }
             }
-        }
+        });
     });
-});
 
 
 </script>
