@@ -48,7 +48,9 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("Success");
                 console.log(response)
-                const markedResponse = marked.parse(response['answer'])
+
+                //marked.parse 로 마크다운 형식으로 변환
+                const markedResponse = marked.parse(response['answer']) 
                 $('#answerResult').html(markedResponse);
                 hideSpinner();
             },
