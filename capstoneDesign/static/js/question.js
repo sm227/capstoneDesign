@@ -11,6 +11,17 @@ function hideSpinner() {
 }
 
 $(document).ready(function () {
+
+    $('#question-button').click(function(event) {
+        $('#question-tab').css({
+            'display':'block'
+        })
+
+        $('#add-memo-form').css({
+            'display':'none'
+        })
+    })
+
     $('#question-form').submit(function (event) {
         event.preventDefault(); // Prevent default form submission
 
@@ -23,8 +34,10 @@ $(document).ready(function () {
         var url = '/question/' + encodeURIComponent(realId) + '/'
 
         // textarea 초기화
-        $('#memo-text').val('')
+
+        $('#question-text').val('')
         console.log(realId)
+
         // Send AJAX request
         $.ajax({
             type: 'POST',
@@ -35,7 +48,10 @@ $(document).ready(function () {
             success: function (response) {
                 console.log("Success");
                 console.log(response)
-                $('#answerResult').html(response['answer']);
+
+                //marked.parse 로 마크다운 형식으로 변환
+                const markedResponse = marked.parse(response['answer']) 
+                $('#answerResult').html(markedResponse);
                 hideSpinner();
             },
             error: function (xhr, errmsg, err) {
@@ -45,3 +61,4 @@ $(document).ready(function () {
         });
     });
 });
+

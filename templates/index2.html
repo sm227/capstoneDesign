@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://kit.fontawesome.com/9b49798715.js" crossorigin="anonymous"></script>
 
+    <!--마크다운 라이브러리-->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <script>
         $.ajaxSetup({
             headers: {"X-CSRFToken": '{{csrf_token}}'}
@@ -98,7 +101,7 @@
                                data-bs-toggle="tab">메모 보기</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" id="question" href="#question-tab" data-bs-toggle="tab">질문 하기</a>
+                            <a class="nav-link" id="question-button" href="#question-tab" data-bs-toggle="tab">질문 하기</a>
                         </li>
                     </ul>
                 </div>
