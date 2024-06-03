@@ -534,7 +534,8 @@ def question(request, video_id):
     # 본인 api key 삽입
     genai.configure(api_key=gemini_key)
 
-    model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
+    # model = genai.GenerativeModel('gemini-pro', safety_settings=safety_settings)
+    model = genai.GenerativeModel('gemini-1.5-pro', safety_settings=safety_settings)
 
     q_prompt = request.POST.get('text')
 
@@ -542,7 +543,6 @@ def question(request, video_id):
         example = f.read()
         print(example)
 
-    test = "삼성전자가 뭐야?"
     answer = model.generate_content(example + f"\n{q_prompt}")
 
     print(answer)
