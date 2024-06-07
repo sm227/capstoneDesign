@@ -4,7 +4,7 @@ services:
   web:
     build: .  # Dockerfile 빌드
     #    command: python manage.py runserver 127.0.0.1:8000  # 장고 서버 실행 시키는 방법
-    command: python manage.py runserver 0.0.0.0:8000  # 장고 서버 실행 시키는 방법
+    command: python manage.py runserver --insecure 0.0.0.0:8000  # 장고 서버 실행 시키는 방법
     volumes:
       - ./:/usr/src/app/
     ports:
