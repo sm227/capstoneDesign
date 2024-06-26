@@ -41,3 +41,8 @@ services:
 
 
   # 서비스 명
+  # 서비스 명
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"

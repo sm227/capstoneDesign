@@ -32,7 +32,7 @@ SECRET_KEY = 'django-insecure-tt*1!y_!rq*2^il!*v_i1ro-7_wcy^9xif%th1*fw&a2asa#rl
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '1.236.13.63','127.0.0.1','192.168.55.6','web']
+ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '1.236.13.63','127.0.0.1','192.168.55.6','web','www.sunrize.site']
 
 # Application definition
 
