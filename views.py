@@ -143,7 +143,7 @@ def index2(request):
         temp = {
             'text': item['text'],
             'start': item['start'],
-            # round 는 소수점 반올림 함수
+            # round 는 소수점 반올림 함수O
             'minutes': round(minutes),  # 분
             'seconds': round(seconds)  # 초
         }
