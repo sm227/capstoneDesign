@@ -1,0 +1,23 @@
+version: '3.10'
+# 두 개 띄우려고 이거 만듦
+services:
+  web:
+    build: .  # Dockerfile 빌드
+    #    command: python manage.py runserver 127.0.0.1:8000  # 장고 서버 실행 시키는 방법
+    command: python manage.py runserver 0.0.0.0:8000  # 장고 서버 실행 시키는 방법
+    volumes:
+      - ./:/usr/src/app/
+    ports:
+      - 8000:8000
+    environment:
+      - DJANGO_SETTINGS_MODULE=capstoneDesign.settings.local
+      - gemini_api_key=${gemini_api_key}
+      - youtube_api_key=${youtube_api_key}
+  db:
+    image: postgres # hamsm/capstonedb
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+
+  # 서비스 명
