@@ -19,10 +19,14 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: web
+#    command: >
+#      bash -c "python manage.py collectstatic --noinput
+#      && python3 manage.py migrate
+#      && gunicorn capstoneDesign.wsgi:application --bind 0.0.0.0:8000 --log-level=debug --access-logfile=- --log-file=-"
     command: >
       bash -c "python manage.py collectstatic --noinput
       && python3 manage.py migrate
-      && gunicorn capstoneDesign.wsgi:application --bind 0.0.0.0:8000 --log-level=debug --access-logfile=- --log-file=-"
+      && daphne capstoneDesign.asgi:application --port 8000 --bind 0.0.0.0 -v2
     volumes:
       - ./.static_root:/usr/src/app/staticfiles
     expose:

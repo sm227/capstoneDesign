@@ -4,7 +4,8 @@ services:
   web:
     build: .  # Dockerfile 빌드
     #    command: python manage.py runserver 127.0.0.1:8000  # 장고 서버 실행 시키는 방법
-    command: python manage.py runserver 0.0.0.0:8000  # 장고 서버 실행 시키는 방법
+#    command: python manage.py runserver 0.0.0.0:8000  # 장고 서버 실행 시키는 방법
+    command: daphne capstoneDesign.asgi:application --port 8000 --bind 0.0.0.0 -v2  # 장고 서버 실행 시키는 방법
     volumes:
       - ./:/usr/src/app/
     ports:

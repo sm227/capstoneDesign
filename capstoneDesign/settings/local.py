@@ -37,6 +37,7 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '1.236.13.63','127.0.0.1','192.168.55.6
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     'channels',
     'chat',
     'common.apps.CommonConfig',
@@ -151,7 +152,7 @@ STATICFILES_DIRS=[
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = 'capstoneDesign.routing.application'
+ASGI_APPLICATION = 'capstoneDesign.asgi.application'
 
 CHANNEL_LAYERS = {
     'default': {
