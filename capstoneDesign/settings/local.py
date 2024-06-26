@@ -37,6 +37,8 @@ ALLOWED_HOSTS = ['0.0.0.0', 'localhost', '1.236.13.63','127.0.0.1','192.168.55.6
 # Application definition
 
 INSTALLED_APPS = [
+    'channels',
+    'chat',
     'common.apps.CommonConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -46,7 +48,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "django_bootstrap5",
     'markdownify.apps.MarkdownifyConfig',
-    'chat',
     # 'capstoneDesign'
     # 'common,
 
@@ -150,13 +151,13 @@ STATICFILES_DIRS=[
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = 'capstoneDesign.asgi.application'
+ASGI_APPLICATION = 'capstoneDesign.routing.application'
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [('redis', 6379)],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}

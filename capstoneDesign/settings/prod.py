@@ -15,7 +15,7 @@ from pathlib import Path
 YOUTUBE_API_KEY = os.environ.get('youtube_api_key')
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 # LOGIN_REDIRECT_URL = '/'
 # LOGOUT_REDIRECT_URL = '/login/'
@@ -142,7 +142,7 @@ STATIC_URL = '/static/'
 # STATICFILES_DIRS=[
 #     os.path.join(BASE_DIR,'capstoneDesign','static')]
 
-STATIC_ROOT = os.path.join(BASE_DIR,'capstoneDesign', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, '..', 'static')
 # STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Default primary key field type
@@ -150,13 +150,13 @@ STATIC_ROOT = os.path.join(BASE_DIR,'capstoneDesign', 'static')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-ASGI_APPLICATION = 'capstoneDesign.asgi.application'
+ASGI_APPLICATION = 'capstoneDesign.routing.application'
 
-# CHANNEL_LAYERS = {
-#     'default': {
-#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
-#         'CONFIG': {
-#             "hosts": [('redis', 6379)],
-#         },
-#     },
-# }
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}
