@@ -2,6 +2,9 @@
 
 Welcome to **Sunrize AI**, your go-to service for summarizing YouTube videos! Whether you're a student, a busy professional, or just someone who wants to quickly understand video content, Sunrize AI makes it easy to get concise summaries of YouTube videos.
 
+You can try it out at the following link ->
+http://www.sunrize.site
+
 ![Sunrize AI Logo](https://path-to-your-logo.png) <!-- Add your logo image link here -->
 
 ## 🚀 Features
